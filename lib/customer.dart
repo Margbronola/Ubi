@@ -32,61 +32,80 @@ class _CustomerPageState extends State<CustomerPage> {
                 Container(
                   width: size.width,
                   height: 80,
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          onChanged: (value) {
-                            setState(() {
-                              searchString = value.toLowerCase();
-                            });
-                          },
-                          
-                          decoration: InputDecoration(
-                            border: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.grey.shade300),
-                            ),
-                            hintText: 'Search Customer',
-                            hintStyle: const TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.bold),
-                            filled: true,
-                            fillColor: Colors.grey.shade300,
-                            suffixIconConstraints: const BoxConstraints(
-                              maxHeight: double.maxFinite,
-                            ),
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 0),
-                            suffixIcon: Container(
-                              width: 50,
-                              height: 50,
-                              decoration: const BoxDecoration(
-                                color: Color.fromARGB(255, 40, 84, 232),
-                                borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(5),
-                                  bottomRight: Radius.circular(5),
-                                ),
+                  // padding: const EdgeInsets.symmetric(horizontal: 20),
+                  // color: Colors.red,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade300,
+                        blurRadius: 15.0,
+                        offset: const Offset(0.0, 0.75)
+                      )
+                    ]
+                  ),
+
+                  child: Container(
+                    height: 70,
+                    // color: Colors.green,
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            onChanged: (value) {
+                              setState(() {
+                                searchString = value.toLowerCase();
+                              });
+                            },
+                            
+                            decoration: InputDecoration(
+                              border: const OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
                               ),
-                              child: const Icon(Icons.search_rounded,
-                                  color: Colors.white),
-                            )
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:BorderSide(color: Colors.grey.shade300),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide:BorderSide(color: Colors.grey.shade300),
+                              ),
+                              hintText: 'Search Customer',
+                              hintStyle: const TextStyle(
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.bold),
+                              filled: true,
+                              fillColor: Colors.grey.shade300,
+                              suffixIconConstraints: const BoxConstraints(
+                                maxHeight: double.maxFinite,
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 0),
+                              suffixIcon: Container(
+                                width: 50,
+                                height: 50,
+                                decoration: const BoxDecoration(
+                                  color: Color.fromARGB(255, 40, 84, 232),
+                                  borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(5),
+                                    bottomRight: Radius.circular(5),
+                                  ),
+                                ),
+                                child: const Icon(Icons.search_rounded,
+                                    color: Colors.white),
+                              )
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               
                 Container(
-                  color: Colors.white,
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 30),
+                  margin: const EdgeInsets.only(top: 15),
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
                   child: StreamBuilder<List<CustomerModel>>(
                     stream: _viewModel.stream,
                     builder: (_, snapshot) {

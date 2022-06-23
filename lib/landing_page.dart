@@ -28,6 +28,7 @@ class _LandingPageState extends State<LandingPage> {
   final ToPrepareAPI _toPrepareAPI = ToPrepareAPI();
   final TodaysOrderApi _todayOrderAPI = TodaysOrderApi();
   final OrdersAPI _ordersAPI = OrdersAPI();
+  // final WithoutCustomerApi _woCustomer = WithoutCustomerApi();
   final NavigationButtonViewModel _viewModel = NavigationButtonViewModel.instance;
 
   checkMenu() async {
@@ -115,44 +116,48 @@ class _LandingPageState extends State<LandingPage> {
       ) : StreamBuilder<List<int>> (
         stream: _viewModel.stream,
         builder: (context, snapshot) {
-          return Stack(
-            alignment: Alignment.center,
-            children: [
-              snapshot.hasData && !snapshot.hasError && snapshot.data!.isNotEmpty ? 
-              contents.where((element) => element['id'] == snapshot.data![currentIndex])
-              .first['child'] : const Menu(isNewUser: true),
-                
-              Positioned(
-                bottom: 10,
-                left: 10,
-                right: 10,
-                child: SafeArea(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: size.width * .12),
-                    child: Center(
-                      child: snapshot.hasData && !snapshot.hasError ? FloatingBottomNavList(
-                        disabledColor: const Color.fromARGB(255, 232, 149, 40),
-                        backgroundColor: Colors.grey.shade200,
-                        selectedIndex: currentIndex,
-                        activeColor:const Color.fromARGB(255, 40, 84, 232),
-                        backgroundRadius: 30,
-                        items: [
-                          ...snapshot.data!.map((id) {
-                            return navItems.where((element) => element.id == id).first;
-                          }),
-                        ],
-                        onTap: (index) {
-                          setState(() => currentIndex = index);
-                        },
-                      ): const Center(
-                        child: CircularProgressIndicator.adaptive()
+          if(snapshot.hasData && !snapshot.hasError && snapshot.data!.isNotEmpty){
+            return Stack(
+              alignment: Alignment.center,
+              children: [
+                // snapshot.hasData && !snapshot.hasError && snapshot.data!.isNotEmpty ? 
+                contents.where((element) => element['id'] == snapshot.data![currentIndex])
+                .first['child'] ,
+                // : const Menu(isNewUser: true),
+                  
+                Positioned(
+                  bottom: 10,
+                  left: 10,
+                  right: 10,
+                  child: SafeArea(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: size.width * .12),
+                      child: Center(
+                        child: snapshot.hasData && !snapshot.hasError ? FloatingBottomNavList(
+                          disabledColor: const Color.fromARGB(255, 232, 149, 40),
+                          backgroundColor: Colors.grey.shade200,
+                          selectedIndex: currentIndex,
+                          activeColor:const Color.fromARGB(255, 40, 84, 232),
+                          backgroundRadius: 30,
+                          items: [
+                            ...snapshot.data!.map((id) {
+                              return navItems.where((element) => element.id == id).first;
+                            }),
+                          ],
+                          onTap: (index) {
+                            setState(() => currentIndex = index);
+                          },
+                        ): const Center(
+                          child: CircularProgressIndicator.adaptive()
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          );
+              ],
+            );
+          }
+          return const Menu(isNewUser: true);
         }
       )
     );

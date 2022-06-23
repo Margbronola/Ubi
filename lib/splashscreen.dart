@@ -64,6 +64,7 @@ class _SplashScreenState extends State<SplashScreen> {
               margin: const EdgeInsets.only(bottom: 15),
               child: Image.asset('assets/images/BlackLogo.png', fit: BoxFit.fitWidth)
             ),
+            
             const CircularProgressIndicator.adaptive(),
           ]
         ),

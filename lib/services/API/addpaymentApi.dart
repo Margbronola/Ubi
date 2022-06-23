@@ -6,12 +6,12 @@ import 'package:internapp/global/network.dart';
 
 class AddPayment{
   Future <bool> payment({
-    int? customerId,
+    int? cartcustomerId,
     required double amount,
     }) async{
     try{
       return await http.post(
-        Uri.parse("${Network.url}/paymentorder/$customerId"),
+        Uri.parse("${Network.url}/paymentorder/$cartcustomerId"),
         headers: {
           "Accept": "application/json",
           "Authorization": "Bearer $accessToken"
@@ -20,10 +20,6 @@ class AddPayment{
           "paid": amount.toString(),
         },
       ).then((response) {
-        // ignore: avoid_print
-        print(customerId);
-        // ignore: avoid_print
-        print(amount);
         return response.statusCode == 200;
       },);
     }
@@ -54,8 +50,9 @@ class AddPayment{
     }
     catch (e) {
       // ignore: avoid_print
-      print("mali : $e");
+      print("error sa pagbayad by order:: $e");
       return false;
     }
   }
+
 }

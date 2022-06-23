@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DataCacher{
@@ -23,7 +25,6 @@ class DataCacher{
 
   List<int> get menuList {
     List<String> data = _sharedPreferences.getStringList('menu_ids') ?? [];
-    // ignore: avoid_print
     print(data);
     return data.map((e) => int.parse(e)).toList();
   }

@@ -8,7 +8,6 @@ class ProductModel {
   final List<ImageModel> images;
   final String reference;
   final int stock;
-  final int? categoryId;
   final int companyId;
   final bool isService;
 
@@ -23,7 +22,6 @@ class ProductModel {
       required this.images,
       required this.reference,
       required this.stock,
-      required this.categoryId,
       required this.companyId,
       required this.isService,
     });
@@ -46,7 +44,6 @@ class ProductModel {
       images: imageConvert(json['images']),
       reference: json['reference'],
       stock: json['stock'],
-      categoryId: json['category_id'],
       companyId: int.parse(json['company_id'].toString()),
       isService: json['is_service'] != null ? int.parse(json['is_service'].toString()) == 1 : false,
   );

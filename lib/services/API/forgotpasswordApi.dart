@@ -1,4 +1,4 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, avoid_print
 
 import 'package:http/http.dart' as http;
 import 'package:internapp/global/network.dart';
@@ -15,10 +15,12 @@ class ForgotPassApi{
           "email": email,
         },
       ).then((response) {
+        print(response.body);
         return response.statusCode == 200;
       },);
     }
     catch (e){
+      print(e);
       return false;
     }
   }

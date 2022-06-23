@@ -7,6 +7,7 @@ class OrderModel{
   final bool status;
   final double total;
   final int qty;
+  final DateTime date;
   final CustomerModel? customer;
   final PaymentModel? payments;
   final List<OrderProductModel> orderproduct;
@@ -16,6 +17,7 @@ class OrderModel{
       required this.status,
       required this.total,
       required this.qty,
+      required this.date,
       required this.customer,
       required this.payments,
       required this.orderproduct
@@ -32,12 +34,13 @@ class OrderModel{
     }
 
   factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
-      id: json['id'],
-      status: json['status'] != null ? int.parse(json['status'].toString()) == 1 : false,
-      total: double.parse(json['total'].toString()),
-      qty: json['order_qty'],
-      customer: json['customers'] == null ? null : CustomerModel.fromJson(json['customers']),
-      payments: json['payments'] == null ? null : PaymentModel.fromJson(json['payments']),
-      orderproduct: orderList(json['order_product'])
+    id: json['id'],
+    status: json['status'] != null ? int.parse(json['status'].toString()) == 1 : false,
+    total: double.parse(json['total'].toString()),
+    qty: json['order_qty'],
+    date: DateTime.parse(json['created_at']),
+    customer: json['customers'] == null ? null : CustomerModel.fromJson(json['customers']),
+    payments: json['payments'] == null ? null : PaymentModel.fromJson(json['payments']),
+    orderproduct: orderList(json['order_product'])
   );
 }

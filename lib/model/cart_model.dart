@@ -1,34 +1,33 @@
-import 'package:internapp/model/cartdetails_model.dart';
+import 'package:internapp/model/customer_model.dart';
+import 'package:internapp/model/displaycart_model.dart';
 
 class CartModel{
   final int id;
-  final String cusname; 
+  CustomerModel? customer; 
   final double total;
-  List<CartDetailsModel> cart;
+  List<DisplayCartModel> cart;
 
 
    CartModel({
     required this.id,
-    required this.cusname,
+    required this.customer,
     required this.total,
     required this.cart,
   });
 
-  static List<CartDetailsModel> carttolist(
-    List? data
-  ){
-    List<CartDetailsModel> o = [];
+  static List<DisplayCartModel> carttolist(List? data){
+    List<DisplayCartModel> o = [];
     if(data != null){
-      for(var order in data){
-            o.add(CartDetailsModel.fromJson(order));
-          }
+      for(var datum in data){
+        o.add(DisplayCartModel.fromJson(datum));
+      }
     }
-          return o;
+    return o;
   }
 
   factory CartModel.fromJson(Map<String, dynamic> json) => CartModel(
       id: json['id'],
-      cusname: json['name'],
+      customer: json['customer_id'] == null ? null : CustomerModel.fromJson(json['customer_id']),
       total: json['total'] == null ? 0.0 : double.parse(json['total'].toString()),
       cart: carttolist(json['carts']),
   );

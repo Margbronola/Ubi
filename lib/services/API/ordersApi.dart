@@ -4,13 +4,13 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:internapp/global/access.dart';
 import 'package:internapp/global/network.dart';
-import 'package:internapp/model/orders_model.dart';
-import 'package:internapp/viewmodel/ordersviewmodel.dart';
+import 'package:internapp/model/order_model.dart';
+import 'package:internapp/viewmodel/todaysorderviewmodel.dart';
 
 class OrdersAPI{
-  final OrdersViewModel _viewModel = OrdersViewModel.instance;
+  final TodaysOrderViewModel _viewModel = TodaysOrderViewModel.instance;
   
-  Future<OrdersModel?> getOrders() async{
+  Future<OrderModel?> getOrders() async{
     try{
       return await http.get(Uri.parse("${Network.url}/displayAll/Paid"),
         headers: {
@@ -20,14 +20,14 @@ class OrdersAPI{
       ).then((response) {
         var data = json.decode(response.body);
         if(response.statusCode == 200){
-          List<OrdersModel> o = [];
+          List<OrderModel> o = [];
           for(var orders in data){
-            o.add(OrdersModel.fromJson(orders));
+            o.add(OrderModel.fromJson(orders));
           }
           // ignore: avoid_print
           print("All Orders : ${o.length}");
           _viewModel.populate(o);
-          return order;
+          return orderlist;
         }
         return null;
       });

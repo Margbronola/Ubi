@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:internapp/model/orders_model.dart';
-import 'package:internapp/viewmodel/ordersviewmodel.dart';
+import 'package:internapp/model/order_model.dart';
+import 'package:internapp/viewmodel/todaysorderviewmodel.dart';
 import 'package:intl/intl.dart';
 
 class OrderPage extends StatefulWidget {
@@ -11,7 +11,7 @@ class OrderPage extends StatefulWidget {
 }
 
 class _OrderPageState extends State<OrderPage> {
-  final OrdersViewModel _viewModel = OrdersViewModel.instance;
+  final TodaysOrderViewModel _viewModel = TodaysOrderViewModel.instance;
   final TextEditingController controller = TextEditingController();
   String searchString = "";
 
@@ -29,107 +29,119 @@ class _OrderPageState extends State<OrderPage> {
           child: ListView(
             children: [
               Container(
-                width: size.width,
-                height: 55,
-                margin: const EdgeInsets.only(top: 20),
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Expanded(
-                  child: TextField(
-                    onChanged: (value) {
-                      setState(() {
-                        searchString = value.toLowerCase();
-                      });
-                    },
-
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.shade300),
-                      ),
-                      hintText: 'Search Customer',
-                      hintStyle: const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
-                      filled: true,
-                      fillColor: Colors.grey.shade300,
-                      suffixIconConstraints: const BoxConstraints(
-                        maxHeight: double.maxFinite,
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 20,vertical: 0),
-                      suffixIcon:  Container(
-                        width: 50,
-                        height: 50,
-                        decoration: const BoxDecoration(
-                          color: Color.fromARGB(255, 40, 84, 232),
-                          borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(5),
-                            bottomRight: Radius.circular(5),
-                          ),
-                        ),
-    
-                        child:
-                          const Icon(Icons.search_rounded, color: Colors.white),
-                      )
-                    ),
-                  ),
-                ),
-              ),
-    
-              Container(
-                height: 50,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 decoration: BoxDecoration(
+                  color: Colors.white,
                   boxShadow: [
                     BoxShadow(
                       color: Colors.grey.shade300,
-                      spreadRadius: 10,
-                      blurRadius: 5,
-                      offset: const Offset(0,7),
+                      blurRadius: 15.0,
+                      offset: const Offset(0.0, 0.75)
                     )
                   ]
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: const [
-                    SizedBox(
-                      width: 125,
-                      child: Center(
-                        child: Text('Customer', 
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                height: 120,
+                child: Column(
+                  children: [
+                    Container(
+                      width: size.width,
+                      height: 55,
+                      margin: const EdgeInsets.only(top: 15),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Expanded(
+                        child: TextField(
+                          onChanged: (value) {
+                            setState(() {
+                              searchString = value.toLowerCase();
+                            });
+                          },
+
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey.shade300),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:BorderSide(color: Colors.grey.shade300),
+                            ),
+                            hintText: 'Search Customer',
+                            hintStyle: const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+                            filled: true,
+                            fillColor: Colors.grey.shade300,
+                            suffixIconConstraints: const BoxConstraints(
+                              maxHeight: double.maxFinite,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 20,vertical: 0),
+                            suffixIcon:  Container(
+                              width: 50,
+                              height: 50,
+                              decoration: const BoxDecoration(
+                                color: Color.fromARGB(255, 40, 84, 232),
+                                borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(5),
+                                  bottomRight: Radius.circular(5),
+                                ),
+                              ),
+      
+                              child:
+                                const Icon(Icons.search_rounded, color: Colors.white),
+                            )
+                          ),
                         ),
-                      )
+                      ),
                     ),
-    
-                    SizedBox(
-                      width: 125,
-                      child: Center(
-                        child: Text('Amount', 
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
-                        ),
-                      )
+
+                    Container(
+                      height: 50,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: const [
+                          SizedBox(
+                            width: 125,
+                            child: Center(
+                              child: Text('Customer', 
+                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                              ),
+                            )
+                          ),
+          
+                          SizedBox(
+                            width: 125,
+                            child: Center(
+                              child: Text('Amount', 
+                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                              ),
+                            )
+                          ),
+          
+                          SizedBox(
+                            width: 125,
+                            child: Center(
+                              child: Text('Date', 
+                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                              ),
+                            )
+                          )
+                        ],
+                      ),
                     ),
-    
-                    SizedBox(
-                      width: 125,
-                      child: Center(
-                        child: Text('Date', 
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
-                        ),
-                      )
-                    )
+
                   ],
-                ),
+                )
               ),
     
               Container(
                 height: 610,
+                margin: const EdgeInsets.only(top: 15),
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: StreamBuilder<List<OrdersModel>>(
+                child: StreamBuilder<List<OrderModel>>(
                   stream: _viewModel.stream,
                   builder: (_, snapshot) {
                     if (snapshot.hasData && !snapshot.hasError){
                       if (snapshot.data!.isNotEmpty) {
-                        final List<OrdersModel> searchCustomer = snapshot.data!.where((element) => element.customer.name.toLowerCase().contains(searchString)).toList();
+                        final List<OrderModel> searchCustomer = snapshot.data!.where((element) => element.customer == null || element.customer!.name.toLowerCase().contains(searchString)).toList();
                       
                         return ListView.separated(
                           shrinkWrap: true,
@@ -144,7 +156,7 @@ class _OrderPageState extends State<OrderPage> {
                                     SizedBox(
                                       width: 125,
                                       child: Center(
-                                        child: Text(searchCustomer[index].customer.name,
+                                        child: Text(searchCustomer[index].customer?.name ?? "N/A",
                                           style: const TextStyle(
                                             color: Colors.black,
                                             fontSize: 18,

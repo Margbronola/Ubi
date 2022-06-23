@@ -1,4 +1,4 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, avoid_print
 
 import 'dart:convert';
 import 'dart:core';
@@ -35,20 +35,21 @@ class CartDetails{
       ).then((response){
         var data = json.decode(response.body);
         if(response.statusCode == 200){
-          // ignore: avoid_print
           print('added');
+          print(response.body);
           return CartDetailsModel.fromJson(data);
         }
       }); 
     }
     catch(e){
+      print("error sa pag add:: $e");
       return;
     }
   }
 
-  Future<void> getOrderDetailsbyCustomer({int? customerId}) async{
+  Future<void> getCartDetails({int? cartCustomerId}) async{
     try {
-        return await http.get(Uri.parse("${Network.url}/cart/$customerId"),
+        return await http.get(Uri.parse("${Network.url}/cart/$cartCustomerId"),
         headers: {
           "Accept": "application/json",
           HttpHeaders.authorizationHeader : "Bearer $accessToken"
@@ -57,7 +58,6 @@ class CartDetails{
         var data = json.decode(response.body);
         if(response.statusCode == 200){
           final CartModel model = CartModel.fromJson(data);
-          // ignore: avoid_print
           print("order : ${model.cart.length}");
           _viewModel.populate(model);
         return;
@@ -66,6 +66,7 @@ class CartDetails{
       });
     }
     catch (e){
+      print("Error sa pagpadisplay:: $e");
       return;
     }
   }

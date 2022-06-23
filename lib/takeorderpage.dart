@@ -101,8 +101,6 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                     Container(
                       height: 250,
                       width: size.width,
-                      // color: Colors.grey,
-                      // margin: const EdgeInsets.only(top: 70),
                       padding: const EdgeInsets.symmetric(horizontal: 25),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

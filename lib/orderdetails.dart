@@ -1,19 +1,22 @@
+// ignore_for_file: avoid_print
+
 import 'dart:ui';
+import 'package:internapp/model/displaycart_model.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:internapp/global/network.dart';
-import 'package:internapp/model/cart_model.dart';
-import 'package:internapp/model/cartdetails_model.dart';
-import 'package:internapp/model/product_model.dart';
-import 'package:internapp/productdetails.dart';
 import 'package:internapp/productpage.dart';
 import 'package:internapp/profile_page.dart';
+import 'package:internapp/productdetails.dart';
+import 'package:internapp/global/network.dart';
+import 'package:internapp/model/cart_model.dart';
+import 'package:internapp/model/product_model.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:internapp/model/cartdetails_model.dart';
 import 'package:internapp/services/API/addpaymentApi.dart';
 import 'package:internapp/services/API/cartdetailsApi.dart';
 import 'package:internapp/services/API/confirmorderApi.dart';
 import 'package:internapp/services/API/deleteupdateorder.dart';
 import 'package:internapp/viewmodel/cartdetailsviewmodel.dart';
-import 'package:jiffy/jiffy.dart';
 
 // ignore: must_be_immutable
 class OrderDetailsPage extends StatefulWidget {
@@ -75,7 +78,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
       );
     }
 
-    void delete(BuildContext context, int cartId) async{
+    void delete(BuildContext context, int cartId, int cartCustomer) async{
       setState(() {
         isLoading = true;
       });
@@ -83,7 +86,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
       await _deleteorder.delete(cartID: cartId)
       .then((value){
         setState(() {
-          _order.getOrderDetailsbyCustomer(customerId: widget.cusid);
+          _order.getCartDetails(cartCustomerId: cartCustomer);
         });
       }).whenComplete(
         () => setState(
@@ -169,7 +172,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                               Row(
                                 children: [
                                   const Text('Customer: ', style: TextStyle(fontSize: 20)),
-                                  Text(widget.cusname,
+                                  Text(snapshot.data!.customer?.name ?? "N/A",
                                     style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
                                   ),
                                 ],
@@ -183,7 +186,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                           child: snapshot.data!.cart.isNotEmpty ? ListView.separated(
                             itemCount: snapshot.data?.cart.length ?? 0,
                             itemBuilder: (_, index) {
-                              CartDetailsModel details = snapshot.data!.cart[index];
+                              DisplayCartModel details = snapshot.data!.cart[index];
                               
                               if(details.comment == null){
                                 return Padding(
@@ -220,7 +223,8 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                                   
                                         SlidableAction(
                                           onPressed: (_){
-                                            delete(context, details.id);
+                                            print(snapshot.data!.id);
+                                            delete(context, details.id, snapshot.data!.id);
                                           },
                                           backgroundColor: Colors.red,
                                           icon: Icons.delete_rounded,
@@ -355,7 +359,8 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                                   
                                       SlidableAction(
                                         onPressed: (_){
-                                          delete(context, details.id);
+                                          print(snapshot.data!.id);
+                                          delete(context, details.id, snapshot.data!.id);
                                         },
                                         backgroundColor: Colors.red,
                                         icon: Icons.delete_rounded,
@@ -583,7 +588,9 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                                           isLoading = true;
                                         });
                                 
-                                        await _confirmOrder.confirm(customerId: widget.cusid)
+                                        await _confirmOrder.confirm(
+                                          cartcustomerId: snapshot.data!.id
+                                        )
                                         .whenComplete(
                                           () => setState(
                                             () => isLoading = false,
@@ -810,7 +817,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                                         });
 
                                         await _addPayment.payment(
-                                          customerId: widget.cusid,
+                                          cartcustomerId: snapshot.data!.id,
                                           amount: double.parse(_amount.text),
                                         ).whenComplete(
                                           () => setState(

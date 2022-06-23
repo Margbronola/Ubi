@@ -157,7 +157,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   Container(
                     height: 100,
                     width: 250,
-                    // color: Colors.grey,
                     margin: const EdgeInsets.only(left: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

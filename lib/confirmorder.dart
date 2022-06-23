@@ -6,7 +6,7 @@ import 'package:internapp/model/orderproduct_model.dart';
 import 'package:internapp/profile_page.dart';
 import 'package:internapp/services/API/addpaymentApi.dart';
 import 'package:internapp/services/API/orderdetailsApi.dart';
-import 'package:internapp/viewmodel/todaysorderdetailsviewmodel.dart';
+import 'package:internapp/viewmodel/OrdersDetailsViewModel.dart';
 import 'package:jiffy/jiffy.dart';
 
 // ignore: must_be_immutable

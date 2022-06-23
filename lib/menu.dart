@@ -94,7 +94,7 @@ class _MenuState extends State<Menu> {
               child: SizedBox(
                 width: size.width,
                 height: 50,
-                child: ElevatedButton(
+                child: ElevatedButton( 
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)

@@ -72,94 +72,116 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
           child: ListView(
             children: [
               Container(
-                width: size.width,
-                height: 80,
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.shade300,
+                      blurRadius: 15.0,
+                      offset: const Offset(0.0, 0.75)
+                    )
+                  ]
+                ),
+                height: 120,
+                child: Column(
                   children: [
-                    Expanded(
-                      child: TextField(
-                        onChanged: (value) {
-                          setState(() {
-                            searchString = value.toLowerCase();
-                          });
-                        },
+                    Container(
+                      width: size.width,
+                      height: 80,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              onChanged: (value) {
+                                setState(() {
+                                  searchString = value.toLowerCase();
+                                });
+                              },
 
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.shade300),
-                        ),
-                        hintText: 'Search Customer',
-                        hintStyle: const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
-                        filled: true,
-                        fillColor: Colors.grey.shade300,
-                        suffixIconConstraints: const BoxConstraints(
-                          maxHeight: double.maxFinite,
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 20,vertical: 0),
-                        suffixIcon:  Container(
-                          width: 50,
-                          height: 50,
-                          decoration: const BoxDecoration(
-                            color: Color.fromARGB(255, 40, 84, 232),
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(5),
-                              bottomRight: Radius.circular(5),
+                              decoration: InputDecoration(
+                                border: const OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey.shade300),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide:BorderSide(color: Colors.grey.shade300),
+                                ),
+                                hintText: 'Search Customer',
+                                hintStyle: const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+                                filled: true,
+                                fillColor: Colors.grey.shade300,
+                                suffixIconConstraints: const BoxConstraints(
+                                  maxHeight: double.maxFinite,
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 20,vertical: 0),
+                                suffixIcon:  Container(
+                                  width: 50,
+                                  height: 50,
+                                  decoration: const BoxDecoration(
+                                    color: Color.fromARGB(255, 40, 84, 232),
+                                    borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(5),
+                                      bottomRight: Radius.circular(5),
+                                    ),
+                                  ),
+
+                                  child: const Icon(Icons.search_rounded, color: Colors.white),
+                                )
+                              ),
                             ),
                           ),
-
-                          child: const Icon(Icons.search_rounded, color: Colors.white),
-                        )
+                        ],
                       ),
                     ),
-                  ),
-                ],
+
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: const [
+                          SizedBox(
+                            width: 150,
+                            child: Center(
+                              child: Text('Customer', 
+                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                              ),
+                            )
+                          ),
+            
+                          SizedBox(
+                            width: 100,
+                            child: Center(
+                              child: Text('Price', 
+                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                              ),
+                            )
+                          ),
+            
+                          SizedBox(
+                            width: 100,
+                            child: Center(
+                              child: Text('No. Products', 
+                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                              ),
+                            )
+                          )
+                        ],
+                      ),
+                    ),
+
+                  ],
+                ),
               ),
-            ),
     
-            const Divider(thickness: 10, color: Colors.transparent,),
-    
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: const [
-                  SizedBox(
-                    width: 150,
-                    child: Center(
-                      child: Text('Customer', 
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
-                      ),
-                    )
-                  ),
-    
-                  SizedBox(
-                    width: 100,
-                    child: Center(
-                      child: Text('Price', 
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
-                      ),
-                    )
-                  ),
-    
-                  SizedBox(
-                    width: 100,
-                    child: Center(
-                      child: Text('No. Products', 
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
-                      ),
-                    )
-                  )
-                ],
-              ),
-            ),
-    
+            // const Divider(thickness: 10, color: Colors.transparent,),
+
             Container(
               height: 590,
+              margin: const EdgeInsets.only(top: 15),
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: StreamBuilder<List<OrderModel>>(
                 stream: _viewModel.stream,
@@ -179,7 +201,7 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
                                   builder: (context) => ConfirmOrderPage(
                                     isfromPendingOrder: true,
                                     cusid: searchCustomer[index].customer!.id,
-                                    cusname: searchCustomer[index].customer!.name,
+                                    cusname: searchCustomer[index].customer?.name ?? "N/A",
                                     orderid: searchCustomer[index].id,
                                     status: "Pending"
                                   )
@@ -196,7 +218,7 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
                                   SizedBox(
                                     width: 150,
                                     child: Center(
-                                      child: Text(searchCustomer[index].customer!.name,
+                                      child: Text(searchCustomer[index].customer?.name ?? "N/A",
                                         style: const TextStyle(
                                           color: Colors.black,
                                           fontSize: 18,

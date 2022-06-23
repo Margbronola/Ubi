@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:internapp/global/access.dart';
 import 'package:internapp/global/network.dart';
 import 'package:internapp/model/order_model.dart';
-import 'package:internapp/viewmodel/todaysorderdetailsviewmodel.dart';
+import 'package:internapp/viewmodel/OrdersDetailsViewModel.dart';
 import 'package:http/http.dart' as http;
 
 class TodaysOrderdetailsApi{

@@ -1,5 +1,5 @@
 import 'package:internapp/model/cart_model.dart';
-import 'package:internapp/model/cartdetails_model.dart';
+import 'package:internapp/model/displaycart_model.dart';
 import 'package:rxdart/subjects.dart';
 
 class CartDetailsViewModel {
@@ -15,7 +15,7 @@ class CartDetailsViewModel {
     _subject.add(order);
   }
 
-  void add(CartDetailsModel cartModel){
+  void add(DisplayCartModel cartModel){
     CartModel copy = current;
     copy.cart.add(cartModel);
     _subject.add(copy);

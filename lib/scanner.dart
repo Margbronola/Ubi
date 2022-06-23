@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:internapp/profile_page.dart';
+import 'package:internapp/qrcodescanner.dart';
 
 // ignore: must_be_immutable
 class ScannerPage extends StatefulWidget {
@@ -81,17 +82,17 @@ class _ScannerPageState extends State<ScannerPage> {
                 padding: const EdgeInsets.only(top: 0, bottom: 0),
                 child: GestureDetector(
                   onTap: () {
-                    // Navigator.push(
-                    //   context, MaterialPageRoute(
-                    //     builder: (context) => const QrCodeScanner()
-                    //   )
-                    // );
+                    Navigator.push(
+                      context, MaterialPageRoute(
+                        builder: (context) => const QrCodeScanner()
+                      )
+                    );
                   },
                   child: Container(
                     width: 170,
                     height: 170,
                     padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5)),
+                    decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10)),
                       color: Color.fromARGB(255, 40, 84, 232)),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -104,20 +105,30 @@ class _ScannerPageState extends State<ScannerPage> {
                 ),
               ),
 
-              // Container(
-              //   width: 170,
-              //   height: 170,
-              //   decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5)),
-              //     color: Color.fromARGB(255, 40, 84, 232)),
-              //   child: Column(
-              //     crossAxisAlignment: CrossAxisAlignment.center,
-              //     children: const [
-              //       Padding(
-              //         padding: EdgeInsets.only(top: 10),
-              //         child: ImageIcon(AssetImage("assets/icons/barcode.png"), color: Colors.white, size: 90),
-              //       ),
-              //       Text('Barcode\nScanner', style: TextStyle(fontSize: 25, color: Colors.white))
-              //     ],
+              // GestureDetector(
+              //   onTap: () {
+              //     Navigator.push(
+              //       context, MaterialPageRoute(
+              //         builder: (context) => const BarcodeScannerPage()
+              //       )
+              //     );
+              //   },
+        
+              //   child: Container(
+              //     width: 170,
+              //     height: 170,
+              //     decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5)),
+              //       color: Color.fromARGB(255, 40, 84, 232)),
+              //     child: Column(
+              //       crossAxisAlignment: CrossAxisAlignment.center,
+              //       children: const [
+              //         Padding(
+              //           padding: EdgeInsets.only(top: 10),
+              //           child: ImageIcon(AssetImage("assets/icons/barcode.png"), color: Colors.white, size: 90),
+              //         ),
+              //         Text('Barcode\nScanner', style: TextStyle(fontSize: 25, color: Colors.white))
+              //       ],
+              //     ),
               //   ),
               // ),
             ],

@@ -4,10 +4,10 @@ import 'package:internapp/global/access.dart';
 import 'package:internapp/global/network.dart';
 
 class ConfirmOrder{
-  Future <bool> confirm({int? customerId}) async{
+  Future <bool> confirm({int? cartcustomerId}) async{
     try{
       return await http.post(
-        Uri.parse("${Network.url}/confirmedorder/$customerId"),
+        Uri.parse("${Network.url}/confirmedorder/$cartcustomerId"),
         headers: {
           "Accept": "application/json",
           "Authorization": "Bearer $accessToken"

@@ -5,7 +5,6 @@ import 'package:internapp/global/network.dart';
 import 'package:internapp/model/product_model.dart';
 import 'package:internapp/productdetails.dart';
 import 'package:internapp/profile_page.dart';
-import 'package:internapp/services/API/categoryApi.dart';
 import 'package:internapp/viewmodel/productviewmodel.dart';
 
 // ignore: must_be_immutable
@@ -31,7 +30,6 @@ class ProductPage extends StatefulWidget {
 
 class _ProductPageState extends State<ProductPage> {
   final ProductViewModel _viewModel = ProductViewModel.instance;
-  final CategoryAPI categoryAPI = CategoryAPI();
   final TextEditingController controller = TextEditingController();
   String searchString = "";
 
@@ -83,6 +81,16 @@ class _ProductPageState extends State<ProductPage> {
             child: ListView(
               children: [
                 Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade400,
+                        blurRadius: 15.0,
+                        offset: const Offset(0.0, 0.75)
+                      )
+                    ]
+                  ),
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   width: size.width,
                   height: 80,
@@ -100,9 +108,12 @@ class _ProductPageState extends State<ProductPage> {
                             border: const OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(15)),
                             ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: const BorderRadius.all(Radius.circular(15)),
+                            focusedBorder: OutlineInputBorder(
+                              // borderRadius: const BorderRadius.all(Radius.circular(15)),
                               borderSide: BorderSide(color: Colors.grey.shade300),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:BorderSide(color: Colors.grey.shade300),
                             ),
                             hintText: 'Search Product',
                             hintStyle: const TextStyle(
@@ -221,7 +232,7 @@ class _ProductPageState extends State<ProductPage> {
                 Container(
                   height: widget.height,
                   padding:const EdgeInsets.only(left: 20, right: 20),
-                  margin: const EdgeInsets.only(bottom: 20),
+                  margin: const EdgeInsets.only(bottom: 20, top: 15),
                   child: StreamBuilder<List<ProductModel>>(
                     stream: _viewModel.stream,
                     builder: (_, snapshot) {
@@ -352,40 +363,43 @@ class _ProductPageState extends State<ProductPage> {
                                       );
                                     },
 
-                                    child: Stack(
-                                      children: [
-                                        ListTile(
-                                          title: Text(searchProduct[index].name,
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold
-                                            )
+                                    child: Container(
+                                      color: Colors.grey.shade300,
+                                      child: Stack(
+                                        children: [
+                                          ListTile(
+                                            title: Text(searchProduct[index].name,
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold
+                                              )
+                                            ),
+
+                                            trailing: Text(searchProduct[index].price.toStringAsFixed(2),
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 20
+                                              )
+                                            ),
                                           ),
 
-                                          trailing: Text(searchProduct[index].price.toStringAsFixed(2),
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 20
-                                            )
-                                          ),
-                                        ),
-
-                                        if (searchProduct[index].stock == 0) ...{
-                                          Positioned.fill(
-                                            child: Container(
-                                              color: Colors.black.withOpacity(.3),
-                                              alignment: Alignment.center,
-                                              child: const Text( 'Out of Stock',
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 22
+                                          if (searchProduct[index].stock == 0) ...{
+                                            Positioned.fill(
+                                              child: Container(
+                                                color: Colors.black.withOpacity(.3),
+                                                alignment: Alignment.center,
+                                                child: const Text( 'Out of Stock',
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 22
+                                                  ),
                                                 ),
-                                              ),
+                                              )
                                             )
-                                          )
-                                        },
-                                      ],
+                                          },
+                                        ],
+                                      ),
                                     ),
                                   );
                                 },

@@ -156,12 +156,13 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
 
                                 await _forgotPassApi.requestOtp(email: _email.text)
                                 .then((value) {
-                                  if(value){
-                                    print('Successful');
+                                  print('Successful');
                                     Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) => VerificationPage(email: _email.text)
                                     ));
-                                  }
+                                  // if(value){
+                                    
+                                  // }
                                 }).whenComplete(
                                   () => setState(
                                     () => isLoading = false,

@@ -465,7 +465,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                         fontSize: 20
                                       )
                                     ),
-                                    content: const Text("Incorrect old password"),
+                                    content: const Text("Incorrect old password", textAlign: TextAlign.center),
                                     actions: <Widget>[
                                       FlatButton(
                                         onPressed: () {
