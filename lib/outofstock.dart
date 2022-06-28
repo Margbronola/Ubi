@@ -23,7 +23,7 @@ class _OutofStockPageState extends State<OutofStockPage> {
           width: size.width,
           height: size.height,
           color: Colors.white,
-          padding: const EdgeInsets.all(30),
+          padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
           child: StreamBuilder<List<ProductModel>>(
             stream: _viewModel.stream,
             builder: (_, snapshot) {
@@ -47,18 +47,18 @@ class _OutofStockPageState extends State<OutofStockPage> {
                         
                       //   child:
                         Container(
-                          padding: const EdgeInsets.all(20),
+                          padding: const EdgeInsets.all(15),
                           color: Colors.grey.shade300,
                           height: 130,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               SizedBox(
-                                width: 150,
-                                height: 120,
+                                width: 140,
+                                height: 125,
                                 child:  _outOfStockProducts[index].images.isEmpty ? SizedBox(
-                                  width: 150,
-                                  height: 120,
+                                  width: 140,
+                                  height: 125,
                                   child: Image.asset('assets/images/placeholder.jpg', fit: BoxFit.fitWidth),
                                 ) : Image.network("${Network.imageUrl}${_outOfStockProducts[index].images[0].url}",
                                   fit: BoxFit.cover,

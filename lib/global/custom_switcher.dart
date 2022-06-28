@@ -29,8 +29,6 @@ class _CustomSwitcherState extends State<CustomSwitcher> {
             children: [
               Positioned(
                 top: 0,
-                // left: 10,
-                // right: 10,
                 bottom: 0,
                 child: Center(
                   child: AnimatedContainer(

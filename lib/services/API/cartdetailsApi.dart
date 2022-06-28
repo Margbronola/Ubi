@@ -34,6 +34,7 @@ class CartDetails{
       // ignore: void_checks
       ).then((response){
         var data = json.decode(response.body);
+        print(data);
         if(response.statusCode == 200){
           print('added');
           print(response.body);

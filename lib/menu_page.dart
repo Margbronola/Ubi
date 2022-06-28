@@ -13,8 +13,8 @@ class _MenuPageState extends State<MenuPage> {
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
         minChildSize: .08,
-        initialChildSize: .8,
-        maxChildSize: .8,
+        initialChildSize: .75,
+        maxChildSize: .75,
         builder: (context, scrollController){
           return Container(
             decoration: const BoxDecoration(

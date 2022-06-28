@@ -93,7 +93,7 @@ class _ProductPageState extends State<ProductPage> {
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   width: size.width,
-                  height: 80,
+                  height: 70,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

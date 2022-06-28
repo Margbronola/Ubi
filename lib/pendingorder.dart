@@ -82,13 +82,13 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
                     )
                   ]
                 ),
-                height: 120,
+                height: 105,
                 child: Column(
                   children: [
                     Container(
                       width: size.width,
-                      height: 80,
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      height: 70,
+                      padding: const EdgeInsets.fromLTRB(20, 15, 20, 10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -139,7 +139,7 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
                     ),
 
                     Container(
-                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+                      padding: const EdgeInsets.fromLTRB(20, 5, 20, 0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: const [
@@ -176,8 +176,6 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
                   ],
                 ),
               ),
-    
-            // const Divider(thickness: 10, color: Colors.transparent,),
 
             Container(
               height: 590,

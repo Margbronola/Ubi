@@ -7,7 +7,6 @@ import 'package:internapp/outofstock.dart';
 import 'package:internapp/pendingorder.dart';
 import 'package:internapp/productpage.dart';
 import 'package:internapp/producttoprepare.dart';
-import 'package:internapp/scanner.dart';
 import 'package:internapp/takeorderpage.dart';
 import 'package:internapp/todaysorderpage.dart';
 
@@ -60,10 +59,10 @@ final List<FloatingBottomNavListItem> navItems = [
       icon: const ImageIcon(AssetImage("assets/icons/order.png")),
       title: const Text("Order")),
 
-  FloatingBottomNavListItem(
-      id: 10,
-      icon: const ImageIcon(AssetImage("assets/icons/qrscanner.png")),
-      title: const Text("QR Scanner")),
+  // FloatingBottomNavListItem(
+  //     id: 10,
+  //     icon: const ImageIcon(AssetImage("assets/icons/qrscanner.png")),
+  //     title: const Text("QR Scanner")),
 ];
 
 
@@ -132,10 +131,10 @@ final  List<Map> contents = [
       "child": const OrderPage(),
     },
 
-    {
-      "id": 10,
-      "name": "Scanner",
-      "icon": const ImageIcon(AssetImage("assets/icons/qrscanner.png")),
-      "child": ScannerPage(),
-    },
+    // {
+    //   "id": 10,
+    //   "name": "Scanner",
+    //   "icon": const ImageIcon(AssetImage("assets/icons/qrscanner.png")),
+    //   "child": ScannerPage(),
+    // },
   ];  

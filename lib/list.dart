@@ -70,7 +70,7 @@ class _listState extends State<list> {
 
     return Container(
       width: size.width,
-      height: 565,
+      height: 510,
       padding: const EdgeInsets.only(right: 20),
       child: StreamBuilder<List<int>>(
         stream: _viewModel.stream,
@@ -173,20 +173,20 @@ class _listState extends State<list> {
                   isEnabled: snapshot.data!.contains(9)
                 ),
 
-                SwitcherData(
-                  id: 10,
-                  icon: const ImageIcon(AssetImage("assets/icons/qrscanner.png"),
-                    color: Color.fromARGB(255, 232, 149, 40),
-                  ),
-                  title: "Qr Scanner",
-                  onPressed: () {},
-                  isEnabled: snapshot.data!.contains(10)
-                ),
+                // SwitcherData(
+                //   id: 10,
+                //   icon: const ImageIcon(AssetImage("assets/icons/qrscanner.png"),
+                //     color: Color.fromARGB(255, 232, 149, 40),
+                //   ),
+                //   title: "Qr Scanner",
+                //   onPressed: () {},
+                //   isEnabled: snapshot.data!.contains(10)
+                // ),
               ]),
-                        ],
-                      );
-                    }
-                  ),
-                );
+            ],
+          );
+        }
+      ),
+    );
   }
 }

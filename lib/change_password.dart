@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:internapp/login_page.dart';
@@ -28,7 +28,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   deleteToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('accesstoken');
-    // ignore: avoid_print
     print('token deleted');
   }
 
@@ -97,7 +96,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     ),
                 
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 5),
+                      height: 60,
+                      margin: const EdgeInsets.only(top: 5),
+                      padding: const EdgeInsets.symmetric(horizontal: 50),
                         child: TextFormField(
                           controller: _currentpassword,
                           keyboardType: TextInputType.text,
@@ -140,7 +141,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     ),
                 
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 5),
+                      height: 60,
+                      margin: const EdgeInsets.only(top: 5),
+                      padding: const EdgeInsets.symmetric(horizontal: 50),
                       child: TextFormField(
                         controller: _newpassword,
                         keyboardType: TextInputType.text,
@@ -182,7 +185,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     ),
                 
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 5),
+                      height: 60,
+                      margin: const EdgeInsets.only(top: 5),
+                      padding: const EdgeInsets.symmetric(horizontal: 50),
                       child: TextFormField(
                         keyboardType: TextInputType.text,
                         controller: _confirmpassword,
@@ -197,13 +202,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                               return 'Retype Password';
                             }
                           }
-                
-                          // ignore: avoid_print
-                          print(_newpassword.text);
-                
-                          // ignore: avoid_print
-                          print(_confirmpassword.text);
-                
+
                           if (_newpassword.text != _confirmpassword.text) {
                             return 'Password didn\'t match';
                           }
@@ -261,7 +260,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                             await _auth.changePassword(oldPass, newPass, confirmPass)
                               .then((value) async {
                                 if(value!){
-                                  // ignore: avoid_print
                                   print('Successful');
                                 
                                   showDialog(
@@ -358,7 +356,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                           } 
                 
                           else {
-                              // ignore: avoid_print
                             print('Unsuccessful');
                           }
                         },
@@ -389,7 +386,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                             await _auth.changePassword(oldPass, newPass, confirmPass)
                               .then((value) async {
                                 if(value!){
-                                  // ignore: avoid_print
                                   print('Successful');
                                 
                                   showDialog(
@@ -486,7 +482,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                           } 
                 
                           else {
-                              // ignore: avoid_print
                             print('Unsuccessful');
                           }
                         },

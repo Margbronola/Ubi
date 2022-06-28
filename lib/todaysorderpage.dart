@@ -44,7 +44,7 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
           child: ListView(
             children: [
               Container(
-                height: 165,
+                height: 160,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   boxShadow: [
@@ -60,7 +60,7 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
                   children: [
                     Container(
                       height: 50,
-                      padding: const EdgeInsets.only(left: 20, top: 10),
+                      padding: const EdgeInsets.only(left: 20, top: 5),
                       child: Row(
                         children: [
                           const Padding(
@@ -74,8 +74,9 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
                     
                     Container(
                       width: size.width,
-                      height: 80,
+                      height: 55,
                       padding: const EdgeInsets.symmetric(horizontal: 20),
+                      margin: const EdgeInsets.only(bottom: 15),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -193,11 +194,7 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
                   ],
                 ),
               ),
-              
-              
-              // const Divider(thickness: 10, color: Colors.transparent,),
-    
-    
+
               Container(
                 height: 555,
                 margin: const EdgeInsets.only(top: 15),

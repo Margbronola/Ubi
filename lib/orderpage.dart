@@ -39,13 +39,13 @@ class _OrderPageState extends State<OrderPage> {
                     )
                   ]
                 ),
-                height: 120,
+                height: 110,
                 child: Column(
                   children: [
                     Container(
                       width: size.width,
                       height: 55,
-                      margin: const EdgeInsets.only(top: 15),
+                      margin: const EdgeInsets.only(top: 10),
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Expanded(
                         child: TextField(
@@ -84,8 +84,7 @@ class _OrderPageState extends State<OrderPage> {
                                 ),
                               ),
       
-                              child:
-                                const Icon(Icons.search_rounded, color: Colors.white),
+                              child: const Icon(Icons.search_rounded, color: Colors.white),
                             )
                           ),
                         ),
@@ -93,7 +92,7 @@ class _OrderPageState extends State<OrderPage> {
                     ),
 
                     Container(
-                      height: 50,
+                      height: 40,
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,

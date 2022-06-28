@@ -28,7 +28,6 @@ class _LandingPageState extends State<LandingPage> {
   final ToPrepareAPI _toPrepareAPI = ToPrepareAPI();
   final TodaysOrderApi _todayOrderAPI = TodaysOrderApi();
   final OrdersAPI _ordersAPI = OrdersAPI();
-  // final WithoutCustomerApi _woCustomer = WithoutCustomerApi();
   final NavigationButtonViewModel _viewModel = NavigationButtonViewModel.instance;
 
   checkMenu() async {
@@ -73,36 +72,38 @@ class _LandingPageState extends State<LandingPage> {
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
-          padding: const EdgeInsets.all(11),
+          padding: const EdgeInsets.only(left: 20, top: 10, bottom: 10),
           child: Image.asset("assets/images/Only_Logo.png"),
         ),
 
         actions: <Widget>[
-          Container(
-            width: 40,
-            height: 40,
-            margin: const EdgeInsets.only(right: 8),
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.white,
-            ),
+          Padding(
+            padding: const EdgeInsets.only(right: 14, top:5, bottom:5),
+            child: Container(
+              width: 40,
+              height: 40,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+              ),
 
-            child: IconButton(
-              onPressed: loggedUser == null ? null : (){
-                showModalBottomSheet(
-                  isScrollControlled: true,
-                  backgroundColor: Colors.transparent,
-                  constraints: BoxConstraints(
-                    maxHeight: size.height,
-                  ),
-                  context: context,
-                  builder: (_) => BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 5, sigmaY:5),
-                    child: const ProfilePage()
-                  )
-                );
-              }, 
-              icon: const Icon(Icons.person_rounded, color: Colors.blue)
+              child: IconButton(
+                onPressed: loggedUser == null ? null : (){
+                  showModalBottomSheet(
+                    isScrollControlled: true,
+                    backgroundColor: Colors.transparent,
+                    constraints: BoxConstraints(
+                      maxHeight: size.height,
+                    ),
+                    context: context,
+                    builder: (_) => BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 5, sigmaY:5),
+                      child: const ProfilePage()
+                    )
+                  );
+                }, 
+                icon: const Icon(Icons.person_rounded, color: Colors.blue)
+              ),
             ),
           ),
         ],

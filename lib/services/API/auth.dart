@@ -101,6 +101,7 @@ class Auth {
           "phone": newPhoneNumber,
         },
       ).then((response){
+        print(response.body);
         return response.statusCode == 200;
       }); 
     }
