@@ -1,142 +1,94 @@
-// ignore_for_file: avoid_print
-
 import 'dart:ui';
-import 'package:internapp/model/displaycart_model.dart';
-import 'package:jiffy/jiffy.dart';
 import 'package:flutter/material.dart';
-import 'package:internapp/productpage.dart';
-import 'package:internapp/profile_page.dart';
-import 'package:internapp/productdetails.dart';
 import 'package:internapp/global/network.dart';
-import 'package:internapp/model/cart_model.dart';
-import 'package:internapp/model/product_model.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:internapp/model/cartdetails_model.dart';
+import 'package:internapp/model/order_model.dart';
+import 'package:internapp/model/orderproduct_model.dart';
+import 'package:internapp/profile_page.dart';
 import 'package:internapp/services/API/addpaymentApi.dart';
-import 'package:internapp/services/API/cartdetailsApi.dart';
-import 'package:internapp/services/API/confirmorderApi.dart';
-import 'package:internapp/services/API/deleteupdateorder.dart';
-import 'package:internapp/viewmodel/cartdetailsviewmodel.dart';
+import 'package:internapp/services/API/orderdetailsApi.dart';
+import 'package:internapp/viewmodel/OrdersDetailsViewModel.dart';
+import 'package:jiffy/jiffy.dart';
 
 // ignore: must_be_immutable
 class OrderDetailsPage extends StatefulWidget {
-  OrderDetailsPage(
-    {Key? key,
-      required this.product,
-      this.qty = 0,
-      this.comment = "none",
+  OrderDetailsPage({ Key? key,
+      this.orderid = 0,
       this.cusid = 0,
       this.cusname = "",
+      this.isfromOrderPage = false,
       this.isfromPendingOrder = false,
-    }) : super(key: key);
+      this.status = ""}) : super(key: key);
 
-  ProductModel product;
+  int orderid;
   int cusid;
-  int qty;
-  String comment;
   String cusname;
+  bool isfromOrderPage;
   bool isfromPendingOrder;
+  String status;
 
   @override
   State<OrderDetailsPage> createState() => _OrderDetailsPageState();
 }
 
 class _OrderDetailsPageState extends State<OrderDetailsPage> {
-  final CartDetailsViewModel _viewModel = CartDetailsViewModel.instance;
-  final DeleteUpdateOrderCart _deleteorder = DeleteUpdateOrderCart();
   final TextEditingController _amount = TextEditingController();
   final TextEditingController _change = TextEditingController();
-  final ConfirmOrder _confirmOrder = ConfirmOrder();
+  final OrdersDetailsViewModel _viewModel = OrdersDetailsViewModel.instance;
   final AddPayment _addPayment = AddPayment();
-  final CartDetails _order = CartDetails();
-  bool _disableConfirmButton = true;
-  bool visiblecontainer = true;
-  bool _enableSlidable = true;
-  bool visiblewidget = false;
+  final OrderDetailsApi _orderApi = OrderDetailsApi();
   bool isLoading = false;
-  
+  bool visiblewidget = false;
+  bool visiblecontainer = true;
 
+  @override
+  void initState() {
+    setState(() {
+      _orderApi.getOrderdetails(orderId: widget.orderid);
+    });
+    super.initState();
+  }
+  
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     DateTime current = DateTime.now();
     String date = Jiffy(current).format('MMMM dd, yyyy');
     
-    void edit(BuildContext context, int cartId, int qty, String comment, ProductModel product, String cusname, {required ValueChanged<CartDetailsModel> callback,}) {
-      Navigator.push(
-        context, MaterialPageRoute(
-          builder: (context) => ProductDetailsPage(
-            onUpdateCallback: callback,
-            cartId: cartId,
-            quantity: qty,
-            comment: comment,
-            product: product,
-            cusname: cusname,
-            isfromOrderDetails: true,
-          )
-        )
-      );
-    }
-
-    void delete(BuildContext context, int cartId, int cartCustomer) async{
-      setState(() {
-        isLoading = true;
-      });
-
-      await _deleteorder.delete(cartID: cartId)
-      .then((value){
-        setState(() {
-          _order.getCartDetails(cartCustomerId: cartCustomer);
-        });
-      }).whenComplete(
-        () => setState(
-          () => isLoading = false,
-        ),
-      );
-    }
-
-
     return Scaffold(
-      appBar: AppBar(
+      appBar: widget.isfromPendingOrder ? AppBar(
         actions: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 30),
-                child: Container(
-                  width: 40,
-                  height: 40,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                  ),
-
-                  child: IconButton(
-                    onPressed: () {
-                      showModalBottomSheet(
-                        isScrollControlled: true,
-                        backgroundColor: Colors.transparent,
-                        constraints: BoxConstraints(
-                          maxHeight: size.height,
-                        ),
-                        context: context,
-                        builder: (_) => BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                          child: const ProfilePage()
-                        )
-                      );
-                    },
-                    icon: const Icon(Icons.person_rounded, color: Colors.blue)
-                  ),
-                ),
-              )
-            ],
+          Padding(
+            padding: const EdgeInsets.only(right: 30),
+            child: Container(
+              width: 40,
+              height: 40,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+              ),
+              child: IconButton(
+                onPressed: () {
+                  showModalBottomSheet(
+                    isScrollControlled: true,
+                    backgroundColor: Colors.transparent,
+                    constraints: BoxConstraints(
+                      maxHeight: size.height,
+                    ),
+                    context: context,
+                    builder: (_) => BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                      child: const ProfilePage()
+                    )
+                  );
+                },
+                icon: const Icon(Icons.person_rounded, color: Colors.blue)
+              ),
+            ),
           ),
         ],
         elevation: 5,
         backgroundColor: const Color.fromARGB(255, 40, 84, 232),
-      ),
+      ) : null,
     
       body: SafeArea(
         child: SizedBox(
@@ -144,680 +96,324 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
           height: size.height,
           child: ListView(
             children: [
-              StreamBuilder<CartModel>(
+              Container(
+                width: size.width,
+                height: 55,
+                margin: const EdgeInsets.only(top: 25, bottom: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Row(
+                        children: [
+                          const Text('Customer: ', style: TextStyle(fontSize: 20)),
+                          Text(widget.cusname,
+                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                          ),
+                        ],
+                      ),
+                    ),
+                    
+                    Text(date,
+                      style: const TextStyle(fontSize: 20)
+                    )
+                
+                  ]
+                ),
+              ),
+
+              StreamBuilder<OrderModel>(
                 stream: _viewModel.stream,
                 builder: (context, snapshot) {
                   if (snapshot.hasData && !snapshot.hasError) {
                     final TextEditingController _totalController = TextEditingController()..text = snapshot.data!.total.toString();
                     
-                    return Column(
-                      children: [
-                        Container(
-                          width: size.width,
-                          height: 55,
-                          margin: const EdgeInsets.only(top: 20, bottom: 10),
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                alignment: Alignment.centerRight,
-                                width: size.width,
-                                height: 20,
-                                child: Text(date,
-                                  style: const TextStyle(fontSize: 20)
-                                )
-                              ),
-
-                              Row(
-                                children: [
-                                  const Text('Customer: ', style: TextStyle(fontSize: 20)),
-                                  Text(snapshot.data!.customer?.name ?? "N/A",
-                                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
-                                  ),
-                                ],
-                              ),
-                            ]
-                          ),
-                        ),
-
-                        SizedBox(
-                          height: 450,
-                          child: snapshot.data!.cart.isNotEmpty ? ListView.separated(
-                            itemCount: snapshot.data?.cart.length ?? 0,
-                            itemBuilder: (_, index) {
-                              DisplayCartModel details = snapshot.data!.cart[index];
-                              
-                              if(details.comment == null){
+                    if(widget.status == "Pending"){
+                      return Column(
+                        children: [
+                          SizedBox(
+                            height: 450,
+                            child: 
+                            ListView.separated(
+                              itemBuilder: (_, index) {
+                                final OrderProductModel details = snapshot.data!.orderproduct[index];
                                 return Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                                  child: Slidable(
-                                    enabled: _enableSlidable,
-                                    endActionPane: ActionPane(
-                                      extentRatio: 0.30,
-                                      motion: const ScrollMotion(),
-                                      children: [
-                                        SlidableAction(
-                                          flex: 1,
-                                          onPressed: (_){
-                                            edit(
-                                              context, 
-                                              details.id,
-                                              details.qty,
-                                              details.comment.toString(),
-                                              details.product,
-                                              widget.cusname,
-                                              callback: (callback){
-                                                setState(() {
-                                                  details.qty = callback.qty;
-                                                  details.product = callback.product;
-                                                  details.comment = callback.comment;
-                                                });
-                                              },
-
-                                            );
-                                          },
-                                          backgroundColor: Colors.greenAccent.shade400,
-                                          icon: Icons.mode_edit_rounded,
-                                        ),
-                                  
-                                        SlidableAction(
-                                          onPressed: (_){
-                                            print(snapshot.data!.id);
-                                            delete(context, details.id, snapshot.data!.id);
-                                          },
-                                          backgroundColor: Colors.red,
-                                          icon: Icons.delete_rounded,
-                                        ),
-                                      ]
-                                    ),
-     
-                                    child: Container(
-                                      padding: const EdgeInsets.all(10),
-                                      color: Colors.grey.shade200,
-                                      height: 105,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          SizedBox(
-                                            width: 80,
-                                            height: 120,
-                                            child: details.product.images.isEmpty ? Image.asset(
-                                              'assets/images/placeholder.jpg',
-                                              fit: BoxFit.fitWidth
-                                            ) : Image.network("${Network.imageUrl}${details.product.images[0].url}",
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                      
-                                          Container(
-                                            margin: const EdgeInsets.only(top: 5),
-                                            child: Column(
-                                              children: [
-                                                const Center(
-                                                  child: SizedBox(
-                                                    width: 190,
-                                                    height: 30,
-                                                    child: Text('To Prepare',
-                                                      style: TextStyle(
-                                                        fontSize: 20,
-                                                        fontWeight: FontWeight.bold,
-                                                        color: Color.fromARGB(255,40,84,232)
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                            
-                                                SizedBox(
-                                                  width: 190,
-                                                  height: 50,
-                                                  child: Row(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      SizedBox(
-                                                        width: 30,
-                                                        child: Text(details.qty.toString(),
-                                                          textAlign: TextAlign.center,
-                                                          style: const TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 18,
-                                                            fontWeight: FontWeight.bold
-                                                          )
-                                                        ),
-                                                      ),
-
-                                                      SizedBox(
-                                                        width: 160,
-                                                        child: Text(details.product.name,
-                                                          textAlign: TextAlign.center,
-                                                          style: const TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 18,
-                                                            fontWeight: FontWeight.bold
-                                                          )
-                                                        ),
-                                                      ),
-
-                                                    ],
-                                                  ),
-                                                ),
-
-                                              ],
-                                            ),
-                                          ),
-
-                                          SizedBox(
-                                            width: 80,
-                                            height: 100,
-                                            child: Center(
-                                              child: Text("P${details.product.price}",
-                                                style: const TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              }
-                              
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 20),
-                                child: Slidable(
-                                  enabled: _enableSlidable,
-                                  endActionPane: ActionPane(
-                                    extentRatio: 0.30,
-                                    motion: const ScrollMotion(),
-                                    children: [
-                                      SlidableAction(
-                                        flex: 1,
-                                        onPressed: (_){
-                                          edit(
-                                            context, 
-                                            details.id,
-                                            details.qty,
-                                            details.comment.toString(),
-                                            details.product,
-                                            widget.cusname,
-                                            callback: (callback){
-                                                setState(() {
-                                                  details.qty = callback.qty;
-                                                  details.product = callback.product;
-                                                  details.comment = callback.comment;
-                                                });
-                                              },
-                                          );
-                                        },
-                                        backgroundColor: Colors.greenAccent.shade400,
-                                        icon: Icons.mode_edit_rounded,
-                                      ),
-                                  
-                                      SlidableAction(
-                                        onPressed: (_){
-                                          print(snapshot.data!.id);
-                                          delete(context, details.id, snapshot.data!.id);
-                                        },
-                                        backgroundColor: Colors.red,
-                                        icon: Icons.delete_rounded,
-                                      ),
-                                    ]
-                                  ),
-     
                                   child: Container(
                                     padding: const EdgeInsets.all(10),
                                     color: Colors.grey.shade200,
-                                    height: 150,
+                                    height: 100,
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         SizedBox(
                                           width: 80,
-                                          height: 120,
-                                          child: details.product.images.isEmpty ? Image.asset(
-                                            'assets/images/placeholder.jpg',
+                                          height: 100,
+                                          child: details.product.images.isNotEmpty ? 
+                                          Image.network("${Network.imageUrl}${details.product.images[0].url}",
+                                            fit: BoxFit.cover
+                                          ) : Image.asset('assets/images/placeholder.jpg',
                                             fit: BoxFit.fitWidth
-                                          ) : Image.network("${Network.imageUrl}${details.product.images[0].url}",
-                                            fit: BoxFit.cover,
-                                          ),
+                                          )
                                         ),
-                      
+                        
                                         Container(
                                           margin: const EdgeInsets.only(top: 5),
                                           child: Column(
                                             children: [
-                                              Row(
-                                                children: [
-                                                  Column(
-                                                    children: [
-                                                       const Center(
-                                                        child: SizedBox(
-                                                          width: 190,
-                                                          height: 30,
-                                                          child: Text('To Prepare',
-                                                            style: TextStyle(
-                                                              fontSize: 20,
-                                                              fontWeight: FontWeight.bold,
-                                                              color: Color.fromARGB(255,40,84,232)
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                            
-                                                      SizedBox(
-                                                        width: 190,
-                                                        height: 40,
-                                                        child: Row(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          children: [
-                                                            SizedBox(
-                                                              width: 30,
-                                                              child: Text(details.qty.toString(),
-                                                                textAlign: TextAlign.center,
-                                                                style: const TextStyle(
-                                                                  color: Colors.black,
-                                                                  fontSize: 18,
-                                                                  fontWeight: FontWeight.bold
-                                                                )
-                                                              ),
-                                                            ),
-
-                                                            SizedBox(
-                                                              width: 160,
-                                                              child: Text(details.product.name,
-                                                                textAlign: TextAlign.center,
-                                                                style: const TextStyle(
-                                                                  color: Colors.black,
-                                                                  fontSize: 18,
-                                                                  fontWeight: FontWeight.bold
-                                                                )
-                                                              ),
-                                                            ),
-
-                                                          ],
-                                                        ),
-                                                      ),
-
-                                                    ],
-                                                  ),
-
-                                                  SizedBox(
-                                                    width: 80,
-                                                    height: 70,
-                                                    child: Center(
-                                                      child: Text("P${details.product.price}",
-                                                        style: const TextStyle(
-                                                          fontWeight: FontWeight.bold,
-                                                          fontSize: 20,
-                                                        ),
-                                                      ),
+                                              Center(
+                                                child: Container(
+                                                  width: 190,
+                                                  height: 30,
+                                                  padding: const EdgeInsets.only(left: 15),
+                                                  child: Text( details.prepared ? "Prepared" : "To Prepare",
+                                                    style: const TextStyle(
+                                                      fontSize: 20,
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Color.fromARGB(255, 40, 84, 232)
                                                     ),
                                                   ),
-
-                                                ],
-                                              ),
-
-                                              Container(
-                                                width: 250,
-                                                height: 50,
-                                                alignment: Alignment.center,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.grey.shade300,
-                                                  borderRadius: const BorderRadius.all (Radius.circular(10)),
                                                 ),
-                                                child: Text(details.comment.toString()),
-                                              )
+                                              ),
+                              
+                                              SizedBox(
+                                                width: 190,
+                                                height: 45,
+                                                child: Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    SizedBox(
+                                                      width: 30,
+                                                      child: Text(details.qty.toString(),
+                                                        textAlign: TextAlign.center,
+                                                        style: const TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 18,
+                                                          fontWeight: FontWeight.bold
+                                                        )
+                                                      ),
+                                                    ),
 
+                                                    SizedBox(
+                                                      width: 160,
+                                                      child: Text(details.product.name,
+                                                        textAlign: TextAlign.center,
+                                                        style: const TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 18,
+                                                          fontWeight: FontWeight.bold
+                                                        )
+                                                      ),
+                                                    ),
+
+                                                  ],
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ),
 
-                                        
+                                        SizedBox(
+                                          width: 80,
+                                          height: 100,
+                                          child: Center(
+                                            child: Text("P${details.price}",
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
 
                                       ],
                                     ),
                                   ),
-                                ),
-                              );
-
-                            },
-                            separatorBuilder: (BuildContext context, int index) => const Divider(color: Colors.transparent),
-                          ) : const Center(
-                            child: Text('Empty Cart', style: TextStyle(fontSize: 25))
-                          ) 
-                        ),
-
-                        Container(
-                          height: 60,
-                          padding: const EdgeInsets.only(right: 20, top: 15),
-                          margin: const EdgeInsets.only(bottom: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              const Text('Total   ',
-                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                              
-                              SizedBox(
-                                width: 150,
-                                height: 40,
-                                child: TextFormField(
-                                  controller: _totalController,
-                                  textAlign: TextAlign.end,
-                                  enabled: false,
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(
-                                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                        color: Colors.grey.shade300,
-                                        width: 2
-                                      )
-                                    ),
-                                    fillColor: Colors.grey.shade300,
-                                    filled: true,
-                                  ),
-                                ),
-                              )
-
-                            ]
+                                );
+                              },
+                              separatorBuilder: (BuildContext context, int index) => const Divider(color: Colors.transparent),
+                              itemCount: snapshot.data!.orderproduct.length,
+                            ),
                           ),
-                        ),
 
-                        Visibility(
-                          visible: visiblecontainer,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Column(
+                          Container(
+                            height: 60,
+                            padding: const EdgeInsets.only(right: 20, top: 15),
+                            margin: const EdgeInsets.only(bottom: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                SizedBox(
-                                  width: size.width,
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      side: const BorderSide(
-                                        width: 3,
-                                        color: Color.fromARGB(255, 40, 84, 232)
-                                      ),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:BorderRadius.circular(10)
-                                      ),
-                                      primary: Colors.white,
-                                      padding: const EdgeInsets.symmetric(vertical: 20),
-                                    ),
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context, MaterialPageRoute(
-                                          builder: (context) => ProductPage(
-                                            isFromLocalPage: true,
-                                            height: 630,
-                                            cusid: widget.cusid,
-                                            cusname: widget.cusname
-                                          )
-                                        )
-                                      );
-                                    },
-                                    child: const Text('ADD ANOTHER PRODUCT',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        letterSpacing: 3,
-                                        color: Color.fromARGB(255, 40, 84, 232)
-                                      )
-                                    ),
-                                  )
+                                const Text('Total   ',
+                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                                 ),
+                                
+                                SizedBox(
+                                  width: 150,
+                                  height: 40,
+                                  child: TextFormField(
+                                    controller: _totalController,
+                                    textAlign: TextAlign.end,
+                                    enabled: false,
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                        borderSide: BorderSide(
+                                          color: Colors.grey.shade300,
+                                          width: 2
+                                        )
+                                      ),
+                                      fillColor: Colors.grey.shade300,
+                                      filled: true,
+                                    ),
+                                  ),
+                                )
 
-                                Visibility(
-                                  visible: _disableConfirmButton,
-                                  child: Container(
+                              ]
+                            ),
+                          ),
+
+                          Visibility(
+                            visible: visiblecontainer,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              child: Column(
+                                children: [
+
+                                  Visibility(
+                                    visible: true,
+                                    child: Visibility(
+                                      child: Container(
+                                        width: size.width,
+                                        margin: const EdgeInsets.only(top: 5),
+                                        child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            side: const BorderSide(
+                                              width: 3,
+                                              color: Color.fromARGB(255, 40, 84, 232)
+                                            ),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:BorderRadius.circular(10)
+                                            ),
+                                            primary: const Color.fromARGB(255, 40, 84, 232),
+                                            padding: const EdgeInsets.symmetric(vertical: 20),
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              visiblewidget = !visiblewidget;
+                                              visiblecontainer = !visiblecontainer;
+                                            });
+                                          },
+                                          child: const Text('ADD PAYMENT',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              letterSpacing: 3,
+                                              color: Colors.white
+                                            )
+                                          ),
+                                        )
+                                      ),
+
+                                    ),
+                                  ),
+                                ]
+                              ),
+                            ),
+                            
+                            replacement: Container(
+                              height: 190,
+                              color: Colors.grey.shade300,
+                              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          const Text('Amount Received  ',
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight:
+                                              FontWeight.bold
+                                            )
+                                          ),
+
+                                          Container(
+                                            height: 50,
+                                            width: 170,
+                                            margin: const EdgeInsets.only(top: 10),
+                                            child: TextFormField(
+                                              controller: _amount,
+                                              keyboardType: const TextInputType.numberWithOptions(),
+                                              onChanged: (__text) {
+                                                setState(() {
+                                                  _change.text = (double.parse(_amount.text) - double.parse(_totalController.text)).toString();
+                                                });
+                                              },
+                                              textAlign: TextAlign.center,
+                                              style: const TextStyle(fontSize: 18),
+                                              decoration: const InputDecoration(
+                                                border: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)
+                                                  ),
+                                                ),
+                                                fillColor: Colors.white,
+                                                filled: true,
+                                              ),
+                                            ),
+                                          ),
+                                        ]
+                                      ),
+
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          const Text('Change',
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold
+                                            )
+                                          ),
+                                          
+                                          Container(
+                                            height: 50,
+                                            width: 170,
+                                            margin: const EdgeInsets.only(top: 10),
+                                            child: Center(
+                                              child: TextFormField(
+                                                readOnly: true,
+                                                textAlign: TextAlign.center,
+                                                controller: _change,      
+                                              )
+                                            ),
+                                          ),
+                                        ]
+                                      ),
+                                    ],
+                                  ),
+                                  
+                                  Container(
                                     width: size.width,
-                                    margin: const EdgeInsets.only(top: 5),
+                                    height: 50,
+                                    margin: const EdgeInsets.only(top: 15),
                                     child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(10)
                                         ),
-                                        primary: const Color.fromARGB(255, 40, 84, 232),
-                                        padding: const EdgeInsets.symmetric(vertical: 20),
+                                        primary: const Color.fromARGB(255, 40, 84, 232)
                                       ),
-                                      onPressed: widget.isfromPendingOrder == true ? (){} :
-                                      () async {
-                                        setState(() {
-                                          isLoading = true;
-                                        });
-                                
-                                        await _confirmOrder.confirm(
-                                          cartcustomerId: snapshot.data!.id
-                                        )
-                                        .whenComplete(
-                                          () => setState(
-                                            () => isLoading = false,
-                                          ),
-                                        );
-                                
-                                        showDialog(
-                                          barrierDismissible: false,
-                                          context: context, builder: (ctx) => AlertDialog(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(15)
-                                            ),
-                                            content: SizedBox(
-                                              width: 190,
-                                              height: 138,
-                                              child: Column(
-                                                children: [
-                                                  Container(
-                                                    height: 50,
-                                                    width: 50,
-                                                    margin: const EdgeInsets.only(bottom: 10),
-                                                    decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      border: Border.all(
-                                                        width: 5,
-                                                        color: const Color.fromARGB(255, 40, 84, 232)
-                                                      )
-                                                    ),
-
-                                                    child: const Icon(
-                                                      Icons.check_rounded,
-                                                      size: 35,
-                                                      color: Color.fromARGB(255, 40, 84, 232)
-                                                    ),
-                                                  ),
-                                
-                                                  const Center(
-                                                    child: Text("Order Successfully Added",
-                                                      style: TextStyle(
-                                                        fontWeight: FontWeight.bold,
-                                                        fontSize: 20
-                                                      )
-                                                    ),
-                                                  ),
-                                
-                                                  Container(
-                                                    padding: const EdgeInsets.only(top: 10),
-                                                    child: Row(
-                                                      mainAxisAlignment: MainAxisAlignment.end,
-                                                      children: [
-                                                        TextButton(
-                                                          onPressed: (){
-                                                            Navigator.of(context).pushNamedAndRemoveUntil(
-                                                              '/landingPage', (Route<dynamic> route) => false
-                                                            );
-                                                          }, 
-                                                          child: const Text('Go Back to Home',
-                                                            style: TextStyle(fontSize: 16)
-                                                          )
-                                                        ),
-                                
-                                                        TextButton(
-                                                          onPressed: (){
-                                                            Navigator.of(context).pop();
-                                                          }, 
-                                                          child: const Text('Continue', 
-                                                            style: TextStyle(fontSize: 16)
-                                                          )
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ]
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                
-                                        setState(() {
-                                          _enableSlidable = !_enableSlidable;
-                                          _disableConfirmButton = !_disableConfirmButton;
-                                        });
-                                      },
-                                      child: const Text('CONFIRM ORDER',
-                                        style: TextStyle(fontSize: 22, letterSpacing: 3)
-                                      ),
-                                    )
-                                  ),
-
-                                  replacement: Container(
-                                      width: size.width,
-                                      margin: const EdgeInsets.only(top: 5),
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          side: const BorderSide(
-                                            width: 3,
-                                            color: Color.fromARGB(255, 40, 84, 232)
-                                          ),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:BorderRadius.circular(10)
-                                          ),
-                                          primary: const Color.fromARGB(255, 40, 84, 232),
-                                          padding: const EdgeInsets.symmetric(vertical: 20),
-                                        ),
-                                        onPressed: () {
-                                          setState(() {
-                                            visiblewidget = !visiblewidget;
-                                            visiblecontainer = !visiblecontainer;
-                                          });
-                                        },
-                                        child: const Text('ADD PAYMENT',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            letterSpacing: 3,
-                                            color: Colors.white
-                                          )
-                                        ),
-                                      )
-                                    ),
-                                ),
-                              ]
-                            ),
-                          ),
-                          
-                          replacement: Container(
-                            height: 190,
-                            color: Colors.grey.shade300,
-                            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        const Text('Amount Received  ',
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight:
-                                            FontWeight.bold
-                                          )
-                                        ),
-
-                                        Container(
-                                          height: 50,
-                                          width: 170,
-                                          margin: const EdgeInsets.only(top: 10),
-                                          child: TextFormField(
-                                            controller: _amount,
-                                            keyboardType: const TextInputType.numberWithOptions(),
-                                            onChanged: (__text) {
-                                              setState(() {
-                                                _change.text = (double.parse(_amount.text) - double.parse(_totalController.text)).toString();
-                                              });
-                                            },
-                                            textAlign: TextAlign.center,
-                                            style: const TextStyle(fontSize: 18),
-                                            decoration: const InputDecoration(
-                                              border: OutlineInputBorder(
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(10)
-                                                ),
-                                              ),
-                                              fillColor: Colors.white,
-                                              filled: true,
-                                            ),
-                                          ),
-                                        ),
-                                      ]
-                                    ),
-
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        const Text('Change',
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold
-                                          )
-                                        ),
-                                        
-                                        Container(
-                                          height: 50,
-                                          width: 170,
-                                          margin: const EdgeInsets.only(top: 10),
-                                          child: Center(
-                                            child: TextFormField(
-                                            textAlign: TextAlign.center,
-                                            controller: _change,  
-                                            style: const TextStyle(fontSize: 18),
-                                            decoration: const InputDecoration(
-                                              border: OutlineInputBorder(
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(10)
-                                                ),
-                                              ),
-                                              fillColor: Colors.white,
-                                              filled: true,
-                                            ),    
-                                            )
-                                          ),
-                                        ),
-                                      ]
-                                    ),
-                                  ],
-                                ),
-                                
-                                Container(
-                                  width: size.width,
-                                  height: 50,
-                                  margin: const EdgeInsets.only(top: 15),
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10)
-                                      ),
-                                      primary: const Color.fromARGB(255, 40, 84, 232)
-                                    ),
-                                    onPressed: () async {
-                                      if(double.parse(_amount.text)  >= double.parse(_totalController.text)){
+                                      onPressed: () async {
+                                        if(double.parse(_amount.text)  >= double.parse(_totalController.text)){
                                         setState(() {
                                           isLoading = true;
                                         });
 
-                                        await _addPayment.payment(
-                                          cartcustomerId: snapshot.data!.id,
+                                        await _addPayment.paymentbyOrder(
+                                          orderID: widget.orderid,
                                           amount: double.parse(_amount.text),
                                         ).whenComplete(
                                           () => setState(
@@ -917,7 +513,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                       children: [
-                                                        const Text('Amount Received',
+                                                        const Text('Amount Receive',
                                                           style: TextStyle(fontSize:18,)
                                                         ),
                                                               
@@ -943,96 +539,332 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                                                       ],
                                                     ),
 
-                                                  //   Container(
-                                                  //     width: size.width,
-                                                  //     height: 50,
-                                                  //     margin: const EdgeInsets.only(top: 60),
-                                                  //     child:ElevatedButton(
-                                                  //       style: ElevatedButton.styleFrom(
-                                                  //         shape: RoundedRectangleBorder(
-                                                  //           borderRadius: BorderRadius.circular(10)
-                                                  //         ),
-                                                  //       primary:const Color.fromARGB(255, 15, 41, 142)
-                                                  //     ),
+                                                    // Container(
+                                                    //   width: size.width,
+                                                    //   height: 50,
+                                                    //   margin: const EdgeInsets.only(top: 60),
+                                                    //   child:ElevatedButton(
+                                                    //     style: ElevatedButton.styleFrom(
+                                                    //       shape: RoundedRectangleBorder(
+                                                    //         borderRadius: BorderRadius.circular(10)
+                                                    //       ),
+                                                    //       primary:const Color.fromARGB(255, 15, 41, 142)
+                                                    //     ),
+                                                    //     child: const Text('Go to Pending Orders',
+                                                    //       style: TextStyle(
+                                                    //         color: Colors.white,
+                                                    //         fontSize: 20
+                                                    //       )
+                                                    //     ),
+                                                    //     onPressed: () {
+                                                    //       Navigator.of(context).pushNamedAndRemoveUntil(
+                                                    //         '/landingPage', (Route<dynamic> route) => false
+                                                    //       );
+                                                    //     },
+                                                    //   )
+                                                    // )
+                                                  ],
+                                                ),
+                                              ),
+                                            )
+                                          );
+                                        }
 
-                                                  //     child: const Text('Go to Pending Orders',
-                                                  //       style: TextStyle(
-                                                  //         color: Colors.white,
-                                                  //         fontSize: 20
-                                                  //       )
-                                                  //     ),
+                                        else{
+                                          showDialog(
+                                            barrierDismissible: false,
+                                            context: context,
+                                            builder: (ctx) => AlertDialog(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(25)
+                                              ),
 
-                                                  //     onPressed: () {
-                                                  //       Navigator.push(
-                                                  //         context, MaterialPageRoute(
-                                                  //           builder: (context) => PendingOrderDetailsPage(
-                                                  //             cusid: widget.cusid,
-                                                  //             cusname: widget.cusname,
-                                                  //           )
-                                                  //         )
-                                                  //       );
-                                                  //     },
+                                              title: const Text("Payment Unsuccessful",
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20
+                                                )
+                                              ),
 
-                                                  //   )
-                                                  // )
-                                                ],
+                                              content: const Text("Insufficient amount", textAlign: TextAlign.center),
+
+                                              actions: <Widget>[
+                                                // ignore: deprecated_member_use
+                                                FlatButton(
+                                                  onPressed: () {
+                                                    Navigator.of(ctx).pop();
+                                                  },
+                                                  child: const Text("Close"),
+                                                )
+                                              ]
+                                            )
+                                          );
+                                        }
+                                      },
+
+                                      child: const Text('Confirm Payment',
+                                        style: TextStyle(
+                                          fontSize: 25,
+                                          letterSpacing: 3
+                                        )
+                                      ),
+                                    )
+                                  )
+
+                                ],
+                              ),
+                            ),
+                          ) 
+                        ]
+                      );
+                    }
+
+                    else{
+                      return Column(
+                        children: [
+                          SizedBox(
+                            height: 450,
+                            child: 
+                            ListView.separated(
+                              itemBuilder: (_, index) {
+                                final OrderProductModel details = snapshot.data!.orderproduct[index];
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(10),
+                                    color: Colors.grey.shade200,
+                                    height: 100,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        SizedBox(
+                                          width: 80,
+                                          height: 100,
+                                          child: details.product.images.isNotEmpty ? 
+                                          Image.network("${Network.imageUrl}${details.product.images[0].url}",
+                                            fit: BoxFit.cover
+                                          ) : Image.asset('assets/images/placeholder.jpg',
+                                            fit: BoxFit.fitWidth
+                                          )
+                                        ),
+                        
+                                        Container(
+                                          margin: const EdgeInsets.only(top: 5),
+                                          child: Column(
+                                            children: [
+                                              Center(
+                                                child: Container(
+                                                  width: 190,
+                                                  height: 30,
+                                                  padding: const EdgeInsets.only(left: 15),
+                                                  child: Text(details.prepared ? "Prepared" : "To Prepare",
+                                                    style: const TextStyle(
+                                                      fontSize: 20,
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Color.fromARGB(255, 40, 84, 232)
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                              
+                                              SizedBox(
+                                                width: 190,
+                                                height: 45,
+                                                child: Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    SizedBox(
+                                                      width: 30,
+                                                      child: Text(details.qty.toString(),
+                                                        textAlign: TextAlign.center,
+                                                        style: const TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 18,
+                                                          fontWeight: FontWeight.bold
+                                                        )
+                                                      ),
+                                                    ),
+
+                                                    SizedBox(
+                                                      width: 160,
+                                                      child: Text(details.product.name,
+                                                        textAlign: TextAlign.center,
+                                                        style: const TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 18,
+                                                          fontWeight: FontWeight.bold
+                                                        )
+                                                      ),
+                                                    ),
+
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+
+                                        SizedBox(
+                                          width: 80,
+                                          height: 100,
+                                          child: Center(
+                                            child: Text("P${details.price}",
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20,
                                               ),
                                             ),
-                                          )
-                                        );
-                                      }
+                                          ),
+                                        ),
 
-                                      else{
-                                        showDialog(
-                                          barrierDismissible: false,
-                                          context: context,
-                                          builder: (ctx) => AlertDialog(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(25)
-                                            ),
-
-                                            title: const Text("Payment Unsuccessful",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20
-                                              )
-                                            ),
-
-                                            content: const Text("Insufficient amount", textAlign: TextAlign.center),
-
-                                            actions: <Widget>[
-                                              // ignore: deprecated_member_use
-                                              FlatButton(
-                                                onPressed: () {
-                                                  Navigator.of(ctx).pop();
-                                                },
-                                                child: const Text("Close"),
-                                              )
-                                            ]
-                                          )
-                                        );
-                                      }
-                                    },
-
-                                    child: const Text('Confirm Payment',
-                                      style: TextStyle(
-                                        fontSize: 25,
-                                        letterSpacing: 3
-                                      )
+                                      ],
                                     ),
-                                  )
-                                )
-
-                              ],
+                                  ),
+                                );
+                              },
+                              separatorBuilder: (BuildContext context, int index) => const Divider(color: Colors.transparent),
+                              itemCount: snapshot.data!.orderproduct.length,
                             ),
                           ),
-                        ),
-                      ]
-                    );
+
+                          Container(
+                            height: 60,
+                            padding: const EdgeInsets.only(right: 20, top: 15),
+                            margin: const EdgeInsets.only(bottom: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                const Text('Total   ',
+                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                ),
+                                
+                                SizedBox(
+                                  width: 150,
+                                  height: 40,
+                                  child: TextFormField(
+                                    controller: _totalController,
+                                    textAlign: TextAlign.end,
+                                    enabled: false,
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                        borderSide: BorderSide(
+                                          color: Colors.grey.shade300,
+                                          width: 2
+                                        )
+                                      ),
+                                      fillColor: Colors.grey.shade300,
+                                      filled: true,
+                                    ),
+                                  ),
+                                )
+
+                              ]
+                            ),
+                          ),
+
+                          Container(
+                            height: 170,
+                            margin: const EdgeInsets.only(top: 10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: size.width,
+                                  height: 50,
+                                  alignment: Alignment.centerLeft,
+                                  padding: const EdgeInsets.only(left: 20),
+                                  child: const Text('Payment Received', 
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color.fromARGB(255, 40, 84, 232)
+                                    )
+                                  ),
+                                ),
+
+                                Container(
+                                  width: size.width,
+                                  height: 120,
+                                  color: Colors.grey.shade200,
+                                  padding: const EdgeInsets.all(25),
+                                  child: Row(
+                                    mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          const Text('Amount Received  ',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                            )
+                                          ),
+
+                                          Container(
+                                            height: 40,
+                                            width: 150,
+                                            margin: const EdgeInsets.only(top: 10),
+                                            decoration: const BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.all(Radius.circular(10))
+                                            ),
+                                            child: Center(
+                                              child: Text(snapshot.data!.payments?.paid.toStringAsFixed(2)??"0.0" ,
+                                                style: const TextStyle(
+                                                  fontSize: 20, 
+                                                  fontWeight: FontWeight.bold
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+              
+                                        ]
+                                      ),
+
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          const Text('Change',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                            )
+                                          ),
+                                                  
+                                          Container(
+                                            height: 40,
+                                            width: 150,
+                                            margin: const EdgeInsets.only(top: 10),
+                                            decoration: const BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.all(Radius.circular(10))
+                                            ),
+                                            child: Center(
+                                              child: Text(snapshot.data!.payments?.change.toStringAsFixed(2)??"0.0" ,
+                                                style: const TextStyle(
+                                                  fontSize: 20, 
+                                                  fontWeight: FontWeight.bold
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                  
+                                        ]
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            )
+                          )
+                        ]
+                      );
+                    }
+
                   }
                   return Text(snapshot.error.toString());
                 }
-              ),
+              ) 
+
             ],
           ),
         ),

@@ -2,10 +2,10 @@ import 'package:internapp/model/product_model.dart';
 
 class OrderProductModel{
   final int id;
-  final double price;
-  final String? comment;
   final int qty;
+  final double price;
   final bool prepared;
+  final String? comment;
   final ProductModel product;
 
   OrderProductModel({

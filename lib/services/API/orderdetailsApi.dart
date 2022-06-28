@@ -1,14 +1,13 @@
 // ignore_for_file: file_names
 
 import 'dart:convert';
-
 import 'package:internapp/global/access.dart';
 import 'package:internapp/global/network.dart';
+import 'package:http/http.dart' as http;
 import 'package:internapp/model/order_model.dart';
 import 'package:internapp/viewmodel/OrdersDetailsViewModel.dart';
-import 'package:http/http.dart' as http;
 
-class TodaysOrderdetailsApi{
+class OrderDetailsApi{
   final OrdersDetailsViewModel _viewModel = OrdersDetailsViewModel.instance;
 
   Future<void> getOrderdetails({int? orderId}) async {

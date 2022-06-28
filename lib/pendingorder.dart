@@ -1,8 +1,8 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:internapp/confirmorder.dart';
-import 'package:internapp/model/order_model.dart';
+import 'package:internapp/model/todaysorder_model.dart';
+import 'package:internapp/orderdetails.dart';
 import 'package:internapp/services/API/todaysorderApi.dart';
 import 'package:internapp/viewmodel/todaysorderviewmodel.dart';
 
@@ -22,7 +22,7 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
   
   @override
   void initState(){
-    _todaysOrderApi.getOrder();
+    _todaysOrderApi.getAllOrder();
     super.initState();
   }
 
@@ -181,13 +181,16 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
               height: 590,
               margin: const EdgeInsets.only(top: 15),
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: StreamBuilder<List<OrderModel>>(
+              child: StreamBuilder<List<TodaysOrderModel>>(
                 stream: _viewModel.stream,
                 builder: (_, snapshot) {
                   if (snapshot.hasData && !snapshot.hasError){
-                    if (snapshot.data!.isNotEmpty) {
-                      final List<OrderModel> searchCustomer = snapshot.data!.where((element) => element.status == false && element.customer!.name.toLowerCase().contains(searchString)).toList();
-                      
+                    if (snapshot.data!.isNotEmpty) {                      
+                      final List<TodaysOrderModel> searchCustomer = snapshot.data!.where((element) => 
+                        (element.cartCustomer.customer?.name.toLowerCase().contains(searchString) ?? searchString.isEmpty) &&
+                        element.status == false
+                      ).toList();
+
                       return ListView.separated(
                         shrinkWrap: true,
                         itemCount: searchCustomer.length,
@@ -196,10 +199,10 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
                             onTap: () {
                               Navigator.push(
                                 context, MaterialPageRoute(
-                                  builder: (context) => ConfirmOrderPage(
+                                  builder: (context) => OrderDetailsPage(
                                     isfromPendingOrder: true,
-                                    cusid: searchCustomer[index].customer!.id,
-                                    cusname: searchCustomer[index].customer?.name ?? "N/A",
+                                    cusid: searchCustomer[index].cartCustomer.customer!.id,
+                                    cusname: searchCustomer[index].cartCustomer.customer?.name ?? "N/A",
                                     orderid: searchCustomer[index].id,
                                     status: "Pending"
                                   )
@@ -216,7 +219,7 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
                                   SizedBox(
                                     width: 150,
                                     child: Center(
-                                      child: Text(searchCustomer[index].customer?.name ?? "N/A",
+                                      child: Text(searchCustomer[index].cartCustomer.customer?.name ?? "N/A",
                                         style: const TextStyle(
                                           color: Colors.black,
                                           fontSize: 18,
@@ -240,7 +243,7 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
                                   SizedBox(
                                     width: 100,
                                     child: Center(
-                                      child: Text(searchCustomer[index].qty.toString(),
+                                      child: Text(searchCustomer[index].orderQty.toString(),
                                         style: const TextStyle(
                                           color: Colors.black,
                                           fontSize: 18,

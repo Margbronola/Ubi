@@ -20,7 +20,6 @@ class ForgotPassApi{
       },);
     }
     catch (e){
-      print(e);
       return false;
     }
   }

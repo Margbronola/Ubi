@@ -16,7 +16,7 @@ class OrdersDetailsViewModel {
     _subject.add(order);
   }
 
-  void add(OrderModel cartModel){
-    _subject.add(cartModel);
-  }
+  // void add(OrderModel cartModel){
+  //   _subject.add(cartModel);
+  // }
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:internapp/model/customer_model.dart';
@@ -169,13 +171,13 @@ class _CustomerDetailsPageState extends State<CustomerDetailsPage> {
                     ),
                     
                     onPressed: () {
+                      print(widget.customer.id);
                       Navigator.push(
                         context, MaterialPageRoute(
                           builder: (context) => ProductPage(
                             isFromLocalPage: true,  
                             height: 685, 
                             cusid: widget.customer.id,
-                            cusname: widget.customer.name,
                           )
                         )
                       );

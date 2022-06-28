@@ -1,4 +1,4 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, avoid_print
 
 import 'package:http/http.dart' as http;
 import 'package:internapp/global/access.dart';
@@ -24,7 +24,6 @@ class AddPayment{
       },);
     }
     catch (e) {
-      // ignore: avoid_print
       print("mali : $e");
       return false;
     }
@@ -49,8 +48,6 @@ class AddPayment{
       },);
     }
     catch (e) {
-      // ignore: avoid_print
-      print("error sa pagbayad by order:: $e");
       return false;
     }
   }

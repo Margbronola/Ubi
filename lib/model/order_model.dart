@@ -1,4 +1,4 @@
-import 'package:internapp/model/customer_model.dart';
+import 'package:internapp/model/cartcustomer_model.dart';
 import 'package:internapp/model/orderproduct_model.dart';
 import 'package:internapp/model/payment_model.dart';
 
@@ -8,8 +8,8 @@ class OrderModel{
   final double total;
   final int qty;
   final DateTime date;
-  final CustomerModel? customer;
   final PaymentModel? payments;
+  final CartCustomerModel? cartcustomer;
   final List<OrderProductModel> orderproduct;
 
   OrderModel({
@@ -18,8 +18,8 @@ class OrderModel{
       required this.total,
       required this.qty,
       required this.date,
-      required this.customer,
       required this.payments,
+      required this.cartcustomer,
       required this.orderproduct
   });
 
@@ -39,8 +39,8 @@ class OrderModel{
     total: double.parse(json['total'].toString()),
     qty: json['order_qty'],
     date: DateTime.parse(json['created_at']),
-    customer: json['customers'] == null ? null : CustomerModel.fromJson(json['customers']),
     payments: json['payments'] == null ? null : PaymentModel.fromJson(json['payments']),
+    cartcustomer: json['cart_customer'] == null ? null : CartCustomerModel.fromJson(json['cart_customer']),
     orderproduct: orderList(json['order_product'])
   );
 }

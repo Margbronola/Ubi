@@ -1,16 +1,16 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, avoid_print
 
 import 'dart:convert';
 import 'package:internapp/global/access.dart';
 import 'package:internapp/global/network.dart';
-import 'package:internapp/model/order_model.dart';
+import 'package:internapp/model/todaysorder_model.dart';
 import 'package:internapp/viewmodel/todaysorderviewmodel.dart';
 import 'package:http/http.dart' as http;
 
 class TodaysOrderApi{
   final TodaysOrderViewModel _viewModel = TodaysOrderViewModel.instance;
 
-  Future<OrderModel?> getOrder() async{
+  Future<TodaysOrderModel?> getAllOrder() async{
     try{
       return await http.get(Uri.parse("${Network.url}/orderproduct"),
       headers: {
@@ -20,14 +20,13 @@ class TodaysOrderApi{
       ).then((response){
         var data = json.decode(response.body);
         if(response.statusCode == 200){
-          List<OrderModel> to = [];
+          List<TodaysOrderModel> to = [];
           for(var todayOrder in data){
-            to.add(OrderModel.fromJson(todayOrder));
+            to.add(TodaysOrderModel.fromJson(todayOrder));
           }
-          // ignore: avoid_print
-          print("Orders : ${to.length}");
+          print(" All Orders (Paid & Pending): ${to.length}");
           _viewModel.populate(to);
-        return orderlist;
+        return todaysOrderlist;
         }
         return null;
       });

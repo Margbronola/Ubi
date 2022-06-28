@@ -1,37 +1,32 @@
 // ignore_for_file: deprecated_member_use, avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:internapp/cartdetails.dart';
 import 'package:internapp/global/network.dart';
-import 'package:internapp/model/cart_model.dart';
+import 'package:internapp/model/addtocart_model.dart';
 import 'package:internapp/model/cartdetails_model.dart';
 import 'package:internapp/model/product_model.dart';
-import 'package:internapp/orderdetails.dart';
-import 'package:internapp/services/API/cartdetailsApi.dart';
+import 'package:internapp/services/API/cartApi.dart';
 import 'package:internapp/services/API/deleteupdateorder.dart';
-import 'package:internapp/viewmodel/cartdetailsviewmodel.dart';
 
 // ignore: must_be_immutable
 class ProductDetailsPage extends StatefulWidget {
-  bool isFromWithoutCustomer;
   final ProductModel product;
   final ValueChanged<CartDetailsModel> onUpdateCallback;
   bool isfromOrderDetails;
   int quantity;
-  int cusid;
+  int? cusid;
   String comment;
-  String cusname;
   int cartId;
   
   ProductDetailsPage({Key? key,  
-    this.isFromWithoutCustomer = false,
     required this.product, 
     required this.onUpdateCallback,
     this.quantity = 0, 
     this.cartId = 0, 
     this.isfromOrderDetails = false, 
-    this.cusid = 0,
-    required this.comment, 
-    this.cusname = ""
+    this.cusid,
+    required this.comment,
   }) 
   : super(key: key);
 
@@ -42,10 +37,9 @@ class ProductDetailsPage extends StatefulWidget {
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
   late final TextEditingController comment =  TextEditingController()..text = widget.comment;
+  AddToCartModel? added;
   final DeleteUpdateOrderCart _updateorder = DeleteUpdateOrderCart();
-  final CartDetails order = CartDetails();
-  final CartDetailsViewModel _viewModel = CartDetailsViewModel.instance;
-  // final WithoutCustomerApi _confirmOrder = WithoutCustomerApi();
+  final CartApi cartApi = CartApi();
   bool visiblebutton = false;
   bool isLoading = false;
   String label = "Add Order";
@@ -140,10 +134,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             height: size.height,
             color: Colors.white,
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-            child: StreamBuilder<CartModel>(
-              stream: _viewModel.stream,
-              builder: (context, snapshot) {
-                return Container(
+            child: 
+              Container(
                   color: Colors.white,
                   child: ListView(
                     children: [
@@ -309,7 +301,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                         height: 50,
                                         alignment: Alignment.center,
                                         margin: const EdgeInsets.only(right: 7),
-                                        child: Text('${widget.quantity == 0 ? _qty : widget.quantity}',
+                                        child:Text('${widget.quantity == 0 ? _qty : widget.quantity}',
                                           style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                                         )
                                         // TextField(
@@ -398,7 +390,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 }
             
                                 else...{
-                                    SizedBox(
+                                  SizedBox(
                                     width: 150,
                                     height: 50,
                                     child: ElevatedButton(
@@ -439,14 +431,18 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                               isLoading = true;
                                             });
                                           
-                                            await order.addOrder(
+                                            await cartApi.addToCart(
                                               comment: comment.text,
                                               productid: widget.product.id,
                                               quantity: _qty,
-                                              customerID: widget.cusid, 
+                                              customerID: widget.cusid == 0 ? null : widget.cusid, 
                                             ).then((value){
-                                              print("Cart ID ${snapshot.data?.id}");
-                                              order.getCartDetails(cartCustomerId: snapshot.data?.id);
+                                              if(value != null){
+                                                setState(() {
+                                                  added = value;
+                                                });
+                                                cartApi.getCartDetails(cartCustomerId: value.cartcustomer!.id);
+                                              }
                                             }).whenComplete(
                                               () => setState(
                                                 () => isLoading = false,
@@ -526,32 +522,18 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                       primary: const Color.fromARGB(255, 40, 84, 232)
                                     ),
             
-                                    onPressed: () {
-                                      // if(widget.cusname == ""){
-                                      //   print("without customer name");
-                                      //   Navigator.pushReplacement(
-                                      //     context, MaterialPageRoute(
-                                      //       builder: (context) => OrderDetailwoCustomerPage(
-                                      //         product: widget.product,
-                                      //         isfromPendingOrder: false,
-                                      //       )
-                                      //     )
-                                      //   );
-                                      // }
-                                      // else{
-                                        print("with customer name");
+                                    onPressed: added != null ? () {
                                         Navigator.pushReplacement(
                                           context, MaterialPageRoute(
-                                            builder: (context) => OrderDetailsPage(
+                                            builder: (context) => CartDetailsPage(
                                               product: widget.product,
-                                              cusid: widget.cusid,
-                                              cusname: widget.cusname,
+                                              cusname: added!.cartcustomer?.customer?.name ?? "N/A",
                                               isfromPendingOrder: false,
+                                              cartcusid: added!.cartcustomer!.id
                                             )
                                           )
                                         );
-                                      // }
-                                    },
+                                    } : null,
                                     child: const Text('FINISH ORDER', 
                                       style: TextStyle(fontSize: 20, letterSpacing: 5, color: Colors.white),
                                     )
@@ -566,9 +548,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       
                     ],
                   ),
-                );
-              }
-            ),
+                )
           ),
         ),
       ),

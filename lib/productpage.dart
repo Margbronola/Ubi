@@ -109,7 +109,6 @@ class _ProductPageState extends State<ProductPage> {
                               borderRadius: BorderRadius.all(Radius.circular(15)),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              // borderRadius: const BorderRadius.all(Radius.circular(15)),
                               borderSide: BorderSide(color: Colors.grey.shade300),
                             ),
                             enabledBorder: OutlineInputBorder(
@@ -259,12 +258,10 @@ class _ProductPageState extends State<ProductPage> {
                                     Navigator.push(
                                       context, MaterialPageRoute(
                                         builder: (context) => ProductDetailsPage(
-                                          isFromWithoutCustomer: widget.isFromWithoutCustomer,
                                           onUpdateCallback: (callback){},
                                           product: searchProduct[index],
                                           comment: "",
                                           cusid: widget.cusid,
-                                          cusname: widget.cusname,
                                         )
                                       )
                                     );
@@ -357,7 +354,6 @@ class _ProductPageState extends State<ProductPage> {
                                             comment: "",
                                             product: searchProduct[index],
                                             cusid: widget.cusid,
-                                            cusname: widget.cusname,
                                           )
                                         )
                                       );

@@ -1,4 +1,4 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, avoid_print
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -23,7 +23,6 @@ class ProductAPI{
           for(var prod in data){
             p.add(ProductModel.fromJson(prod));
           }
-          // ignore: avoid_print
           print("Products : ${p.length}");
           _viewModel.populate(p);
           return productDetails;

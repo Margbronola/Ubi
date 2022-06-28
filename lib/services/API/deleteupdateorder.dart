@@ -17,7 +17,6 @@ class DeleteUpdateOrderCart{
           "Authorization": "Bearer $accessToken"
         },
       ).then((response) {
-        var data = json.decode(response.body);
         return response.statusCode == 200;
         });
     }

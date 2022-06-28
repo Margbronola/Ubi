@@ -9,8 +9,8 @@ import 'package:internapp/services/API/auth.dart';
 import 'package:internapp/services/API/customerApi.dart';
 import 'package:internapp/services/API/ordersApi.dart';
 import 'package:internapp/services/API/productApi.dart';
+import 'package:internapp/services/API/producttoprepareApi.dart';
 import 'package:internapp/services/API/todaysorderApi.dart';
-import 'package:internapp/services/API/toprepareApi.dart';
 import 'package:internapp/viewmodel/navigationbuttonviewmodel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,7 +25,7 @@ class _LandingPageState extends State<LandingPage> {
   final Auth _auth = Auth();
   final ProductAPI _productAPI = ProductAPI();
   final CustomerAPI _customerAPI = CustomerAPI();
-  final ToPrepareAPI _toPrepareAPI = ToPrepareAPI();
+  final ProductToPrepareAPI _toPrepareAPI = ProductToPrepareAPI();
   final TodaysOrderApi _todayOrderAPI = TodaysOrderApi();
   final OrdersAPI _ordersAPI = OrdersAPI();
   final NavigationButtonViewModel _viewModel = NavigationButtonViewModel.instance;
@@ -54,7 +54,7 @@ class _LandingPageState extends State<LandingPage> {
     _productAPI.getProduct();
     _customerAPI.getCustomer();
     _toPrepareAPI.getToPrepare();
-    _todayOrderAPI.getOrder();
+    _todayOrderAPI.getAllOrder();
     checkMenu();
 
     init();

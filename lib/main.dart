@@ -3,7 +3,6 @@ import 'package:internapp/change_password.dart';
 import 'package:internapp/landing_page.dart';
 import 'package:internapp/login_page.dart';
 import 'package:internapp/menu.dart';
-import 'package:internapp/pendingorder.dart';
 import 'package:internapp/profile_details.dart';
 import 'package:internapp/services/API/datacacher.dart';
 import 'package:internapp/splashscreen.dart';
@@ -49,8 +48,8 @@ class MyApp extends StatelessWidget {
           case "/takeOrder":
             return PageTransition(child: const TakeOrderPage(), type: PageTransitionType.leftToRightWithFade);
           
-          case "/pendingOrder":
-            return PageTransition(child: PendingOrderPage(), type: PageTransitionType.leftToRightWithFade);
+          // case "/pendingOrder":
+          //   return PageTransition(child: PendingOrderPage(), type: PageTransitionType.leftToRightWithFade);
           
           default:
             return PageTransition(child: const LandingPage(), type: PageTransitionType.fade);

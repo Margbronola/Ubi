@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:internapp/model/order_model.dart';
-import 'package:internapp/viewmodel/todaysorderviewmodel.dart';
+import 'package:internapp/viewmodel/orderviewmodel.dart';
 import 'package:intl/intl.dart';
 
 class OrderPage extends StatefulWidget {
@@ -11,7 +11,7 @@ class OrderPage extends StatefulWidget {
 }
 
 class _OrderPageState extends State<OrderPage> {
-  final TodaysOrderViewModel _viewModel = TodaysOrderViewModel.instance;
+  final OrderViewModel _viewModel = OrderViewModel.instance;
   final TextEditingController controller = TextEditingController();
   String searchString = "";
 
@@ -39,13 +39,13 @@ class _OrderPageState extends State<OrderPage> {
                     )
                   ]
                 ),
-                height: 110,
+                height: 120,
                 child: Column(
                   children: [
                     Container(
                       width: size.width,
                       height: 55,
-                      margin: const EdgeInsets.only(top: 10),
+                      margin: const EdgeInsets.only(top: 20),
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Expanded(
                         child: TextField(
@@ -140,8 +140,8 @@ class _OrderPageState extends State<OrderPage> {
                   builder: (_, snapshot) {
                     if (snapshot.hasData && !snapshot.hasError){
                       if (snapshot.data!.isNotEmpty) {
-                        final List<OrderModel> searchCustomer = snapshot.data!.where((element) => element.customer == null || element.customer!.name.toLowerCase().contains(searchString)).toList();
-                      
+                        final List<OrderModel> searchCustomer = snapshot.data!.where((element) => element.cartcustomer?.customer?.name.toLowerCase().contains(searchString)??searchString.isEmpty).toList();
+                        
                         return ListView.separated(
                           shrinkWrap: true,
                           itemCount: searchCustomer.length,
@@ -155,7 +155,7 @@ class _OrderPageState extends State<OrderPage> {
                                     SizedBox(
                                       width: 125,
                                       child: Center(
-                                        child: Text(searchCustomer[index].customer?.name ?? "N/A",
+                                        child: Text(searchCustomer[index].cartcustomer!.customer?.name ?? "N/A",
                                           style: const TextStyle(
                                             color: Colors.black,
                                             fontSize: 18,
@@ -205,6 +205,7 @@ class _OrderPageState extends State<OrderPage> {
                     return const Center(child: CircularProgressIndicator.adaptive());
                   }
                 )
+                        
               ),
             ],
           ),

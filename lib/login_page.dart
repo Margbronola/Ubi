@@ -41,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
                   )
                 )
               ),
-    
+          
               Center(
                 child: SizedBox(
                   width: 190,
@@ -49,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Image.asset("assets/images/WhiteLogo.png",)
                 )
               ),
-    
+          
               DraggableScrollableSheet(
                 minChildSize: .08,
                 initialChildSize: widget.isFromAlertBox,
@@ -78,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-    
+          
                         Container(
                           padding: const EdgeInsets.fromLTRB(40, 30, 40, 0),
                           child: TextFormField(
@@ -88,12 +88,12 @@ class _LoginPageState extends State<LoginPage> {
                               if (value!.isEmpty) {
                                 return 'Enter your Email';
                               }
-    
+          
                               if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
                               .hasMatch(value)) {
                                 return 'Please enter a valid Email';
                               }
-    
+          
                               return null;
                             },
                             style: const TextStyle(fontSize: 18),
@@ -114,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-    
+          
                         Container(
                           padding: const EdgeInsets.fromLTRB(40, 20, 40, 0),
                           child: TextFormField(
@@ -176,7 +176,7 @@ class _LoginPageState extends State<LoginPage> {
                                 setState(() {
                                   isLoading = true;
                                 });
-    
+          
                                 print("LOGGING IN");
                                 await _auth.login(
                                   email: _emailController.text,
@@ -189,7 +189,7 @@ class _LoginPageState extends State<LoginPage> {
                                       ),
                                     );
                                   } 
-    
+          
                                   else {
                                     return showDialog(
                                       barrierDismissible: false,
@@ -204,9 +204,9 @@ class _LoginPageState extends State<LoginPage> {
                                             fontSize: 20
                                           )
                                         ),
-    
+          
                                         content: const Text("Incorrect email/password", textAlign: TextAlign.center),
-
+        
                                         actions: <Widget>[
                                           FlatButton(
                                             onPressed: () {
@@ -230,7 +230,7 @@ class _LoginPageState extends State<LoginPage> {
                             },
                           ),
                         ),
-    
+          
                         Container(
                           padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
                           child: TextButton(

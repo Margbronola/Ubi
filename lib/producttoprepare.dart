@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:internapp/global/network.dart';
-import 'package:internapp/model/toprepare_model.dart';
-import 'package:internapp/services/API/toprepareApi.dart';
-import 'package:internapp/viewmodel/toprepareviewmodel.dart';
+import 'package:internapp/model/producttoprepare_model.dart';
+import 'package:internapp/services/API/producttoprepareApi.dart';
+import 'package:internapp/viewmodel/producttoprepareviewmodel.dart';
 
 class ProductsToPreparePage extends StatefulWidget {
   const ProductsToPreparePage({ Key? key }) : super(key: key);
@@ -12,9 +12,9 @@ class ProductsToPreparePage extends StatefulWidget {
 }
 
 class _ProductsToPreparePageState extends State<ProductsToPreparePage> {
-  final ToPrepareViewModel _viewModel = ToPrepareViewModel.instance;
+  final ProductToPrepareViewModel _viewModel = ProductToPrepareViewModel.instance;
   bool isLoading = false;
-  final ToPrepareAPI _toPrepareAPI = ToPrepareAPI();
+  final ProductToPrepareAPI _toPrepareAPI = ProductToPrepareAPI();
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +28,13 @@ class _ProductsToPreparePageState extends State<ProductsToPreparePage> {
           color: Colors.white,
           padding: const EdgeInsets.all(20),
           margin: const EdgeInsets.only(bottom: 50),
-          child: StreamBuilder<List<ToPrepareModel>>( 
+          child: StreamBuilder<List<ProductToPrepareModel>>( 
             stream: _viewModel.stream,
             builder: (_, snapshot) {
               if(snapshot.hasData && !snapshot.hasError){
                 if(snapshot.data!.isNotEmpty){
-                  final List<ToPrepareModel> _toPrepare = snapshot.data!.where((element) => !element.prepared).toList();
+                  final List<ProductToPrepareModel> _toPrepare = snapshot.data!.where((element) => !element.prepared).toList();
+                  
                   return ListView.separated(
                     itemCount: _toPrepare.length,
                     itemBuilder: (BuildContext ctx, int index){
@@ -48,11 +49,12 @@ class _ProductsToPreparePageState extends State<ProductsToPreparePage> {
                               SizedBox(
                                 width: 95,
                                 height: 130,
-                                child:  snapshot.data![index].product.images.isEmpty ? SizedBox(
+                                child: snapshot.data![index].products.images.isEmpty ? 
+                                SizedBox(
                                   width: 95,
                                   height: 130,
                                   child: Image.asset('assets/images/placeholder.jpg', fit: BoxFit.fitWidth),
-                                ) : Image.network("${Network.imageUrl}${snapshot.data![index].product.images[0].url}",
+                                ) : Image.network("${Network.imageUrl}${snapshot.data![index].products.images[0].url}",
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -83,7 +85,7 @@ class _ProductsToPreparePageState extends State<ProductsToPreparePage> {
                                           width: 150,
                                           height: 40,
                                           alignment: Alignment.center, 
-                                          child: Text(snapshot.data![index].product.name,
+                                          child: Text(snapshot.data![index].products.name,
                                             textAlign: TextAlign.left,
                                             style: const TextStyle(
                                               color: Colors.black,
@@ -105,7 +107,7 @@ class _ProductsToPreparePageState extends State<ProductsToPreparePage> {
                                       ),
                                       padding: const EdgeInsets.all(5),
                                       alignment: Alignment.center,
-                                      child: Text(snapshot.data![index].comment!,
+                                      child: Text(snapshot.data![index].comment.toString(),
                                         textAlign: TextAlign.left,
                                         style: const TextStyle(
                                           color: Colors.black,
@@ -165,12 +167,12 @@ class _ProductsToPreparePageState extends State<ProductsToPreparePage> {
                             SizedBox(
                               width: 95,
                               height: 110,
-                              child:  snapshot.data![index].product.images.isEmpty ? SizedBox(
+                              child: snapshot.data![index].products.images.isEmpty ? SizedBox(
                                 width: 95,
                                 height: 110,
                                 child: Image.asset('assets/images/placeholder.jpg', fit: BoxFit.fitWidth),
                               ) : Image.network(
-                                "${Network.imageUrl}${snapshot.data![index].product.images[0].url}",
+                                "${Network.imageUrl}${snapshot.data![index].products.images[0].url}",
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -196,7 +198,7 @@ class _ProductsToPreparePageState extends State<ProductsToPreparePage> {
                                   width: 150,
                                   height: 60,
                                   alignment: Alignment.center, 
-                                  child: Text(snapshot.data![index].product.name,
+                                  child: Text(snapshot.data![index].products.name,
                                     textAlign: TextAlign.left,
                                     style: const TextStyle(
                                       color: Colors.black,
@@ -234,6 +236,7 @@ class _ProductsToPreparePageState extends State<ProductsToPreparePage> {
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold
                                       ),
+                                      textAlign: TextAlign.center,
                                     )
                                   )
                                 ),
@@ -259,6 +262,6 @@ class _ProductsToPreparePageState extends State<ProductsToPreparePage> {
           ),
         ),
       ),
-    ); 
+    );
   }
 }

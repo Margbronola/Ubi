@@ -6,49 +6,48 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:internapp/global/access.dart';
 import 'package:internapp/global/network.dart';
-import 'package:internapp/model/cart_model.dart';
-import 'package:internapp/model/cartdetails_model.dart';
-import 'package:internapp/viewmodel/cartdetailsviewmodel.dart';
+import 'package:internapp/model/addtocart_model.dart';
+import 'package:internapp/model/displaycart_model.dart';
 
-class CartDetails{
-  final CartDetailsViewModel _viewModel = CartDetailsViewModel.instance;
-
-  Future<void> addOrder({
+class CartApi{
+  Future<AddToCartModel?> addToCart({
     int? customerID,
     int? quantity,
     int? productid,
     String? comment,
   }) async{
     try{
+      Map body = {
+        "quantity": quantity.toString(),
+          "product_id": productid.toString(),
+          "comment": comment,
+      };
+      
+      if(customerID != null){
+        body.addAll({"customer_id": customerID.toString()});
+      }
       return await http.post(Uri.parse("${Network.url}/addtocart"),
         headers: {
           "Accept": "application/json",
-          "Authorization": "Bearer $accessToken"
+          HttpHeaders.authorizationHeader : "Bearer $accessToken",
         },
-        body: {
-          "customer_id": customerID?.toString(),
-          "quantity": quantity?.toString(),
-          "product_id": productid?.toString(),
-          "comment": comment,
-        },
+        body: body,
       // ignore: void_checks
       ).then((response){
         var data = json.decode(response.body);
-        print(data);
         if(response.statusCode == 200){
-          print('added');
-          print(response.body);
-          return CartDetailsModel.fromJson(data);
+          print(data);
+          return AddToCartModel.fromJson(data);
         }
+        return null;
       }); 
     }
     catch(e){
-      print("error sa pag add:: $e");
-      return;
+      return null;
     }
   }
 
-  Future<void> getCartDetails({int? cartCustomerId}) async{
+  Future<DisplayCartModel?> getCartDetails({required int cartCustomerId}) async{
     try {
         return await http.get(Uri.parse("${Network.url}/cart/$cartCustomerId"),
         headers: {
@@ -58,17 +57,15 @@ class CartDetails{
       ).then((response) {
         var data = json.decode(response.body);
         if(response.statusCode == 200){
-          final CartModel model = CartModel.fromJson(data);
-          print("order : ${model.cart.length}");
-          _viewModel.populate(model);
-        return;
+          final DisplayCartModel model = DisplayCartModel.fromJson(data);
+          print("order : ${model.carts.length}");
+          return model;
         }
         return null;
       });
     }
     catch (e){
-      print("Error sa pagpadisplay:: $e");
-      return;
+      return null;
     }
   }
 }

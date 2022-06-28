@@ -1,4 +1,4 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, avoid_print
 import 'package:http/http.dart' as http;
 import 'package:internapp/global/access.dart';
 import 'package:internapp/global/network.dart';
@@ -13,6 +13,7 @@ class ConfirmOrder{
           "Authorization": "Bearer $accessToken"
         },
       ).then((response) {
+        print(response.body);
         return response.statusCode == 200;
       },);
     }

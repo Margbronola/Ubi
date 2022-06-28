@@ -1,9 +1,8 @@
-
 // ignore_for_file: unrelated_type_equality_checks
 
 import 'package:flutter/material.dart';
-import 'package:internapp/confirmorder.dart';
-import 'package:internapp/model/order_model.dart';
+import 'package:internapp/model/todaysorder_model.dart';
+import 'package:internapp/orderdetails.dart';
 import 'package:internapp/viewmodel/todaysorderviewmodel.dart';
 import 'package:jiffy/jiffy.dart';
 
@@ -31,7 +30,6 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
     final Size size = MediaQuery.of(context).size;
     DateTime current = DateTime.now();
 
-    // ignore: unused_local_variable
     String date = Jiffy(current).format('MMMM dd, yyyy');
 
     return GestureDetector(
@@ -199,15 +197,15 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
                 height: 555,
                 margin: const EdgeInsets.only(top: 15),
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: StreamBuilder<List<OrderModel>>(
+                child: StreamBuilder<List<TodaysOrderModel>>(
                   stream: _viewModel.stream,
                   builder: (_, snapshot) {
                     if (snapshot.hasData && !snapshot.hasError){
                       if (snapshot.data!.isNotEmpty) {
 
                         if(dropdownvalue == "Pending"){
-                          final List<OrderModel> pendinglist = snapshot.data!.where((element) => 
-                            element.customer!.name.toLowerCase().contains(searchString) &&
+                          final List<TodaysOrderModel> pendinglist = snapshot.data!.where((element) => 
+                            (element.cartCustomer.customer?.name.toLowerCase().contains(searchString) ?? searchString.isEmpty) &&
                             element.status == false
                           ).toList();
 
@@ -219,10 +217,10 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
                                   onTap: () {
                                     Navigator.push(
                                       context, MaterialPageRoute(
-                                        builder: (context) => ConfirmOrderPage(
+                                        builder: (context) => OrderDetailsPage(
                                           isfromPendingOrder: true,
-                                          cusid: pendinglist[index].customer!.id,
-                                          cusname: pendinglist[index].customer?.name ?? "N/A",
+                                          cusid: pendinglist[index].cartCustomer.customer?.id ?? 0,
+                                          cusname: pendinglist[index].cartCustomer.customer?.name ?? "N/A",
                                           orderid: pendinglist[index].id,
                                           status: pendinglist[index].status ? "Paid" : "Pending",
                                         )
@@ -239,7 +237,7 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
                                         SizedBox(
                                           width: 125,
                                           child: Center(
-                                            child: Text(pendinglist[index].customer?.name ?? "N/A",
+                                            child: Text(pendinglist[index].cartCustomer.customer?.name ?? "N/A",
                                               style: const TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 18,
@@ -263,7 +261,7 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
                                         SizedBox(
                                           width: 125,
                                           child: Center(
-                                            child: Text(pendinglist[index].qty.toString(),
+                                            child: Text(pendinglist[index].orderQty.toString(),
                                               style: const TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 18,
@@ -281,9 +279,10 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
                           }
 
                           else if(dropdownvalue == "Paid"){
-                            final List<OrderModel> paidlist = snapshot.data!.where((element) => 
-                              element.customer!.name.toLowerCase().contains(searchString)
-                              && element.status == true).toList();
+                            final List<TodaysOrderModel> paidlist = snapshot.data!.where((element) => 
+                              (element.cartCustomer.customer?.name.toLowerCase().contains(searchString) ?? searchString.isEmpty) &&
+                              element.status == true
+                            ).toList();
 
                             return ListView.separated(
                               shrinkWrap: true,
@@ -293,10 +292,10 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
                                   onTap: () {
                                     Navigator.push(
                                       context, MaterialPageRoute(
-                                        builder: (context) => ConfirmOrderPage(
+                                        builder: (context) => OrderDetailsPage(
                                           isfromPendingOrder: true,
-                                          cusid: paidlist[index].customer!.id,
-                                          cusname: paidlist[index].customer!.name,
+                                          cusid: paidlist[index].cartCustomer.customer?.id ?? 0,
+                                          cusname: paidlist[index].cartCustomer.customer?.name ?? "N/A",
                                           orderid: paidlist[index].id,
                                           status: paidlist[index].status ? "Paid" : "Pending",
                                         )
@@ -313,7 +312,7 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
                                         SizedBox(
                                           width: 125,
                                           child: Center(
-                                            child: Text(paidlist[index].customer!.name,
+                                            child: Text(paidlist[index].cartCustomer.customer?.name ?? "N/A",
                                               style: const TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 18,
@@ -337,7 +336,7 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
                                         SizedBox(
                                           width: 125,
                                           child: Center(
-                                            child: Text(paidlist[index].qty.toString(),
+                                            child: Text(paidlist[index].orderQty.toString(),
                                               style: const TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 18,
@@ -353,11 +352,12 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
                               separatorBuilder: (BuildContext context, int index) => const Divider(color: Colors.transparent),
                             );
                           }
-                        // }
 
                         else{
-                          final List<OrderModel> searchCustomer = snapshot.data!.where((element) => element.customer!.name.toLowerCase().contains(searchString)).toList();
-                      
+                          final List<TodaysOrderModel> searchCustomer = snapshot.data!.where((element) => 
+                            element.cartCustomer.customer?.name.toLowerCase().contains(searchString) ?? searchString.isEmpty
+                          ).toList();
+
                           return ListView.separated(
                             shrinkWrap: true,
                             itemCount: searchCustomer.length ,
@@ -366,10 +366,10 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
                                 onTap: () {
                                   Navigator.push(
                                     context, MaterialPageRoute(
-                                      builder: (context) => ConfirmOrderPage(
+                                      builder: (context) => OrderDetailsPage(
                                         isfromPendingOrder: true,
-                                        cusid: searchCustomer[index].customer!.id,
-                                        cusname: searchCustomer[index].customer!.name,
+                                        cusid: searchCustomer[index].cartCustomer.customer?.id ?? 0,
+                                        cusname: searchCustomer[index].cartCustomer.customer?.name ?? "N/A",
                                         orderid: searchCustomer[index].id,
                                         status: searchCustomer[index].status ? "Paid" : "Pending",
                                       )
@@ -386,7 +386,7 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
                                       SizedBox(
                                         width: 125,
                                         child: Center(
-                                          child: Text(searchCustomer[index].customer!.name,
+                                          child: Text(searchCustomer[index].cartCustomer.customer?.name ?? "N/A",
                                             style: const TextStyle(
                                               color: Colors.black,
                                               fontSize: 18,
@@ -410,7 +410,7 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
                                       SizedBox(
                                         width: 125,
                                         child: Center(
-                                          child: Text(searchCustomer[index].qty.toString(),
+                                          child: Text(searchCustomer[index].orderQty.toString(),
                                             style: const TextStyle(
                                               color: Colors.black,
                                               fontSize: 18,
