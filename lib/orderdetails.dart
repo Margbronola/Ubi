@@ -6,7 +6,6 @@ import 'package:internapp/model/orderproduct_model.dart';
 import 'package:internapp/profile_page.dart';
 import 'package:internapp/services/API/addpaymentApi.dart';
 import 'package:internapp/services/API/orderdetailsApi.dart';
-import 'package:internapp/viewmodel/OrdersDetailsViewModel.dart';
 import 'package:jiffy/jiffy.dart';
 
 // ignore: must_be_immutable
@@ -33,21 +32,40 @@ class OrderDetailsPage extends StatefulWidget {
 class _OrderDetailsPageState extends State<OrderDetailsPage> {
   final TextEditingController _amount = TextEditingController();
   final TextEditingController _change = TextEditingController();
-  final OrdersDetailsViewModel _viewModel = OrdersDetailsViewModel.instance;
   final AddPayment _addPayment = AddPayment();
   final OrderDetailsApi _orderApi = OrderDetailsApi();
   bool isLoading = false;
   bool visiblewidget = false;
   bool visiblecontainer = true;
+  OrderModel? _displayorder;
+
+  fetchDetails() async {
+    await _orderApi.getOrderdetails(orderId: widget.orderid).then((value) 
+    {
+      if(value != null){
+        setState(() {
+          _displayorder = value;
+        });
+      }else{
+        Navigator.of(context).pop();
+      }
+    });
+  }
 
   @override
-  void initState() {
-    setState(() {
-      _orderApi.getOrderdetails(orderId: widget.orderid);
-    });
+  void initState(){
+    if(widget.orderid != 0){
+      fetchDetails();
+    }
     super.initState();
   }
-  
+
+  @override
+  void dispose(){
+    super.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -94,7 +112,9 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
         child: SizedBox(
           width: size.width,
           height: size.height,
-          child: ListView(
+          child: _displayorder == null ? const Center(
+            child: CircularProgressIndicator(),
+          ) : ListView(
             children: [
               Container(
                 width: size.width,
@@ -123,157 +143,142 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                 ),
               ),
 
-              StreamBuilder<OrderModel>(
-                stream: _viewModel.stream,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData && !snapshot.hasError) {
-                    final TextEditingController _totalController = TextEditingController()..text = snapshot.data!.total.toString();
-                    
-                    if(widget.status == "Pending"){
-                      return Column(
-                        children: [
-                          SizedBox(
-                            height: 450,
-                            child: 
-                            ListView.separated(
-                              itemBuilder: (_, index) {
-                                final OrderProductModel details = snapshot.data!.orderproduct[index];
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                                  child: Container(
-                                    padding: const EdgeInsets.all(10),
-                                    color: Colors.grey.shade200,
-                                    height: 100,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        SizedBox(
-                                          width: 80,
-                                          height: 100,
-                                          child: details.product.images.isNotEmpty ? 
-                                          Image.network("${Network.imageUrl}${details.product.images[0].url}",
-                                            fit: BoxFit.cover
-                                          ) : Image.asset('assets/images/placeholder.jpg',
-                                            fit: BoxFit.fitWidth
-                                          )
-                                        ),
+              ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: _displayorder!.orderproduct.length,
+                itemBuilder: (BuildContext ctx, int index){
+                  OrderProductModel details = _displayorder!.orderproduct[index];
+
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          color: Colors.grey.shade200,
+                          height: 100,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                width: 80,
+                                height: 100,
+                                child: details.product.images.isNotEmpty ? 
+                                Image.network("${Network.imageUrl}${details.product.images[0].url}",
+                                  fit: BoxFit.cover
+                                ) : Image.asset('assets/images/placeholder.jpg',
+                                  fit: BoxFit.fitWidth
+                                )
+                              ),
                         
-                                        Container(
-                                          margin: const EdgeInsets.only(top: 5),
-                                          child: Column(
-                                            children: [
-                                              Center(
-                                                child: Container(
-                                                  width: 190,
-                                                  height: 30,
-                                                  padding: const EdgeInsets.only(left: 15),
-                                                  child: Text( details.prepared ? "Prepared" : "To Prepare",
-                                                    style: const TextStyle(
-                                                      fontSize: 20,
-                                                      fontWeight: FontWeight.bold,
-                                                      color: Color.fromARGB(255, 40, 84, 232)
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                              
-                                              SizedBox(
-                                                width: 190,
-                                                height: 45,
-                                                child: Row(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    SizedBox(
-                                                      width: 30,
-                                                      child: Text(details.qty.toString(),
-                                                        textAlign: TextAlign.center,
-                                                        style: const TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 18,
-                                                          fontWeight: FontWeight.bold
-                                                        )
-                                                      ),
-                                                    ),
-
-                                                    SizedBox(
-                                                      width: 160,
-                                                      child: Text(details.product.name,
-                                                        textAlign: TextAlign.center,
-                                                        style: const TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 18,
-                                                          fontWeight: FontWeight.bold
-                                                        )
-                                                      ),
-                                                    ),
-
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
+                              Container(
+                                margin: const EdgeInsets.only(top: 5),
+                                child: Column(
+                                  children: [
+                                    Center(
+                                      child: Container(
+                                        width: 190,
+                                        height: 30,
+                                        padding: const EdgeInsets.only(left: 15),
+                                        child: Text( details.prepared ? "Prepared" : "To Prepare",
+                                          style: const TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Color.fromARGB(255, 40, 84, 232)
                                           ),
                                         ),
-
-                                        SizedBox(
-                                          width: 80,
-                                          height: 100,
-                                          child: Center(
-                                            child: Text("P${details.price}",
+                                      ),
+                                    ),
+                    
+                                    SizedBox(
+                                      width: 190,
+                                      height: 45,
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            width: 30,
+                                            child: Text(details.qty.toString(),
+                                              textAlign: TextAlign.center,
                                               style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20,
-                                              ),
+                                                color: Colors.black,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold
+                                              )
                                             ),
                                           ),
-                                        ),
 
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              },
-                              separatorBuilder: (BuildContext context, int index) => const Divider(color: Colors.transparent),
-                              itemCount: snapshot.data!.orderproduct.length,
-                            ),
-                          ),
+                                          SizedBox(
+                                            width: 160,
+                                            child: Text(details.product.name,
+                                              textAlign: TextAlign.center,
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold
+                                              )
+                                            ),
+                                          ),
 
-                          Container(
-                            height: 60,
-                            padding: const EdgeInsets.only(right: 20, top: 15),
-                            margin: const EdgeInsets.only(bottom: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                const Text('Total   ',
-                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                                ),
-                                
-                                SizedBox(
-                                  width: 150,
-                                  height: 40,
-                                  child: TextFormField(
-                                    controller: _totalController,
-                                    textAlign: TextAlign.end,
-                                    enabled: false,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                        borderRadius: const BorderRadius.all(Radius.circular(10)),
-                                        borderSide: BorderSide(
-                                          color: Colors.grey.shade300,
-                                          width: 2
-                                        )
+                                        ],
                                       ),
-                                      fillColor: Colors.grey.shade300,
-                                      filled: true,
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              SizedBox(
+                                width: 80,
+                                height: 100,
+                                child: Center(
+                                  child: Text("P${details.price}",
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
                                     ),
                                   ),
-                                )
+                                ),
+                              ),
 
-                              ]
-                            ),
+                            ],
                           ),
+                        ),
+                      );
 
-                          Visibility(
+                }, 
+                separatorBuilder: (BuildContext context, int index) => const Divider(color: Colors.transparent), 
+              ),
+
+              Container(
+                          height: 60,
+                          padding: const EdgeInsets.only(right: 20, top: 15),
+                          margin: const EdgeInsets.only(bottom: 15, top: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              const Text('Total   ',
+                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                              
+                              Container(
+                                width: 150,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: Colors.black12,
+                                ),
+                                padding: const EdgeInsets.fromLTRB(5, 10, 20, 10),
+                                child: Text("${_displayorder!.total}", 
+                                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold), 
+                                  textAlign: TextAlign.end
+                                )
+                              )
+
+                            ]
+                          ),
+                        ),
+
+              if(widget.status == "Pending")...{
+                Visibility(
                             visible: visiblecontainer,
                             child: Container(
                               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -322,7 +327,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                             
                             replacement: Container(
                               height: 190,
-                              color: Colors.grey.shade300,
+                              // color: Colors.grey.shade300,
                               padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                               child: Column(
                                 children: [
@@ -349,7 +354,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                                               keyboardType: const TextInputType.numberWithOptions(),
                                               onChanged: (__text) {
                                                 setState(() {
-                                                  _change.text = (double.parse(_amount.text) - double.parse(_totalController.text)).toString();
+                                                  _change.text = (double.parse(_amount.text) - double.parse(_displayorder!.total.toString())).toString();
                                                 });
                                               },
                                               textAlign: TextAlign.center,
@@ -407,7 +412,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                                         primary: const Color.fromARGB(255, 40, 84, 232)
                                       ),
                                       onPressed: () async {
-                                        if(double.parse(_amount.text)  >= double.parse(_totalController.text)){
+                                        if(double.parse(_amount.text)  >= double.parse(_displayorder!.total.toString())){
                                         setState(() {
                                           isLoading = true;
                                         });
@@ -498,7 +503,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                                                           style:TextStyle(fontSize:18,)
                                                         ),
                                                         
-                                                        Text("Php ${snapshot.data!.total}",
+                                                        Text("Php ${_displayorder!.total.toString()}",
                                                           style: const TextStyle(
                                                             fontWeight: FontWeight.bold,
                                                             fontSize: 18
@@ -533,7 +538,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                                                           style: TextStyle(fontSize: 18)
                                                         ),
                                                 
-                                                        Text('Php ${_amount.text.isNotEmpty ? double.parse(_amount.text) - (_totalController.text.isNotEmpty ? double.parse(_totalController.text) : 0.0) : "0.0"}',
+                                                        Text('Php ${_amount.text.isNotEmpty ? double.parse(_amount.text) - (_displayorder!.total.toString().isNotEmpty ? double.parse(_displayorder!.total.toString()) : 0.0) : "0.0"}',
                                                           style: const TextStyle(fontSize:18)
                                                         ),
                                                       ],
@@ -614,158 +619,13 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                                 ],
                               ),
                             ),
-                          ) 
-                        ]
-                      );
-                    }
+                          )
+              }
 
-                    else{
-                      return Column(
-                        children: [
-                          SizedBox(
-                            height: 450,
-                            child: 
-                            ListView.separated(
-                              itemBuilder: (_, index) {
-                                final OrderProductModel details = snapshot.data!.orderproduct[index];
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                                  child: Container(
-                                    padding: const EdgeInsets.all(10),
-                                    color: Colors.grey.shade200,
-                                    height: 100,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        SizedBox(
-                                          width: 80,
-                                          height: 100,
-                                          child: details.product.images.isNotEmpty ? 
-                                          Image.network("${Network.imageUrl}${details.product.images[0].url}",
-                                            fit: BoxFit.cover
-                                          ) : Image.asset('assets/images/placeholder.jpg',
-                                            fit: BoxFit.fitWidth
-                                          )
-                                        ),
-                        
-                                        Container(
-                                          margin: const EdgeInsets.only(top: 5),
-                                          child: Column(
-                                            children: [
-                                              Center(
-                                                child: Container(
-                                                  width: 190,
-                                                  height: 30,
-                                                  padding: const EdgeInsets.only(left: 15),
-                                                  child: Text(details.prepared ? "Prepared" : "To Prepare",
-                                                    style: const TextStyle(
-                                                      fontSize: 20,
-                                                      fontWeight: FontWeight.bold,
-                                                      color: Color.fromARGB(255, 40, 84, 232)
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                              
-                                              SizedBox(
-                                                width: 190,
-                                                height: 45,
-                                                child: Row(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    SizedBox(
-                                                      width: 30,
-                                                      child: Text(details.qty.toString(),
-                                                        textAlign: TextAlign.center,
-                                                        style: const TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 18,
-                                                          fontWeight: FontWeight.bold
-                                                        )
-                                                      ),
-                                                    ),
-
-                                                    SizedBox(
-                                                      width: 160,
-                                                      child: Text(details.product.name,
-                                                        textAlign: TextAlign.center,
-                                                        style: const TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 18,
-                                                          fontWeight: FontWeight.bold
-                                                        )
-                                                      ),
-                                                    ),
-
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-
-                                        SizedBox(
-                                          width: 80,
-                                          height: 100,
-                                          child: Center(
-                                            child: Text("P${details.price}",
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              },
-                              separatorBuilder: (BuildContext context, int index) => const Divider(color: Colors.transparent),
-                              itemCount: snapshot.data!.orderproduct.length,
-                            ),
-                          ),
-
-                          Container(
-                            height: 60,
-                            padding: const EdgeInsets.only(right: 20, top: 15),
-                            margin: const EdgeInsets.only(bottom: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                const Text('Total   ',
-                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                                ),
-                                
-                                SizedBox(
-                                  width: 150,
-                                  height: 40,
-                                  child: TextFormField(
-                                    controller: _totalController,
-                                    textAlign: TextAlign.end,
-                                    enabled: false,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                        borderRadius: const BorderRadius.all(Radius.circular(10)),
-                                        borderSide: BorderSide(
-                                          color: Colors.grey.shade300,
-                                          width: 2
-                                        )
-                                      ),
-                                      fillColor: Colors.grey.shade300,
-                                      filled: true,
-                                    ),
-                                  ),
-                                )
-
-                              ]
-                            ),
-                          ),
-
-                          Container(
+              else...{
+                Container(
                             height: 170,
-                            margin: const EdgeInsets.only(top: 10),
+                            margin: const EdgeInsets.only(top: 5),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -785,9 +645,9 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
 
                                 Container(
                                   width: size.width,
-                                  height: 120,
-                                  color: Colors.grey.shade200,
-                                  padding: const EdgeInsets.all(25),
+                                  height: 100,
+                                  // color: Colors.grey.shade200,
+                                  padding: const EdgeInsets.fromLTRB(25, 5, 25, 0),
                                   child: Row(
                                     mainAxisAlignment:MainAxisAlignment.spaceBetween,
                                     children: [
@@ -805,11 +665,11 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                                             width: 150,
                                             margin: const EdgeInsets.only(top: 10),
                                             decoration: const BoxDecoration(
-                                              color: Colors.white,
+                                              color: Colors.black12,
                                               borderRadius: BorderRadius.all(Radius.circular(10))
                                             ),
                                             child: Center(
-                                              child: Text(snapshot.data!.payments?.paid.toStringAsFixed(2)??"0.0" ,
+                                              child: Text(_displayorder?.payments?.paid.toStringAsFixed(2)??"0.0" ,
                                                 style: const TextStyle(
                                                   fontSize: 20, 
                                                   fontWeight: FontWeight.bold
@@ -835,11 +695,11 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                                             width: 150,
                                             margin: const EdgeInsets.only(top: 10),
                                             decoration: const BoxDecoration(
-                                              color: Colors.white,
+                                              color: Colors.black12,
                                               borderRadius: BorderRadius.all(Radius.circular(10))
                                             ),
                                             child: Center(
-                                              child: Text(snapshot.data!.payments?.change.toStringAsFixed(2)??"0.0" ,
+                                              child: Text(_displayorder?.payments?.change.toStringAsFixed(2)??"0.0" ,
                                                 style: const TextStyle(
                                                   fontSize: 20, 
                                                   fontWeight: FontWeight.bold
@@ -856,15 +716,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                               ],
                             )
                           )
-                        ]
-                      );
-                    }
-
-                  }
-                  return Text(snapshot.error.toString());
-                }
-              ) 
-
+              }
             ],
           ),
         ),

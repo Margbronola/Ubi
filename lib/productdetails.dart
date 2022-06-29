@@ -44,7 +44,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   bool isLoading = false;
   String label = "Add Order";
   Color borderColor = const Color.fromARGB(255, 40, 84, 232); 
-
   int _qty = 1;
 
   void _addQty(){
@@ -365,6 +364,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                         ).then((value) {
                                           if(value != null){
                                             widget.onUpdateCallback(value);
+                                            cartApi.getCartDetails(cartCustomerId: widget.cartId);
                                           }
                                           setState(() {});
                                         }).whenComplete(

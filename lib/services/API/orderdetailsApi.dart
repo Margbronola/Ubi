@@ -1,16 +1,13 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, avoid_print
 
 import 'dart:convert';
 import 'package:internapp/global/access.dart';
 import 'package:internapp/global/network.dart';
 import 'package:http/http.dart' as http;
 import 'package:internapp/model/order_model.dart';
-import 'package:internapp/viewmodel/OrdersDetailsViewModel.dart';
 
 class OrderDetailsApi{
-  final OrdersDetailsViewModel _viewModel = OrdersDetailsViewModel.instance;
-
-  Future<void> getOrderdetails({int? orderId}) async {
+  Future<OrderModel?> getOrderdetails({required int orderId}) async {
     try{
       return await http.get(Uri.parse("${Network.url}/displayOrder/$orderId"),
       headers: {
@@ -21,14 +18,14 @@ class OrderDetailsApi{
         var data = json.decode(response.body);
         if(response.statusCode == 200){
           final OrderModel model = OrderModel.fromJson(data);
-          _viewModel.populate(model);
-        return;
+          print("Orders: ${model.orderproduct.length}");
+          return model;
         }
         return null;
       });
     }
     catch (e){
-      return;
+      return null;
     }
   } 
   

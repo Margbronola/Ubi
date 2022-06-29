@@ -201,7 +201,7 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
                                 context, MaterialPageRoute(
                                   builder: (context) => OrderDetailsPage(
                                     isfromPendingOrder: true,
-                                    cusid: searchCustomer[index].cartCustomer.customer!.id,
+                                    cusid: searchCustomer[index].cartCustomer.customer?.id ?? 0,
                                     cusname: searchCustomer[index].cartCustomer.customer?.name ?? "N/A",
                                     orderid: searchCustomer[index].id,
                                     status: "Pending"

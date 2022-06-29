@@ -25,6 +25,7 @@ class CartDetailsPage extends StatefulWidget {
       this.comment = "none",
       this.cartcusid = 0,
       this.cusname = "",
+      this.total = 0.0,
       this.isfromPendingOrder = false,
     }) : super(key: key);
 
@@ -34,6 +35,7 @@ class CartDetailsPage extends StatefulWidget {
   String comment;
   String cusname;
   bool isfromPendingOrder;
+  double total;
 
   @override
   State<CartDetailsPage> createState() => _CartDetailsPageState();
@@ -107,7 +109,6 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
       await _deleteupdateorder.delete(cartID: cartId)
       .then((value){
         setState(() {
-          // _order.getCartDetails(cartCustomerId: cartCustomer);
           fetchDetails();
         });
       }).whenComplete(
@@ -558,7 +559,7 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                           builder: (context) => ProductPage(
                                             isFromLocalPage: true,
                                             height: 630,
-                                            cusid: _displayData!.customer!.id,
+                                            cusid: _displayData?.customer?.id ?? 0,
                                             cusname: widget.cusname
                                           )
                                         )
