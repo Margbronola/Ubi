@@ -75,9 +75,10 @@ class _MenuState extends State<Menu> {
         color: Colors.grey.shade200,
         child: Column(
           children: [
-            const Padding(
-              padding: EdgeInsets.all(20),
-              child: Text(
+            Container(
+              margin: const EdgeInsets.only(top: 20, bottom: 20),
+              padding: const  EdgeInsets.all(20),
+              child: const Text(
                 "Please select your chosen preset to display in your navigation bar.",
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -89,25 +90,25 @@ class _MenuState extends State<Menu> {
 
             const list(),
 
-            Padding(
-              padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
-              child: SizedBox(
-                width: size.width,
-                height: 50,
-                child: ElevatedButton( 
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)
-                    ),
-                    primary: const Color.fromARGB(255, 27, 140, 174)
-                  ),
-                  onPressed: () {  },
-                  child: const Text('CONTINUE',
-                    style: TextStyle(fontSize: 22, letterSpacing: 4),
-                  ),
-                ),
-              ),
-            )
+            // Padding(
+            //   padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
+            //   child: SizedBox(
+            //     width: size.width,
+            //     height: 50,
+            //     child: ElevatedButton( 
+            //       style: ElevatedButton.styleFrom(
+            //         shape: RoundedRectangleBorder(
+            //           borderRadius: BorderRadius.circular(10)
+            //         ),
+            //         primary: const Color.fromARGB(255, 27, 140, 174)
+            //       ),
+            //       onPressed: () {  },
+            //       child: const Text('CONTINUE',
+            //         style: TextStyle(fontSize: 22, letterSpacing: 4),
+            //       ),
+            //     ),
+            //   ),
+            // )
           ],
         ),
       ),

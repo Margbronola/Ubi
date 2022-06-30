@@ -25,7 +25,6 @@ class CartDetailsPage extends StatefulWidget {
       this.comment = "none",
       this.cartcusid = 0,
       this.cusname = "",
-      this.total = 0.0,
       this.isfromPendingOrder = false,
     }) : super(key: key);
 
@@ -35,7 +34,6 @@ class CartDetailsPage extends StatefulWidget {
   String comment;
   String cusname;
   bool isfromPendingOrder;
-  double total;
 
   @override
   State<CartDetailsPage> createState() => _CartDetailsPageState();
@@ -61,7 +59,7 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
         setState(() {
           _displayData = value;
         });
-      }else{
+      } else{
         Navigator.of(context).pop();
       }
     });
@@ -78,6 +76,14 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
   @override
   void dispose(){
     super.dispose();
+  }
+
+  double getTotal() {
+    double ff = 0.0;
+    for(CartDetailsModel cart in _displayData!.carts){
+      ff = ff + cart.total;
+    }
+    return ff;
   }
   
   @override
@@ -226,6 +232,7 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                       details.qty = callback.qty;
                                       details.product = callback.product;
                                       details.comment = callback.comment;
+                                      details.total = callback.total;
                                     });
                                   },
 
@@ -265,54 +272,33 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                               ),
                       
                               Container(
-                                margin: const EdgeInsets.only(top: 5),
-                                child: Column(
+                                width: 190,
+                                height: 80,
+                                alignment: Alignment.center,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Center(
-                                      child: SizedBox(
-                                        width: 190,
-                                        height: 30,
-                                        child: Text('To Prepare',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color.fromARGB(255,40,84,232)
-                                          ),
-                                        ),
+                                    SizedBox(
+                                      width: 30,
+                                      child: Text(details.qty.toString(),
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold
+                                        )
                                       ),
                                     ),
-                            
+
                                     SizedBox(
-                                      width: 190,
-                                      height: 50,
-                                      child: Row(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            width: 30,
-                                            child: Text(details.qty.toString(),
-                                              textAlign: TextAlign.center,
-                                              style: const TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold
-                                              )
-                                            ),
-                                          ),
-
-                                          SizedBox(
-                                            width: 160,
-                                            child: Text(details.product.name,
-                                              textAlign: TextAlign.center,
-                                              style: const TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold
-                                              )
-                                            ),
-                                          ),
-
-                                        ],
+                                      width: 160,
+                                      child: Text(details.product.name,
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold
+                                        )
                                       ),
                                     ),
 
@@ -364,6 +350,7 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                                   details.qty = callback.qty;
                                                   details.product = callback.product;
                                                   details.comment = callback.comment;
+                                                  details.total = callback.total;
                                                 });
                                               },
                                           );
@@ -407,62 +394,44 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                             children: [
                                               Row(
                                                 children: [
-                                                  Column(
-                                                    children: [
-                                                       const Center(
-                                                        child: SizedBox(
-                                                          width: 190,
-                                                          height: 30,
-                                                          child: Text('To Prepare',
-                                                            style: TextStyle(
-                                                              fontSize: 20,
-                                                              fontWeight: FontWeight.bold,
-                                                              color: Color.fromARGB(255,40,84,232)
-                                                            ),
+                                                  Container(
+                                                    width: 190,
+                                                    height: 60,
+                                                    alignment: Alignment.center,
+                                                    child: Row(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        SizedBox(
+                                                          width: 30,
+                                                          child: Text(details.qty.toString(),
+                                                            textAlign: TextAlign.center,
+                                                            style: const TextStyle(
+                                                              color: Colors.black,
+                                                              fontSize: 18,
+                                                              fontWeight: FontWeight.bold
+                                                            )
                                                           ),
                                                         ),
-                                                      ),
-                            
-                                                      SizedBox(
-                                                        width: 190,
-                                                        height: 40,
-                                                        child: Row(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          children: [
-                                                            SizedBox(
-                                                              width: 30,
-                                                              child: Text(details.qty.toString(),
-                                                                textAlign: TextAlign.center,
-                                                                style: const TextStyle(
-                                                                  color: Colors.black,
-                                                                  fontSize: 18,
-                                                                  fontWeight: FontWeight.bold
-                                                                )
-                                                              ),
-                                                            ),
 
-                                                            SizedBox(
-                                                              width: 160,
-                                                              child: Text(details.product.name,
-                                                                textAlign: TextAlign.center,
-                                                                style: const TextStyle(
-                                                                  color: Colors.black,
-                                                                  fontSize: 18,
-                                                                  fontWeight: FontWeight.bold
-                                                                )
-                                                              ),
-                                                            ),
-
-                                                          ],
+                                                        SizedBox(
+                                                          width: 160,
+                                                          child: Text(details.product.name,
+                                                            textAlign: TextAlign.center,
+                                                            style: const TextStyle(
+                                                              color: Colors.black,
+                                                              fontSize: 18,
+                                                              fontWeight: FontWeight.bold
+                                                            )
+                                                          ),
                                                         ),
-                                                      ),
 
-                                                    ],
+                                                      ],
+                                                    ),
                                                   ),
 
                                                   SizedBox(
                                                     width: 80,
-                                                    height: 70,
+                                                    height: 60,
                                                     child: Center(
                                                       child: Text("P${details.product.price}",
                                                         style: const TextStyle(
@@ -478,7 +447,7 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
 
                                               Container(
                                                 width: 250,
-                                                height: 50,
+                                                height: 60,
                                                 alignment: Alignment.center,
                                                 decoration: BoxDecoration(
                                                   color: Colors.grey.shade300,
@@ -507,7 +476,7 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                         Container(
                           height: 60,
                           padding: const EdgeInsets.only(right: 20, top: 15),
-                          margin: const EdgeInsets.only(bottom: 15, top: 20),
+                          margin: const EdgeInsets.only(bottom: 15, top: 10),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
@@ -523,7 +492,7 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                   color: Colors.black12,
                                 ),
                                 padding: const EdgeInsets.fromLTRB(5, 10, 20, 10),
-                                child: Text("${_displayData!.total}", 
+                                child: Text("${getTotal()}", 
                                   style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold), 
                                   textAlign: TextAlign.end
                                 )

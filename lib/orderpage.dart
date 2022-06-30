@@ -132,7 +132,7 @@ class _OrderPageState extends State<OrderPage> {
               ),
     
               Container(
-                height: 610,
+                height: 590,
                 margin: const EdgeInsets.only(top: 15),
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: StreamBuilder<List<OrderModel>>(
@@ -167,7 +167,7 @@ class _OrderPageState extends State<OrderPage> {
                                     SizedBox(
                                       width: 125,
                                       child: Center(
-                                        child: Text(snapshot.data![index].total.toStringAsFixed(2),
+                                        child: Text(searchCustomer[index].total.toStringAsFixed(2),
                                           style: const TextStyle(
                                             color: Colors.black,
                                             fontSize: 18,
@@ -179,7 +179,7 @@ class _OrderPageState extends State<OrderPage> {
                                     SizedBox(
                                       width: 125,
                                       child: Center(
-                                        child: Text(DateFormat('MM-dd-yyyy').format(snapshot.data![index].date),
+                                        child: Text(DateFormat('MM-dd-yyyy').format(searchCustomer[index].date),
                                           style: const TextStyle(
                                             color: Colors.black,
                                             fontSize: 18,

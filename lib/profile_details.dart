@@ -196,7 +196,7 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                           border: InputBorder.none,
                           fillColor: Colors.white,
                           filled: true,
-                          hintText: loggedUser?.email??"FETCHING DETAILS",
+                          hintText: loggedUser?.email ?? "FETCHING DETAILS",
                           hintStyle: const TextStyle(color: Colors.black),
                         ),
                       ),
@@ -206,9 +206,9 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                     Visibility(
                       visible: visiblewidget,
                       child: Container(
-                        padding: const EdgeInsets.fromLTRB(30, 20, 30, 0),
+                        margin: const EdgeInsets.only(bottom: 20, left: 30, right: 30, top: 20),
                         width: size.width,
-                        height: 70,
+                        height: 60,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
@@ -249,10 +249,9 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                     ) : Visibility(
                       visible: visiblewidget,
                       child: Container(
-                        padding: const EdgeInsets.fromLTRB(30, 20, 30, 0),
-                        margin: const EdgeInsets.only(bottom: 320),
+                        margin: const EdgeInsets.only(bottom: 320, left: 30, right: 30, top: 20),
                         width: size.width,
-                        height: 70,
+                        height: 60,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(

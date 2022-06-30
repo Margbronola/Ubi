@@ -96,27 +96,41 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     ),
                 
                     Container(
-                      height: 60,
-                      margin: const EdgeInsets.only(top: 5),
-                      padding: const EdgeInsets.symmetric(horizontal: 50),
-                        child: TextFormField(
-                          controller: _currentpassword,
-                          keyboardType: TextInputType.text,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Enter your Password';
-                            }
-                            return null;
-                          },
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            offset: const Offset(0,3),
+                            blurRadius: 7,
+                            color: Colors.grey.shade400
+                          )
+                        ]
+                      ),
+                      margin: const EdgeInsets.only(top: 5, right: 50, left: 50),
+                      child: TextFormField(
+                        controller: _currentpassword,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Enter your Password';
+                          }
+                          return null;
+                        },
                           obscureText: _isObscure,
                           style: const TextStyle(fontSize: 15),
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(10)),
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            fillColor: Colors.white,
-                            filled: true,
+                                borderRadius: BorderRadius.all(Radius.circular(10)),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white) 
+                              ),
+                              fillColor: Colors.white,
+                              filled: true,
                           //   suffixIcon: IconButton(
                           //     color: Colors.grey,
                           //     icon: Icon(_isObscure
@@ -141,9 +155,18 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     ),
                 
                     Container(
-                      height: 60,
-                      margin: const EdgeInsets.only(top: 5),
-                      padding: const EdgeInsets.symmetric(horizontal: 50),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            offset: const Offset(0,3),
+                            blurRadius: 7,
+                            color: Colors.grey.shade400
+                          )
+                        ]
+                      ),
+                      margin: const EdgeInsets.only(top: 5, right: 50, left: 50),
                       child: TextFormField(
                         controller: _newpassword,
                         keyboardType: TextInputType.text,
@@ -156,12 +179,17 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                         obscureText: _isObscure1,
                         style: const TextStyle(fontSize: 15),
                         decoration: const InputDecoration(
-                          border:  OutlineInputBorder(
+                          border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(color: Colors.white),
                           ),
-                          fillColor: Colors.white,
-                          filled: true,
+                        enabledBorder:  OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white) 
+                          ),
+                              fillColor: Colors.white,
+                              filled: true,
                           // suffixIcon: IconButton(
                           //   color: Colors.grey,
                           //   icon: Icon(_isObscure1
@@ -185,9 +213,18 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     ),
                 
                     Container(
-                      height: 60,
-                      margin: const EdgeInsets.only(top: 5),
-                      padding: const EdgeInsets.symmetric(horizontal: 50),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            offset: const Offset(0,3),
+                            blurRadius: 7,
+                            color: Colors.grey.shade400
+                          )
+                        ]
+                      ),
+                      margin: const EdgeInsets.only(top: 5, right: 50, left: 50),
                       child: TextFormField(
                         keyboardType: TextInputType.text,
                         controller: _confirmpassword,
@@ -214,7 +251,12 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(color: Colors.white),
+                          ),
+                        enabledBorder:  OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white) 
                           ),
                           fillColor: Colors.white,
                           filled: true,

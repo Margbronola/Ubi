@@ -88,7 +88,19 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                         ),
     
                         Container(
-                          padding: const EdgeInsets.fromLTRB(40, 50, 40, 0),
+                          // height: 60,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                offset: const Offset(0,5),
+                                blurRadius: 10,
+                                color: Colors.grey.shade400
+                              )
+                            ]
+                          ),
+                          margin: const EdgeInsets.fromLTRB(40, 50, 40, 0),
                           child: TextFormField(
                             controller: _email,
                             keyboardType: TextInputType.emailAddress,
@@ -105,22 +117,22 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
 
                             onSaved: (email) {},
                             style: const TextStyle(fontSize: 20),
-                            decoration: InputDecoration(
-                              border: const OutlineInputBorder(
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(10)),
                             ),
 
                             enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey.shade200),
+                              borderSide: BorderSide(color: Colors.white),
                             ),
 
-                            focusedBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(color: Color.fromARGB(255, 40, 84, 232)) 
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
                             ),
                             
-                              fillColor: Colors.grey.shade200,
+                              fillColor: Colors.white,
                               filled: true,
-                              prefixIcon: const Icon(Icons.mail_rounded, color: Color.fromARGB(255, 232, 149, 40)),
+                              prefixIcon: Icon(Icons.mail_rounded, color: Color.fromARGB(255, 232, 149, 40)),
                               hintText: 'Email',
                             ),
                           ),

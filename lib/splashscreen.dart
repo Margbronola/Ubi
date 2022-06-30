@@ -65,7 +65,9 @@ class _SplashScreenState extends State<SplashScreen> {
               child: Image.asset('assets/images/BlackLogo.png', fit: BoxFit.fitWidth)
             ),
             
-            const CircularProgressIndicator.adaptive(),
+            const CircularProgressIndicator(
+              strokeWidth: 6,
+            ),
           ]
         ),
       ),

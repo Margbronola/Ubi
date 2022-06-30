@@ -347,7 +347,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                   ),
                                 ),
                       
-                                if(widget.isfromOrderDetails )...{
+                                if(widget.isfromOrderDetails )...{  
                                   SizedBox(
                                     width: 150,
                                     height: 50,
@@ -364,7 +364,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                         ).then((value) {
                                           if(value != null){
                                             widget.onUpdateCallback(value);
-                                            cartApi.getCartDetails(cartCustomerId: widget.cartId);
                                           }
                                           setState(() {});
                                         }).whenComplete(
@@ -408,7 +407,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius: BorderRadius.circular(25)
                                                 ),
-                                                title: const Text(""),
+                                                // title: const Text(""),
                       
                                                 content: Text("Order quantity exceeds stock!\n\n Available Stock :  ${widget.product.stock}", 
                                                   textAlign: TextAlign.center, style: const TextStyle(fontSize: 17),
@@ -470,8 +469,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                     ),
                                   )
                                 }
-                            ],
-                          )
+                              ],
+                            )
                           ),
             
                         ],

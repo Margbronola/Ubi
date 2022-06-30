@@ -112,26 +112,49 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                             )
                           ),
           
-                          Container(
-                            margin: const EdgeInsets.only(top: 20),
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: TextFormField(
-                              controller: _customername,
-                              keyboardType: TextInputType.name,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Enter Customer Name';
-                                }
-                                return null;
-                              },
-                              style: const TextStyle(fontSize: 18),
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                          Center(
+                            child: Container(
+                              height: 58,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(5),
+                                boxShadow: [
+                                  BoxShadow(
+                                    offset: const Offset(0,3),
+                                    blurRadius: 10,
+                                    color: Colors.grey.shade400
+                                  )
+                                ]
+                              ),
+                              margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
+                              // padding: const EdgeInsets.symmetric(horizontal: 20),
+                              child: TextFormField(
+                                controller: _customername,
+                                keyboardType: TextInputType.name,
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Enter Customer Name';
+                                  }
+                                  return null;
+                                },
+                                style: const TextStyle(fontSize: 18),
+                                decoration: InputDecoration(
+                                  // border: OutlineInputBorder(
+                                  //   borderRadius: BorderRadius.all(Radius.circular(10)),
+                                  // ),
+                                  border: const OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(0)),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey.shade200),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey.shade200) 
+                                  ),
+                                  fillColor: Colors.white,
+                                  filled: true,
+                                  hintText: "Type Customer name",
                                 ),
-                                fillColor: Colors.white,
-                                filled: true,
-                                hintText: "Type Customer name",
                               ),
                             ),
                           ),
@@ -215,7 +238,6 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                       () => isLoading = false,
                                     ),
                                   );
-    
                                   
                                   }else {
                                     // ignore: avoid_print

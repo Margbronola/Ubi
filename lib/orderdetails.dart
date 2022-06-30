@@ -150,132 +150,131 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                 itemBuilder: (BuildContext ctx, int index){
                   OrderProductModel details = _displayorder!.orderproduct[index];
 
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          color: Colors.grey.shade200,
-                          height: 100,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                width: 80,
-                                height: 100,
-                                child: details.product.images.isNotEmpty ? 
-                                Image.network("${Network.imageUrl}${details.product.images[0].url}",
-                                  fit: BoxFit.cover
-                                ) : Image.asset('assets/images/placeholder.jpg',
-                                  fit: BoxFit.fitWidth
-                                )
-                              ),
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      color: Colors.grey.shade200,
+                      height: 100,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: 80,
+                            height: 100,
+                            child: details.product.images.isNotEmpty ? 
+                            Image.network("${Network.imageUrl}${details.product.images[0].url}",
+                              fit: BoxFit.cover
+                            ) : Image.asset('assets/images/placeholder.jpg',
+                              fit: BoxFit.fitWidth
+                            )
+                          ),
                         
-                              Container(
-                                margin: const EdgeInsets.only(top: 5),
-                                child: Column(
-                                  children: [
-                                    Center(
-                                      child: Container(
-                                        width: 190,
-                                        height: 30,
-                                        padding: const EdgeInsets.only(left: 15),
-                                        child: Text( details.prepared ? "Prepared" : "To Prepare",
-                                          style: const TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color.fromARGB(255, 40, 84, 232)
-                                          ),
-                                        ),
+                          Container(
+                            margin: const EdgeInsets.only(top: 5),
+                            child: Column(
+                              children: [
+                                Center(
+                                  child: Container(
+                                    width: 190,
+                                    height: 30,
+                                    padding: const EdgeInsets.only(left: 15),
+                                    child: Text( details.prepared ? "Prepared" : "To Prepare",
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color.fromARGB(255, 40, 84, 232)
                                       ),
-                                    ),
-                    
-                                    SizedBox(
-                                      width: 190,
-                                      height: 45,
-                                      child: Row(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            width: 30,
-                                            child: Text(details.qty.toString(),
-                                              textAlign: TextAlign.center,
-                                              style: const TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold
-                                              )
-                                            ),
-                                          ),
-
-                                          SizedBox(
-                                            width: 160,
-                                            child: Text(details.product.name,
-                                              textAlign: TextAlign.center,
-                                              style: const TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold
-                                              )
-                                            ),
-                                          ),
-
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-
-                              SizedBox(
-                                width: 80,
-                                height: 100,
-                                child: Center(
-                                  child: Text("P${details.price}",
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
                                     ),
                                   ),
                                 ),
-                              ),
+                    
+                                SizedBox(
+                                  width: 190,
+                                  height: 45,
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        width: 30,
+                                        child: Text(details.qty.toString(),
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold
+                                          )
+                                        ),
+                                      ),
 
-                            ],
+                                      SizedBox(
+                                        width: 160,
+                                        child: Text(details.product.name,
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold
+                                          )
+                                        ),
+                                      ),
+
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      );
 
+                          SizedBox(
+                            width: 80,
+                            height: 100,
+                            child: Center(
+                              child: Text("P${details.price}",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                          ),
+
+                        ],
+                      ),
+                    ),
+                  );
                 }, 
                 separatorBuilder: (BuildContext context, int index) => const Divider(color: Colors.transparent), 
               ),
 
               Container(
-                          height: 60,
-                          padding: const EdgeInsets.only(right: 20, top: 15),
-                          margin: const EdgeInsets.only(bottom: 15, top: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              const Text('Total   ',
-                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                              
-                              Container(
-                                width: 150,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  color: Colors.black12,
-                                ),
-                                padding: const EdgeInsets.fromLTRB(5, 10, 20, 10),
-                                child: Text("${_displayorder!.total}", 
-                                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold), 
-                                  textAlign: TextAlign.end
-                                )
-                              )
+                height: 60,
+                padding: const EdgeInsets.only(right: 20, top: 15),
+                margin: const EdgeInsets.only(bottom: 0, top: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    const Text('Total   ',
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                             
+                    Container(
+                      width: 150,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.black12,
+                      ),
+                      padding: const EdgeInsets.fromLTRB(5, 10, 20, 10),
+                      child: Text("${_displayorder!.total}", 
+                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold), 
+                        textAlign: TextAlign.end
+                      )
+                    )
 
-                            ]
-                          ),
-                        ),
+                  ]
+                ),
+              ),
 
               if(widget.status == "Pending")...{
                 Visibility(
@@ -326,78 +325,82 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                             ),
                             
                             replacement: Container(
-                              height: 190,
-                              // color: Colors.grey.shade300,
+                              height: 195,
                               padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                               child: Column(
                                 children: [
-                                  Row(
-                                    mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          const Text('Amount Received  ',
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight:
-                                              FontWeight.bold
-                                            )
-                                          ),
+                                  Divider(color:Colors.grey.shade400, thickness: 5),
 
-                                          Container(
-                                            height: 50,
-                                            width: 170,
-                                            margin: const EdgeInsets.only(top: 10),
-                                            child: TextFormField(
-                                              controller: _amount,
-                                              keyboardType: const TextInputType.numberWithOptions(),
-                                              onChanged: (__text) {
-                                                setState(() {
-                                                  _change.text = (double.parse(_amount.text) - double.parse(_displayorder!.total.toString())).toString();
-                                                });
-                                              },
-                                              textAlign: TextAlign.center,
-                                              style: const TextStyle(fontSize: 18),
-                                              decoration: const InputDecoration(
-                                                border: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.all(
-                                                    Radius.circular(10)
-                                                  ),
-                                                ),
-                                                fillColor: Colors.white,
-                                                filled: true,
-                                              ),
-                                            ),
-                                          ),
-                                        ]
-                                      ),
-
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          const Text('Change',
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold
-                                            )
-                                          ),
-                                          
-                                          Container(
-                                            height: 50,
-                                            width: 170,
-                                            margin: const EdgeInsets.only(top: 10),
-                                            child: Center(
-                                              child: TextFormField(
-                                                readOnly: true,
-                                                textAlign: TextAlign.center,
-                                                controller: _change,      
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 15),
+                                    child: Row(
+                                      mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            const Text('Amount Received  ',
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight:
+                                                FontWeight.bold
                                               )
                                             ),
-                                          ),
-                                        ]
-                                      ),
-                                    ],
+
+                                            Container(
+                                              height: 50,
+                                              width: 170,
+                                              margin: const EdgeInsets.only(top: 10),
+                                              child: TextFormField(
+                                                controller: _amount,
+                                                keyboardType: const TextInputType.numberWithOptions(),
+                                                onChanged: (__text) {
+                                                  setState(() {
+                                                    _change.text = (double.parse(_amount.text) - double.parse(_displayorder!.total.toString())).toString();
+                                                  });
+                                                },
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(fontSize: 18),
+                                                decoration: const InputDecoration(
+                                                  border: OutlineInputBorder(
+                                                    borderRadius: BorderRadius.all(
+                                                      Radius.circular(10)
+                                                    ),
+                                                  ),
+                                                  fillColor: Colors.white,
+                                                  filled: true,
+                                                ),
+                                              ),
+                                            ),
+                                          ]
+                                        ),
+
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            const Text('Change',
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold
+                                              )
+                                            ),
+                                            
+                                            Container(
+                                              height: 50,
+                                              width: 170,
+                                              margin: const EdgeInsets.only(top: 10),
+                                              child: Center(
+                                                child: TextFormField(
+                                                  readOnly: true,
+                                                  textAlign: TextAlign.center,
+                                                  controller: _change,      
+                                                )
+                                              ),
+                                            ),
+                                          ]
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                   
                                   Container(
@@ -623,42 +626,45 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
               }
 
               else...{
-                Container(
-                            height: 170,
-                            margin: const EdgeInsets.only(top: 5),
-                            child: Column(
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Divider(color:Colors.grey.shade400, thickness: 5),
+                ),
+
+                SizedBox(
+                  height: 170,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: size.width,
+                        height: 50,
+                        alignment: Alignment.centerLeft,
+                        padding: const EdgeInsets.only(left: 20),
+                        child: const Text('Payment Received', 
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(255, 40, 84, 232)
+                          )
+                        ),
+                      ),
+
+                      Container(
+                        width: size.width,
+                        height: 100,
+                        padding: const EdgeInsets.fromLTRB(25, 5, 25, 0),
+                        child: Row(
+                          mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Container(
-                                  width: size.width,
-                                  height: 50,
-                                  alignment: Alignment.centerLeft,
-                                  padding: const EdgeInsets.only(left: 20),
-                                  child: const Text('Payment Received', 
-                                    style: TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color.fromARGB(255, 40, 84, 232)
-                                    )
-                                  ),
+                                const Text('Amount Received  ',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  )
                                 ),
-
-                                Container(
-                                  width: size.width,
-                                  height: 100,
-                                  // color: Colors.grey.shade200,
-                                  padding: const EdgeInsets.fromLTRB(25, 5, 25, 0),
-                                  child: Row(
-                                    mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          const Text('Amount Received  ',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                            )
-                                          ),
 
                                           Container(
                                             height: 40,
@@ -681,41 +687,41 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                                         ]
                                       ),
 
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          const Text('Change',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                            )
-                                          ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text('Change',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  )
+                                ),
                                                   
-                                          Container(
-                                            height: 40,
-                                            width: 150,
-                                            margin: const EdgeInsets.only(top: 10),
-                                            decoration: const BoxDecoration(
-                                              color: Colors.black12,
-                                              borderRadius: BorderRadius.all(Radius.circular(10))
-                                            ),
-                                            child: Center(
-                                              child: Text(_displayorder?.payments?.change.toStringAsFixed(2)??"0.0" ,
-                                                style: const TextStyle(
-                                                  fontSize: 20, 
-                                                  fontWeight: FontWeight.bold
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                  
-                                        ]
-                                      ),
-                                    ],
+                                Container(
+                                  height: 40,
+                                  width: 150,
+                                  margin: const EdgeInsets.only(top: 10),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.black12,
+                                    borderRadius: BorderRadius.all(Radius.circular(10))
                                   ),
-                                )
-                              ],
-                            )
-                          )
+                                  child: Center(
+                                    child: Text(_displayorder?.payments?.change.toStringAsFixed(2)??"0.0" ,
+                                      style: const TextStyle(
+                                        fontSize: 20, 
+                                        fontWeight: FontWeight.bold
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                 
+                              ]
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  )
+                )
               }
             ],
           ),

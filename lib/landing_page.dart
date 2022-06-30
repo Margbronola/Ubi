@@ -121,10 +121,7 @@ class _LandingPageState extends State<LandingPage> {
             return Stack(
               alignment: Alignment.center,
               children: [
-                // snapshot.hasData && !snapshot.hasError && snapshot.data!.isNotEmpty ? 
-                contents.where((element) => element['id'] == snapshot.data![currentIndex])
-                .first['child'] ,
-                // : const Menu(isNewUser: true),
+                contents.where((element) => element['id'] == snapshot.data![currentIndex]).first['child'] ,
                   
                 Positioned(
                   bottom: 10,
@@ -158,6 +155,7 @@ class _LandingPageState extends State<LandingPage> {
               ],
             );
           }
+          
           return const Menu(isNewUser: true);
         }
       )

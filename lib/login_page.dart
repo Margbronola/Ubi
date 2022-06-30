@@ -80,7 +80,20 @@ class _LoginPageState extends State<LoginPage> {
                         ),
           
                         Container(
-                          padding: const EdgeInsets.fromLTRB(40, 30, 40, 0),
+                          height: 55,
+                          width: 150,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                offset: const Offset(0,5),
+                                blurRadius: 10,
+                                color: Colors.grey.shade400
+                              )
+                            ]
+                          ),
+                          margin: const EdgeInsets.fromLTRB(40, 30, 40, 0),
                           child: TextFormField(
                             controller: _emailController,
                             keyboardType: TextInputType.emailAddress,
@@ -97,26 +110,39 @@ class _LoginPageState extends State<LoginPage> {
                               return null;
                             },
                             style: const TextStyle(fontSize: 18),
-                            decoration: InputDecoration(
-                              border: const OutlineInputBorder(
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(
                                 borderRadius: BorderRadius.all(Radius.circular(10)),
                               ),
                               enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey.shade200),
+                                borderSide: BorderSide(color: Colors.white),
                               ),
-                              focusedBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(color: Color.fromARGB(255, 40, 84, 232)) 
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white) 
                               ),
-                              fillColor: Colors.grey.shade200,
+                              fillColor: Colors.white,
                               filled: true,
-                              prefixIcon: const Icon(Icons.person, color: Color.fromARGB(255, 232, 149, 40)),
+                              prefixIcon: Icon(Icons.person, color: Color.fromARGB(255, 232, 149, 40)),
                               hintText: 'Username',
                             ),
                           ),
                         ),
           
                         Container(
-                          padding: const EdgeInsets.fromLTRB(40, 20, 40, 0),
+                          height: 55,
+                          width: 150,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                offset: const Offset(0,5),
+                                blurRadius: 10,
+                                color: Colors.grey.shade400
+                              )
+                            ]
+                          ),
+                          margin: const EdgeInsets.fromLTRB(40, 30, 40, 0),
                           child: TextFormField(
                             controller: _passwordController,
                             obscureText: _isObscure,
@@ -131,18 +157,18 @@ class _LoginPageState extends State<LoginPage> {
                               border: const OutlineInputBorder(
                                 borderRadius: BorderRadius.all(Radius.circular(10)),
                               ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey.shade200),
+                              enabledBorder: const  OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
                               ),
                               focusedBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(color: Color.fromARGB(255, 40, 84, 232)) 
+                                borderSide: BorderSide(color: Colors.white) 
                               ),
-                              fillColor: Colors.grey.shade200,
+                              fillColor: Colors.white,
                               filled: true,
                               prefixIcon: const Icon(Icons.key_rounded, color: Color.fromARGB(255, 232, 149, 40)),
                               hintText: 'Password',
                               suffixIcon: IconButton(
-                                color: Colors.grey.shade400,
+                                color: Colors.grey.shade300,
                                 icon: Icon(_isObscure
                                   ? Icons.visibility_off_rounded
                                   : Icons.visibility),
