@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:internapp/model/order_model.dart';
+import 'package:internapp/orderdetails.dart';
 import 'package:internapp/viewmodel/orderviewmodel.dart';
 import 'package:intl/intl.dart';
 
@@ -146,50 +147,66 @@ class _OrderPageState extends State<OrderPage> {
                           shrinkWrap: true,
                           itemCount: searchCustomer.length,
                           itemBuilder: (BuildContext ctx, int index ){
-                            return Container(
-                              color: Colors.grey.shade100,
-                              height: 50,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                    SizedBox(
-                                      width: 125,
-                                      child: Center(
-                                        child: Text(searchCustomer[index].cartcustomer!.customer?.name ?? "N/A",
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 18,
-                                          )
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context, MaterialPageRoute(
+                                    builder: (context) => OrderDetailsPage(
+                                      isfromPendingOrder: true,
+                                      cusid: searchCustomer[index].cartcustomer?.customer?.id ?? 0,
+                                      cusname: searchCustomer[index].cartcustomer?.customer?.name ?? "N/A",
+                                      orderid: searchCustomer[index].id,
+                                      status: searchCustomer[index].status ? "Paid" : "Pending",
+                                    )
+                                  )
+                                );
+                              },
+
+                              child: Container(
+                                color: Colors.grey.shade100,
+                                height: 50,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                      SizedBox(
+                                        width: 125,
+                                        child: Center(
+                                          child: Text(searchCustomer[index].cartcustomer!.customer?.name ?? "N/A",
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 18,
+                                            )
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  
-                                    SizedBox(
-                                      width: 125,
-                                      child: Center(
-                                        child: Text(searchCustomer[index].total.toStringAsFixed(2),
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 18,
-                                          )
+                                    
+                                      SizedBox(
+                                        width: 125,
+                                        child: Center(
+                                          child: Text(searchCustomer[index].total.toStringAsFixed(2),
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 18,
+                                            )
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  
-                                    SizedBox(
-                                      width: 125,
-                                      child: Center(
-                                        child: Text(DateFormat('MM-dd-yyyy').format(searchCustomer[index].date),
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 18,
-                                          )
+                                    
+                                      SizedBox(
+                                        width: 125,
+                                        child: Center(
+                                          child: Text(DateFormat('MM-dd-yyyy').format(searchCustomer[index].date),
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 18,
+                                            )
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              );
+                            );
                           },
                           separatorBuilder: (BuildContext context, int index) => const Divider(color: Colors.transparent),
                         );

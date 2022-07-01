@@ -60,13 +60,13 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                         children: [
                           Container(
                             margin: const EdgeInsets.only(left: 25, bottom: 10),
-                            width: 100,
-                            height: 100,
+                            width: 90,
+                            height: 90,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: Colors.grey.shade200,
                             ),
-                            child: Icon(Icons.key_rounded, size: 60, color: Colors.orange.shade600),
+                            child: Icon(Icons.key_rounded, size: 55, color: Colors.orange.shade600),
                           ),
                       
                           Container(

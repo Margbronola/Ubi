@@ -30,9 +30,9 @@ class _CustomerPageState extends State<CustomerPage> {
             child: ListView(
               children: [
                 Container(
-                  width: size.width,
-                  height: 70,
                   padding: const EdgeInsets.symmetric(horizontal: 20),
+                  width: size.width,
+                  height: 75,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     boxShadow: [
@@ -155,7 +155,7 @@ class _CustomerPageState extends State<CustomerPage> {
                       
                         return const Center(
                           child: Text('No Customer entry',
-                            style: TextStyle(fontSize: 30)
+                            style: TextStyle(fontSize: 30, letterSpacing: 3)
                           )
                         );
                       }
@@ -170,7 +170,7 @@ class _CustomerPageState extends State<CustomerPage> {
             )
           ),
         ),
-      ),
+      ), 
     );
   }
 }

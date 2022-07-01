@@ -426,14 +426,15 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
                             separatorBuilder: (BuildContext context, int index) => const Divider(color: Colors.transparent),
                           );
                         }
-                        
                       }
+
                       return const Center(
                         child: Text('No Order Today',
-                          style: TextStyle(fontSize: 30)
+                          style: TextStyle(fontSize: 30, letterSpacing: 3)
                         )
                       );
                     }
+
                     return const Center(child: CircularProgressIndicator.adaptive());
                   }
                 )

@@ -6,7 +6,7 @@ import 'package:internapp/global/network.dart';
 import 'package:http/http.dart' as http;
 import 'package:internapp/model/order_model.dart';
 
-class OrderDetailsApi{
+class OrderDetailsApi{ 
   Future<OrderModel?> getOrderdetails({required int orderId}) async {
     try{
       return await http.get(Uri.parse("${Network.url}/displayOrder/$orderId"),

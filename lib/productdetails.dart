@@ -238,7 +238,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
                                 ),
                                 TextFormField(
-                                  enabled: label == "Added" ? false : true,
+                                  enabled: label == "Added" || widget.product.stock == 0 ? false : true,
                                   controller: comment,
                                   maxLines: 7,
                                   decoration: const InputDecoration(
@@ -282,7 +282,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                           padding: const EdgeInsets.all(5),
                                           alignment: Alignment.topCenter,
                                           onPressed: (){
-                                            if(label == "Added"){
+                                            if(label == "Added" || widget.product.stock == 0){
                                               return;
                                             }
                                             else{
@@ -331,7 +331,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                           padding: const EdgeInsets.all(12),
                                           alignment: Alignment.topCenter,
                                           onPressed: (){
-                                            if(label == "Added"){
+                                            if(label == "Added" || widget.product.stock == 0){
                                               return;
                                             }
                                             else{

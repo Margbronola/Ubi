@@ -33,14 +33,14 @@ class _MenuPageState extends State<MenuPage> {
                     children: [
                       Container(
                         margin: const EdgeInsets.only(left: 30, bottom: 10),
-                        width: 100,
-                        height: 100,
+                        width: 90,
+                        height: 90,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: Colors.grey.shade100,
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(26),
+                          padding: const EdgeInsets.all(25),
                           child: ImageIcon(const AssetImage("assets/icons/Menu.png"),
                           color: Colors.orange.shade700),
                         )

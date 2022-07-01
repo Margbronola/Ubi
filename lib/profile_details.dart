@@ -78,7 +78,7 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                               children: [
                                 SizedBox(
                                   width: 195,
-                                  height: 50,
+                                  height: 45,
                                   child: TextFormField(
                                     controller: _name,
                                     enabled: !_isDisabled,
@@ -101,20 +101,17 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                                   ),
                                 ),
               
-                                SizedBox(
+                                Container(
                                   width: 150,
-                                  height: 40,
-                                  child: TextFormField(
-                                    enabled: false,
-                                    style: const TextStyle(fontSize: 18),
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      fillColor: Colors.white,
-                                      filled: true,
-                                      hintText: loggedUser?.position??"FETCHING DETAILS",
-                                      hintStyle: const TextStyle(fontSize: 22, color: Color.fromARGB(255, 232, 149, 40)),
-                                    ),
-                                  ),
+                                  height: 20,
+                                  padding: const EdgeInsets.only(left: 15),
+                                  margin: const EdgeInsets.only(top: 5),
+                                  child: Text(loggedUser?.position??"FETCHING DETAILS",
+                                    style: const TextStyle(
+                                      fontSize: 22, 
+                                      color: Color.fromARGB(255, 232, 149, 40)
+                                    )
+                                  )
                                 ),
                               ],
                             ),

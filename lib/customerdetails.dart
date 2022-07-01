@@ -96,11 +96,12 @@ class _CustomerDetailsPageState extends State<CustomerDetailsPage> {
                         shape: BoxShape.circle,
                         color: Colors.grey.shade300,
                       ),
-                      child: const Icon(Icons.person_rounded, size: 80, color: Colors.grey,),
+                      child: const Icon(Icons.person_rounded, size: 75, color: Colors.grey,),
                     ),
                   ),
 
                   Container(
+                    margin: const EdgeInsets.only(top: 10),
                     padding: const EdgeInsets.only(top: 10),
                     width: 200,
                     height: 100,
@@ -156,7 +157,6 @@ class _CustomerDetailsPageState extends State<CustomerDetailsPage> {
               // ),
 
               Container(
-                // padding: const EdgeInsets.only(top: 50,),
                 margin: const EdgeInsets.fromLTRB(30, 60, 30, 10),
                 child: SizedBox(
                   width: size.width,

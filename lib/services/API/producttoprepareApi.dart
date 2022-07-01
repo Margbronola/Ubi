@@ -48,6 +48,7 @@ class ProductToPrepareAPI{
       });
     }
     catch(e){
+      print("Maliiiiii : $e");
       return false;
     }
   }

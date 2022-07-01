@@ -82,13 +82,14 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
                     )
                   ]
                 ),
-                height: 105,
+                height: 120,
                 child: Column(
                   children: [
                     Container(
                       width: size.width,
-                      height: 70,
-                      padding: const EdgeInsets.fromLTRB(20, 15, 20, 10),
+                      height: 55,
+                      margin: const EdgeInsets.only(top: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -139,7 +140,8 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
                     ),
 
                     Container(
-                      padding: const EdgeInsets.fromLTRB(20, 5, 20, 0),
+                      height: 40,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: const [
@@ -263,10 +265,11 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
   
                     return const Center(
                       child: Text('No Pending Order',
-                        style: TextStyle(fontSize: 30)
+                        style: TextStyle(fontSize: 30, letterSpacing: 3)
                       )
                     );
                   }
+
                   return const Center(child: CircularProgressIndicator.adaptive());
                 }
               )
