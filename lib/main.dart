@@ -48,9 +48,6 @@ class MyApp extends StatelessWidget {
           case "/takeOrder":
             return PageTransition(child: const TakeOrderPage(), type: PageTransitionType.leftToRightWithFade);
           
-          // case "/pendingOrder":
-          //   return PageTransition(child: PendingOrderPage(), type: PageTransitionType.leftToRightWithFade);
-          
           default:
             return PageTransition(child: const LandingPage(), type: PageTransitionType.fade);
         }

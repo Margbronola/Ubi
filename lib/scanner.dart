@@ -3,8 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:internapp/barcodescanner.dart';
 import 'package:internapp/profile_page.dart';
-import 'package:internapp/qrcodescanner.dart';
-
 // ignore: must_be_immutable
 class ScannerPage extends StatefulWidget {
   ScannerPage({ Key? key, this.isFromLocalPage = false}) : super(key: key);
@@ -83,11 +81,11 @@ class _ScannerPageState extends State<ScannerPage> {
                 padding: const EdgeInsets.only(bottom: 20),
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context, MaterialPageRoute(
-                        builder: (context) => const QrCodeScanner()
-                      )
-                    );
+                    // Navigator.push(
+                    //   context, MaterialPageRoute(
+                    //     builder: (context) => const QrCodeScanner()
+                    //   )
+                    // );
                   },
                   child: Container(
                     width: 170,

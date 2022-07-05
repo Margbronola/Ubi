@@ -5,6 +5,7 @@ import 'package:internapp/model/todaysorder_model.dart';
 import 'package:internapp/orderdetails.dart';
 import 'package:internapp/viewmodel/todaysorderviewmodel.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:page_transition/page_transition.dart';
 
 class TodaysOrderPage extends StatefulWidget {
   const TodaysOrderPage({ Key? key }) : super(key: key);
@@ -216,15 +217,25 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
                                 return GestureDetector(
                                   onTap: () {
                                     Navigator.push(
-                                      context, MaterialPageRoute(
-                                        builder: (context) => OrderDetailsPage(
+                                      context, PageTransition(
+                                        type: PageTransitionType.rightToLeftWithFade,
+                                        child: OrderDetailsPage(
                                           isfromPendingOrder: true,
                                           cusid: pendinglist[index].cartCustomer.customer?.id ?? 0,
                                           cusname: pendinglist[index].cartCustomer.customer?.name ?? "N/A",
                                           orderid: pendinglist[index].id,
                                           status: pendinglist[index].status ? "Paid" : "Pending",
-                                        )
+                                        ),
                                       )
+                                      // MaterialPageRoute(
+                                      //   builder: (context) => OrderDetails                  Page(
+                                          // isfromPendingOrder: true,
+                                          // cusid: pendinglist[index].cartCustomer.customer?.id ?? 0,
+                                          // cusname: pendinglist[index].cartCustomer.customer?.name ?? "N/A",
+                                          // orderid: pendinglist[index].id,
+                                          // status: pendinglist[index].status ? "Paid" : "Pending",
+                                      //   )
+                                      // )
                                     );
                                   },
                             
@@ -291,15 +302,25 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
                                 return GestureDetector(
                                   onTap: () {
                                     Navigator.push(
-                                      context, MaterialPageRoute(
-                                        builder: (context) => OrderDetailsPage(
+                                      context, PageTransition(
+                                        type: PageTransitionType.rightToLeftWithFade,
+                                        child: OrderDetailsPage(
                                           isfromPendingOrder: true,
                                           cusid: paidlist[index].cartCustomer.customer?.id ?? 0,
                                           cusname: paidlist[index].cartCustomer.customer?.name ?? "N/A",
                                           orderid: paidlist[index].id,
                                           status: paidlist[index].status ? "Paid" : "Pending",
-                                        )
+                                        ),
                                       )
+                                      // MaterialPageRoute(
+                                      //   builder: (context) => OrderDetailsPage(
+                                      //     isfromPendingOrder: true,
+                                      //     cusid: paidlist[index].cartCustomer.customer?.id ?? 0,
+                                      //     cusname: paidlist[index].cartCustomer.customer?.name ?? "N/A",
+                                      //     orderid: paidlist[index].id,
+                                      //     status: paidlist[index].status ? "Paid" : "Pending",
+                                      //   )
+                                      // )
                                     );
                                   },
                             
@@ -365,14 +386,15 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
                               return GestureDetector(
                                 onTap: () {
                                   Navigator.push(
-                                    context, MaterialPageRoute(
-                                      builder: (context) => OrderDetailsPage(
+                                    context, PageTransition(
+                                      type: PageTransitionType.rightToLeftWithFade,
+                                      child: OrderDetailsPage(
                                         isfromPendingOrder: true,
                                         cusid: searchCustomer[index].cartCustomer.customer?.id ?? 0,
                                         cusname: searchCustomer[index].cartCustomer.customer?.name ?? "N/A",
                                         orderid: searchCustomer[index].id,
                                         status: searchCustomer[index].status ? "Paid" : "Pending",
-                                      )
+                                      ),
                                     )
                                   );
                                 },

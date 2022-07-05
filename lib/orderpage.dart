@@ -3,6 +3,7 @@ import 'package:internapp/model/order_model.dart';
 import 'package:internapp/orderdetails.dart';
 import 'package:internapp/viewmodel/orderviewmodel.dart';
 import 'package:intl/intl.dart';
+import 'package:page_transition/page_transition.dart';
 
 class OrderPage extends StatefulWidget {
   const OrderPage({ Key? key }) : super(key: key);
@@ -150,14 +151,15 @@ class _OrderPageState extends State<OrderPage> {
                             return GestureDetector(
                               onTap: () {
                                 Navigator.push(
-                                  context, MaterialPageRoute(
-                                    builder: (context) => OrderDetailsPage(
+                                  context, PageTransition(
+                                    type: PageTransitionType.rightToLeftWithFade,
+                                    child: OrderDetailsPage(
                                       isfromPendingOrder: true,
                                       cusid: searchCustomer[index].cartcustomer?.customer?.id ?? 0,
                                       cusname: searchCustomer[index].cartcustomer?.customer?.name ?? "N/A",
                                       orderid: searchCustomer[index].id,
                                       status: searchCustomer[index].status ? "Paid" : "Pending",
-                                    )
+                                    ),
                                   )
                                 );
                               },

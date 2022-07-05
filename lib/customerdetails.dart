@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:internapp/model/customer_model.dart';
 import 'package:internapp/productpage.dart';
 import 'package:internapp/profile_page.dart';
+import 'package:page_transition/page_transition.dart';
 
 class CustomerDetailsPage extends StatefulWidget {
   const CustomerDetailsPage({ Key? key, required this.customer}) : super(key: key);
@@ -173,12 +174,13 @@ class _CustomerDetailsPageState extends State<CustomerDetailsPage> {
                     onPressed: () {
                       print(widget.customer.id);
                       Navigator.push(
-                        context, MaterialPageRoute(
-                          builder: (context) => ProductPage(
+                        context, PageTransition(
+                          type: PageTransitionType.rightToLeftWithFade,
+                          child: ProductPage(
                             isFromLocalPage: true,  
                             height: 685, 
                             cusid: widget.customer.id,
-                          )
+                          ),
                         )
                       );
                     },

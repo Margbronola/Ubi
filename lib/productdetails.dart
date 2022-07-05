@@ -8,6 +8,7 @@ import 'package:internapp/model/cartdetails_model.dart';
 import 'package:internapp/model/product_model.dart';
 import 'package:internapp/services/API/cartApi.dart';
 import 'package:internapp/services/API/deleteupdateorder.dart';
+import 'package:page_transition/page_transition.dart';
 
 // ignore: must_be_immutable
 class ProductDetailsPage extends StatefulWidget {
@@ -407,7 +408,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius: BorderRadius.circular(25)
                                                 ),
-                                                // title: const Text(""),
                       
                                                 content: Text("Order quantity exceeds stock!\n\n Available Stock :  ${widget.product.stock}", 
                                                   textAlign: TextAlign.center, style: const TextStyle(fontSize: 17),
@@ -523,13 +523,14 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             
                                     onPressed: added != null ? () {
                                         Navigator.pushReplacement(
-                                          context, MaterialPageRoute(
-                                            builder: (context) => CartDetailsPage(
+                                          context, PageTransition(
+                                            type: PageTransitionType.rightToLeftWithFade,
+                                            child: CartDetailsPage(
                                               product: widget.product,
                                               cusname: added!.cartcustomer?.customer?.name ?? "N/A",
                                               isfromPendingOrder: false,
                                               cartcusid: added!.cartcustomer!.id
-                                            )
+                                            ),
                                           )
                                         );
                                     } : null,

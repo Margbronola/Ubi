@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:internapp/customerdetails.dart';
 import 'package:internapp/model/customer_model.dart';
 import 'package:internapp/viewmodel/customerviewmodel.dart';
+import 'package:page_transition/page_transition.dart';
 
 class CustomerPage extends StatefulWidget {
   const CustomerPage({Key? key}) : super(key: key);
@@ -115,11 +116,17 @@ class _CustomerPageState extends State<CustomerPage> {
                               return GestureDetector(
                                 onTap: () {
                                   Navigator.push(
-                                    context, MaterialPageRoute(
-                                      builder: (context) => CustomerDetailsPage(
-                                        customer: searchCustomer[index],
-                                      )
+                                    context, PageTransition(
+                                      type: PageTransitionType.rightToLeftWithFade,
+                                      child: CustomerDetailsPage(
+                                        customer: searchCustomer[index]
+                                      ),
                                     )
+                                    // MaterialPageRoute(
+                                    //   builder: (context) => CustomerDetailsPage(
+                                    //     customer: searchCustomer[index],
+                                    //   )
+                                    // )
                                   );
                                 },
                               

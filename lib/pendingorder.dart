@@ -1,8 +1,9 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:internapp/model/todaysorder_model.dart';
 import 'package:internapp/orderdetails.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:internapp/model/todaysorder_model.dart';
 import 'package:internapp/services/API/todaysorderApi.dart';
 import 'package:internapp/viewmodel/todaysorderviewmodel.dart';
 
@@ -200,15 +201,25 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
                           return GestureDetector(
                             onTap: () {
                               Navigator.push(
-                                context, MaterialPageRoute(
-                                  builder: (context) => OrderDetailsPage(
+                                context, PageTransition(
+                                  type: PageTransitionType.rightToLeftWithFade,
+                                  child: OrderDetailsPage(
                                     isfromPendingOrder: true,
                                     cusid: searchCustomer[index].cartCustomer.customer?.id ?? 0,
                                     cusname: searchCustomer[index].cartCustomer.customer?.name ?? "N/A",
                                     orderid: searchCustomer[index].id,
                                     status: "Pending"
-                                  )
+                                  ),
                                 )
+                                // MaterialPageRoute(
+                                //   builder: (context) => OrderDetailsPage(
+                                    // isfromPendingOrder: true,
+                                    // cusid: searchCustomer[index].cartCustomer.customer?.id ?? 0,
+                                    // cusname: searchCustomer[index].cartCustomer.customer?.name ?? "N/A",
+                                    // orderid: searchCustomer[index].id,
+                                    // status: "Pending"
+                                //   )
+                                // )
                               );
                             },
                         

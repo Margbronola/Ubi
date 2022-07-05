@@ -6,6 +6,7 @@ import 'package:internapp/model/product_model.dart';
 import 'package:internapp/productdetails.dart';
 import 'package:internapp/profile_page.dart';
 import 'package:internapp/viewmodel/productviewmodel.dart';
+import 'package:page_transition/page_transition.dart';
 
 // ignore: must_be_immutable
 class ProductPage extends StatefulWidget {
@@ -256,13 +257,14 @@ class _ProductPageState extends State<ProductPage> {
                                 return GestureDetector(
                                   onTap: () {
                                     Navigator.push(
-                                      context, MaterialPageRoute(
-                                        builder: (context) => ProductDetailsPage(
+                                      context, PageTransition(
+                                        type: PageTransitionType.rightToLeftWithFade,
+                                        child: ProductDetailsPage(
                                           onUpdateCallback: (callback){},
                                           product: searchProduct[index],
                                           comment: "",
                                           cusid: widget.cusid,
-                                        )
+                                        ),
                                       )
                                     );
                                   },
