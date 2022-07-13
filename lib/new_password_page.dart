@@ -67,34 +67,35 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                       ),
                     ),
                     child: ListView(
+                      padding: const EdgeInsets.symmetric(vertical: 0),
                       controller: scrollController,
                       children: [
                         Container(
-                          padding: const EdgeInsets.fromLTRB(40, 20, 40, 0),
+                          padding: const EdgeInsets.fromLTRB(40, 50, 40, 0),
                           child: const Text('NEW PASSWORD', 
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontSize: 25,
-                              letterSpacing: 3,
+                              fontSize: 22,
+                              letterSpacing: 1.5,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
 
                         const Padding(
-                          padding: EdgeInsets.fromLTRB(40,8,40,0),
+                          padding: EdgeInsets.fromLTRB(40,10,40,0),
                           child: Text('Enter your new password',
                             style: TextStyle(
                               color: Colors.black, 
-                              fontSize: 20,
-                              letterSpacing: 1
+                              fontSize: 17,
+                              letterSpacing: .5
                             ),
                             textAlign: TextAlign.center
                           ),
                         ),
 
                         Container(
-                          margin: const EdgeInsets.fromLTRB(40, 50, 40, 0),
+                          margin: const EdgeInsets.fromLTRB(40, 40, 40, 0),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
@@ -118,7 +119,7 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                             },
                 
                           obscureText: _isObscure,
-                            style: const TextStyle(fontSize: 20),
+                            style: const TextStyle(fontSize: 17),
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -159,7 +160,7 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                               )
                             ]
                           ),
-                          margin: const EdgeInsets.fromLTRB(40, 20, 40, 0),
+                          margin: const EdgeInsets.fromLTRB(40, 15, 40, 0),
                           child: TextFormField(
                             keyboardType: TextInputType.text,
                             controller: _retypepassword,
@@ -191,7 +192,7 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                             },
                 
                             obscureText: _isObscure1,
-                            style: const TextStyle(fontSize: 20),
+                            style: const TextStyle(fontSize: 17),
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -221,9 +222,9 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                         ),
 
                         Container(
-                          margin: const EdgeInsets.only(top: 50, bottom: 20),
                           width: 600,
                           height: 55,
+                          margin: const EdgeInsets.only(top: 40),
                           padding: const EdgeInsets.symmetric(horizontal: 40),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
@@ -235,7 +236,7 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
 
                             child: const Text('CONFIRM',
                               style: TextStyle(
-                                fontSize: 25, 
+                                fontSize: 20, 
                                 letterSpacing: 3
                               ),
                             ),

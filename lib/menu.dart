@@ -73,7 +73,8 @@ class _MenuState extends State<Menu> {
         width: size.width,
         height: size.height,
         color: Colors.grey.shade200,
-        child: Column(
+        child: ListView(
+          padding: const EdgeInsets.symmetric(vertical: 0),
           children: [
             Container(
               margin: const EdgeInsets.only(top: 20, bottom: 20),

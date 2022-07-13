@@ -134,72 +134,73 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             height: size.height,
             color: Colors.white,
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-            child: 
-              Container(
-                  color: Colors.white,
-                  child: ListView(
+            child: Container(
+              color: Colors.white,
+              child: ListView(
+                padding: const EdgeInsets.symmetric(vertical: 0),
+                children: [
+                  Stack(
                     children: [
-                      Stack(
-                        children: [
-                          SizedBox(
-                            height: 280,
-                            child: Column(
-                              children: [
-                                Hero(
-                                  tag: "product",
-                                  child: SizedBox(
-                                    width: 400,
-                                    height: 245,
-                                    child: widget.product.images.isEmpty ? Image.asset('assets/images/placeholder.jpg', fit: BoxFit.fitWidth) : Image.network(
-                                    "${Network.imageUrl}${widget.product.images[0].url}",
-                                    fit: BoxFit.cover,
+                      SizedBox(
+                        height: 280,
+                        child: Column(
+                          children: [
+                            Hero(
+                              tag: "product",
+                              child: SizedBox(
+                                width: 400,
+                                height: 245,
+                                child: widget.product.images.isEmpty ? Image.asset('assets/images/placeholder.jpg', fit: BoxFit.fitWidth) : Image.network(
+                                  "${Network.imageUrl}${widget.product.images[0].url}",
+                                  fit: BoxFit.cover,
+                                )
+                              ),
+                            ),
+              
+                            Container(
+                              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                              color: const Color.fromARGB(255, 232, 149, 40),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(widget.product.name,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold
                                     )
                                   ),
-                                ),
                 
-                                Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                                  color: const Color.fromARGB(255, 232, 149, 40),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(widget.product.name,
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.bold
-                                        )
-                                      ),
-                
-                                      Text(widget.product.price.toStringAsFixed(2),
-                                        style: const TextStyle(
-                                          color: Colors.white, fontSize: 20
-                                        )
-                                      ),
-                                    ],
+                                  Text(widget.product.price.toStringAsFixed(2),
+                                    style: const TextStyle(
+                                      color: Colors.white, 
+                                      fontSize: 17
+                                    )
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-            
-                          if (widget.product.stock == 0) ...{
-                            Positioned.fill(
-                              child: Container(
-                                color: Colors.black.withOpacity(.4),
-                                alignment: Alignment.center,
-                                child: const Text('Out of Stock',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 25,
-                                    letterSpacing: 5
-                                  ),
-                                ),
-                              )
-                            )
-                          },
-                        ],
+                          ],
+                        ),
                       ),
+            
+                      if (widget.product.stock == 0) ...{
+                        Positioned.fill(
+                          child: Container(
+                            color: Colors.black.withOpacity(.4),
+                            alignment: Alignment.center,
+                            child: const Text('Out of Stock',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 25,
+                                letterSpacing: 5
+                              ),
+                            ),
+                          )
+                        )
+                      },
+                    ],
+                  ),
                 
                       Container(
                         width: size.width,

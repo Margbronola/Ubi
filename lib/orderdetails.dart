@@ -119,6 +119,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                 child: _displayorder == null ? const Center(
                   child: CircularProgressIndicator(),
                 ) : ListView(
+                  padding: const EdgeInsets.symmetric(vertical: 0),
                   children: [
                     Container(
                       width: size.width,
@@ -282,18 +283,19 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
     
                     if(widget.status == "Pending")...{
                       Visibility(
-                                  visible: visiblecontainer,
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                                    child: Column(
-                                      children: [
+                        visible: visiblecontainer,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Column(
+                            children: [
     
-                                        Visibility(
-                                          visible: true,
-                                          child: Visibility(
-                                            child: Container(
-                                              width: size.width,
-                                              margin: const EdgeInsets.only(top: 5),
+                              Visibility(
+                                visible: true,
+                                child: Visibility(
+                                  child: Container(
+                                    width: 600,
+                                    height: 55,
+                                    margin: const EdgeInsets.only(top: 30, bottom: 20),
                                               child: ElevatedButton(
                                                 style: ElevatedButton.styleFrom(
                                                   side: const BorderSide(
@@ -304,7 +306,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                                                     borderRadius:BorderRadius.circular(10)
                                                   ),
                                                   primary: const Color.fromARGB(255, 40, 84, 232),
-                                                  padding: const EdgeInsets.symmetric(vertical: 20),
+                                                  // padding: const EdgeInsets.symmetric(vertical: 20),
                                                 ),
                                                 onPressed: () {
                                                   setState(() {
@@ -411,6 +413,10 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                                           width: size.width,
                                           height: 50,
                                           margin: const EdgeInsets.only(top: 15),
+                        //                   width: 600,
+                        // height: 55,
+                        // margin: const EdgeInsets.only(top: 40, bottom: 20),
+                        // padding: const EdgeInsets.symmetric(horizontal: 40),
                                           child: ElevatedButton(
                                             style: ElevatedButton.styleFrom(
                                               shape: RoundedRectangleBorder(
@@ -624,7 +630,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
     
                                             child: const Text('Confirm Payment',
                                               style: TextStyle(
-                                                fontSize: 25,
+                                                fontSize: 20,
                                                 letterSpacing: 3
                                               )
                                             ),

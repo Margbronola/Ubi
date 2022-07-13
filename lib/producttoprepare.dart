@@ -38,6 +38,7 @@ class _ProductsToPreparePageState extends State<ProductsToPreparePage> {
                       final List<ProductToPrepareModel> _toPrepare = snapshot.data!.where((element) => !element.prepared).toList();
                       
                       return ListView.separated(
+                        padding: const EdgeInsets.symmetric(vertical: 0),
                         itemCount: _toPrepare.length,
                         itemBuilder: (BuildContext ctx, int index){
                           if(snapshot.data![index].comment != null){
@@ -255,9 +256,10 @@ class _ProductsToPreparePageState extends State<ProductsToPreparePage> {
           
                     return const Center(
                       child: Text('No Orders to Prepare',
-                        style: TextStyle(fontSize: 30, letterSpacing: 3)
+                        style: TextStyle(fontSize: 20, letterSpacing: 1.5)
                       )
                     );
+                    
                   }
                   return const Center(child: CircularProgressIndicator.adaptive());
                 },

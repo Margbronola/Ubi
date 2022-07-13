@@ -31,6 +31,7 @@ class _OutofStockPageState extends State<OutofStockPage> {
                 if (snapshot.data!.isNotEmpty){
                   final List<ProductModel> _outOfStockProducts = snapshot.data!.where((element) => element.stock == 0).toList();
                   return ListView.separated(
+                    padding: const EdgeInsets.symmetric(vertical: 0),
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: _outOfStockProducts.length,

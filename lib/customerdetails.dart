@@ -60,7 +60,8 @@ class _CustomerDetailsPageState extends State<CustomerDetailsPage> {
         child: SizedBox(
           width: size.width,
           height: size.height,
-          child: Column(
+          child: ListView(
+            padding: const EdgeInsets.symmetric(vertical: 0),
             children: [
               Column(
                 children: [

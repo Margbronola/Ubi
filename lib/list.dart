@@ -81,6 +81,7 @@ class _listState extends State<list> {
           );
         
           return ListView(
+            padding: const EdgeInsets.symmetric(vertical: 0),
             children: [
               switcherData(switchData: [
                 SwitcherData(

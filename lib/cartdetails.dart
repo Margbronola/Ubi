@@ -176,6 +176,7 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
             child: _displayData == null ? const Center(
               child: CircularProgressIndicator(),
             ) : ListView(
+              padding: const EdgeInsets.symmetric(vertical: 0),
               children: [
                 Container(
                   width: size.width,
@@ -508,47 +509,47 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                             visible: visiblecontainer,
                             child: Container(
                               padding: const EdgeInsets.symmetric(horizontal: 20),
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                    width: size.width,
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        side: const BorderSide(
-                                          width: 3,
-                                          color: Color.fromARGB(255, 40, 84, 232)
+                              child: Visibility(
+                                visible: _disableConfirmButton,
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      width: size.width,
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          side: const BorderSide(
+                                            width: 3,
+                                            color: Color.fromARGB(255, 40, 84, 232)
+                                          ),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:BorderRadius.circular(10)
+                                          ),
+                                          primary: Colors.white,
+                                          padding: const EdgeInsets.symmetric(vertical: 20),
                                         ),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:BorderRadius.circular(10)
-                                        ),
-                                        primary: Colors.white,
-                                        padding: const EdgeInsets.symmetric(vertical: 20),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context, MaterialPageRoute(
-                                            builder: (context) => ProductPage(
-                                              isFromLocalPage: true,
-                                              height: 630,
-                                              cusid: _displayData?.customer?.id ?? 0,
-                                              cusname: widget.cusname
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context, MaterialPageRoute(
+                                              builder: (context) => ProductPage(
+                                                isFromLocalPage: true,
+                                                height: 630,
+                                                cusid: _displayData?.customer?.id ?? 0,
+                                                cusname: widget.cusname
+                                              )
                                             )
+                                          );
+                                        },
+                                        child: const Text('ADD ANOTHER PRODUCT',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            letterSpacing: 3,
+                                            color: Color.fromARGB(255, 40, 84, 232)
                                           )
-                                        );
-                                      },
-                                      child: const Text('ADD ANOTHER PRODUCT',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          letterSpacing: 3,
-                                          color: Color.fromARGB(255, 40, 84, 232)
-                                        )
-                                      ),
-                                    )
-                                  ),
-    
-                                  Visibility(
-                                    visible: _disableConfirmButton,
-                                    child: Container(
+                                        ),
+                                      )
+                                    ),
+                                  
+                                    Container(
                                       width: size.width,
                                       margin: const EdgeInsets.only(top: 5),
                                       child: ElevatedButton(
@@ -564,7 +565,7 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                           setState(() {
                                             isLoading = true;
                                           });
-                                  
+                                    
                                           await _confirmOrder.confirm(
                                             cartcustomerId: _displayData!.id
                                           )
@@ -573,7 +574,7 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                               () => isLoading = false,
                                             ),
                                           );
-                                  
+                                    
                                           showDialog(
                                             barrierDismissible: false,
                                             context: context, builder: (ctx) => AlertDialog(
@@ -596,14 +597,14 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                                           color: const Color.fromARGB(255, 40, 84, 232)
                                                         )
                                                       ),
-    
+                                  
                                                       child: const Icon(
                                                         Icons.check_rounded,
                                                         size: 35,
                                                         color: Color.fromARGB(255, 40, 84, 232)
                                                       ),
                                                     ),
-                                  
+                                    
                                                     const Center(
                                                       child: Text("Order Successfully Added",
                                                         style: TextStyle(
@@ -612,7 +613,7 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                                         )
                                                       ),
                                                     ),
-                                  
+                                    
                                                     Container(
                                                       padding: const EdgeInsets.only(top: 10),
                                                       child: Row(
@@ -628,7 +629,7 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                                               style: TextStyle(fontSize: 16)
                                                             )
                                                           ),
-                                  
+                                    
                                                           TextButton(
                                                             onPressed: (){
                                                               Navigator.of(context).pop();
@@ -645,50 +646,52 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                               ),
                                             ),
                                           );
-                                  
+                                    
                                           setState(() {
                                             _enableSlidable = !_enableSlidable;
                                             _disableConfirmButton = !_disableConfirmButton;
                                           });
                                         },
                                         child: const Text('CONFIRM ORDER',
-                                          style: TextStyle(fontSize: 22, letterSpacing: 3)
+                                          style: TextStyle(fontSize: 20, letterSpacing: 3)
                                         ),
                                       )
                                     ),
-    
-                                    replacement: Container(
-                                        width: size.width,
-                                        margin: const EdgeInsets.only(top: 5),
-                                        child: ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            side: const BorderSide(
-                                              width: 3,
-                                              color: Color.fromARGB(255, 40, 84, 232)
-                                            ),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:BorderRadius.circular(10)
-                                            ),
-                                            primary: const Color.fromARGB(255, 40, 84, 232),
-                                            padding: const EdgeInsets.symmetric(vertical: 20),
-                                          ),
-                                          onPressed: () {
-                                            setState(() {
-                                              visiblewidget = !visiblewidget;
-                                              visiblecontainer = !visiblecontainer;
-                                            });
-                                          },
-                                          child: const Text('ADD PAYMENT',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              letterSpacing: 3,
-                                              color: Colors.white
-                                            )
-                                          ),
-                                        )
+                                  ]
+                                ),
+
+                                replacement: Container(
+                                  width: size.width,
+                                  margin: const EdgeInsets.only(top: 5),
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      side: const BorderSide(
+                                        width: 3,
+                                        color: Color.fromARGB(255, 40, 84, 232)
                                       ),
-                                  ),
-                                ]
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:BorderRadius.circular(10)
+                                      ),
+                                      primary: const Color.fromARGB(255, 40, 84, 232),
+                                      padding: const EdgeInsets.symmetric(vertical: 20),
+                                    ),
+      
+                                    onPressed: () {
+                                      setState(() {
+                                        visiblewidget = !visiblewidget;
+                                        visiblecontainer = !visiblecontainer;
+                                      });
+                                    },
+       
+                                    child: const Text('ADD PAYMENT',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        letterSpacing: 3,
+                                        color: Colors.white
+                                      )
+                                    ),
+                                  )
+                                ),
                               ),
                             ),
                             
@@ -779,7 +782,7 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                   
                                   Container(
                                     width: size.width,
-                                    height: 50,
+                                    height: 55,
                                     margin: const EdgeInsets.only(top: 15),
                                     child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
@@ -1002,7 +1005,7 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
     
                                       child: const Text('Confirm Payment',
                                         style: TextStyle(
-                                          fontSize: 25,
+                                          fontSize: 20,
                                           letterSpacing: 3
                                         )
                                       ),

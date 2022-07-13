@@ -63,27 +63,28 @@ class _VerificationPageState extends State<VerificationPage> {
                     ),
                   ),
                   child: ListView(
+                    padding: const EdgeInsets.symmetric(vertical: 0),
                     controller: scrollController,
                     children: [
                       Container(
-                        padding: const EdgeInsets.fromLTRB(40, 20, 40, 0),
+                        padding: const EdgeInsets.fromLTRB(40, 40, 40, 0),
                         child: const Text('VERIFICATION CODE', 
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 30,
-                            letterSpacing: 3,
+                            fontSize: 22,
+                            letterSpacing: 1.5,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
 
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(40,10,40,0),
-                        child: Text('Please type the verification code sent\nto ${widget.email}',
+                        padding: const EdgeInsets.fromLTRB(30,15,30,0),
+                        child: Text('Please type the verification code sent to ${widget.email}',
                           style: const TextStyle(
                             color: Colors.black, 
-                            fontSize: 20,
-                            letterSpacing: 1
+                            fontSize: 17,
+                            letterSpacing: .5
                           ),
                           textAlign: TextAlign.center
                         ),
@@ -100,6 +101,7 @@ class _VerificationPageState extends State<VerificationPage> {
                           textStyle: const TextStyle(
                             fontSize: 30,
                             color: Colors.black,
+                            fontWeight: FontWeight.bold
                           ),
                           underlineColor: const Color.fromARGB(255, 19, 1, 124),
                           keyboardType: TextInputType.number,
@@ -122,9 +124,9 @@ class _VerificationPageState extends State<VerificationPage> {
                       ),                      
 
                       Container(
-                        margin: const EdgeInsets.only(top: 30, bottom: 20),
                         width: 600,
                         height: 55,
+                        margin: const EdgeInsets.only(top: 40, bottom: 20),
                         padding: const EdgeInsets.symmetric(horizontal: 40),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -135,7 +137,7 @@ class _VerificationPageState extends State<VerificationPage> {
                           ),
 
                           child: const Text('CONTINUE',
-                            style: TextStyle(fontSize: 25, letterSpacing: 3),
+                            style: TextStyle(fontSize: 20, letterSpacing: 3),
                           ),
 
                           onPressed: () async{

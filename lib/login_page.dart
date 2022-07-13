@@ -65,15 +65,16 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     
                     child: ListView(
+                      padding: const EdgeInsets.symmetric(vertical: 0),
                       controller: scrollController,
                       children: [
                         Container(
-                          padding: const EdgeInsets.fromLTRB(40, 50, 40, 0),
+                          padding: const EdgeInsets.fromLTRB(40, 70, 40, 0),
                           alignment: Alignment.centerLeft,
                           child: const Text('LOGIN', 
                             style: TextStyle(
-                              fontSize: 25,
-                              letterSpacing: 3,
+                              fontSize: 22,
+                              letterSpacing: 1.5,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -93,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                               )
                             ]
                           ),
-                          margin: const EdgeInsets.fromLTRB(40, 30, 40, 0),
+                          margin: const EdgeInsets.fromLTRB(40, 20, 40, 0),
                           child: TextFormField(
                             controller: _emailController,
                             keyboardType: TextInputType.emailAddress,
@@ -110,20 +111,27 @@ class _LoginPageState extends State<LoginPage> {
                               return null;
                             },
                             style: const TextStyle(fontSize: 18),
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(
+                            decoration: InputDecoration(
+                              border: const OutlineInputBorder(
                                 borderRadius: BorderRadius.all(Radius.circular(10)),
                               ),
-                              enabledBorder: OutlineInputBorder(
+                              enabledBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white),
                               ),
-                              focusedBorder: OutlineInputBorder(
+                              focusedBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white) 
                               ),
                               fillColor: Colors.white,
                               filled: true,
-                              prefixIcon: Icon(Icons.person, color: Color.fromARGB(255, 232, 149, 40)),
+                              prefixIcon: const Icon(Icons.person, color: Color.fromARGB(255, 232, 149, 40)),
                               hintText: 'Username',
+                              suffixIcon: IconButton(
+                                color: Colors.grey.shade400,
+                                icon: const Icon(Icons.close_rounded),
+                                onPressed: () {
+                                  _emailController.clear();
+                                }
+                              )
                             ),
                           ),
                         ),
@@ -142,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
                               )
                             ]
                           ),
-                          margin: const EdgeInsets.fromLTRB(40, 30, 40, 0),
+                          margin: const EdgeInsets.fromLTRB(40, 15, 40, 0),
                           child: TextFormField(
                             controller: _passwordController,
                             obscureText: _isObscure,
@@ -168,7 +176,7 @@ class _LoginPageState extends State<LoginPage> {
                               prefixIcon: const Icon(Icons.key_rounded, color: Color.fromARGB(255, 232, 149, 40)),
                               hintText: 'Password',
                               suffixIcon: IconButton(
-                                color: Colors.grey.shade300,
+                                color: Colors.grey.shade400,
                                 icon: Icon(_isObscure
                                   ? Icons.visibility_off_rounded
                                   : Icons.visibility),
@@ -183,7 +191,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                     
                         Container(
-                          margin: const EdgeInsets.only(top: 70),
+                          margin: const EdgeInsets.only(top: 40),
                           width: 500,
                           height: 60,
                           padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -195,7 +203,7 @@ class _LoginPageState extends State<LoginPage> {
                               primary: const Color.fromARGB(255, 40, 84, 232)
                             ),
                             child: const Text('LOGIN',
-                              style: TextStyle(fontSize: 25, letterSpacing: 3),
+                              style: TextStyle(fontSize: 20, letterSpacing: 3),
                             ),
                             onPressed: () async {
                               if (_formkey.currentState!.validate()) {
@@ -227,7 +235,7 @@ class _LoginPageState extends State<LoginPage> {
                                         title: const Text("Access Denied",
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 20
+                                            fontSize: 18
                                           )
                                         ),
           
@@ -258,11 +266,11 @@ class _LoginPageState extends State<LoginPage> {
                         ),
           
                         Container(
-                          padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
+                          padding: const EdgeInsets.fromLTRB(30, 0, 30, 20),
                           child: TextButton(
                             child: const Text('Forget Password?',
                               style: TextStyle(
-                                fontSize: 20, 
+                                fontSize: 18, 
                                 color: Colors.black
                               )
                             ),

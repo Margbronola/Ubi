@@ -71,6 +71,7 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
           height: size.height,
           color: Colors.white,
           child: ListView(
+            padding: const EdgeInsets.symmetric(vertical: 0),
             children: [
               Container(
                 decoration: BoxDecoration(

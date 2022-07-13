@@ -61,34 +61,34 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                       ),
                     ),
                     child: ListView(
+                      padding: const EdgeInsets.symmetric(vertical: 0),
                       controller: scrollController,
                       children: [
                         Container(
-                          padding: const EdgeInsets.fromLTRB(40, 20, 40, 0),
+                          padding: const EdgeInsets.fromLTRB(40, 50, 40, 0),
                           child: const Text('FORGOT PASSWORD', 
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontSize: 25,
-                              letterSpacing: 3,
+                              fontSize: 22,
+                              letterSpacing: 1.5,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
     
                         const Padding(
-                          padding: EdgeInsets.fromLTRB(40,10,40,0),
+                          padding: EdgeInsets.fromLTRB(40,15,40,0),
                           child: Text('Enter your email to get verification code',
                             style: TextStyle(
                               color: Colors.black, 
-                              fontSize: 20,
-                              letterSpacing: 1
+                              fontSize: 17,
+                              letterSpacing: .5
                             ),
                             textAlign: TextAlign.center
                           ),
                         ),
     
                         Container(
-                          // height: 60,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
@@ -116,32 +116,39 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                             },
 
                             onSaved: (email) {},
-                            style: const TextStyle(fontSize: 20),
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(
+                            style: const TextStyle(fontSize: 17),
+                            decoration: InputDecoration(
+                              border: const OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(10)),
                             ),
 
-                            enabledBorder: OutlineInputBorder(
+                            enabledBorder: const OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.white),
                             ),
 
-                            focusedBorder: OutlineInputBorder(
+                            focusedBorder: const OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.white),
                             ),
                             
                               fillColor: Colors.white,
                               filled: true,
-                              prefixIcon: Icon(Icons.mail_rounded, color: Color.fromARGB(255, 232, 149, 40)),
+                              prefixIcon: const Icon(Icons.mail_rounded, color: Color.fromARGB(255, 232, 149, 40)),
                               hintText: 'Email',
+                              suffixIcon: IconButton(
+                                color: Colors.grey.shade400,
+                                icon: const Icon(Icons.close_rounded),
+                                onPressed: () {
+                                  _email.clear();
+                                }
+                              )
                             ),
                           ),
                         ),
     
                         Container(
-                          margin: const EdgeInsets.only(top: 40, bottom: 20),
                           width: 600,
                           height: 55,
+                          margin: const EdgeInsets.only(top: 40, bottom: 20),
                           padding: const EdgeInsets.symmetric(horizontal: 40),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
@@ -153,7 +160,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
 
                             child: const Text('CONFIRM',
                               style: TextStyle(
-                                fontSize: 25, 
+                                fontSize: 20, 
                                 letterSpacing: 3
                               ),
                             ),

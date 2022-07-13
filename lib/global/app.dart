@@ -17,47 +17,65 @@ final List<FloatingBottomNavListItem> navItems = [
   FloatingBottomNavListItem(
       id: 1,
       icon: const ImageIcon(AssetImage("assets/icons/takeorder.png")),
-      title: const Text("Take Order")),
+      title: const Text("Take Order"),
+      child: const TakeOrderPage(),
+  ),
 
   FloatingBottomNavListItem(
       id: 2,
       icon: const ImageIcon(AssetImage("assets/icons/takeorderwithoutcustomer.png")),
-      title: const Text("Order w/o Customer")),
+      title: const Text("Order w/o Customer"),
+    child: const OrderWithoutCustomer(),
+  ),
 
   FloatingBottomNavListItem(
       id: 3,
       icon: const ImageIcon(AssetImage("assets/icons/pendingorder.png")),
-      title: const Text("Pending Order")),
+      title: const Text("Pending Order"),
+      child:  PendingOrderPage()
+  ),
 
   FloatingBottomNavListItem(
       id: 4,
       icon: const ImageIcon(AssetImage("assets/icons/today'sorder.png")),
-      title: const Text("Today's Orders")),
+      title: const Text("Today's Orders"),
+      child: const TodaysOrderPage(),
+  ),
 
   FloatingBottomNavListItem(
       id: 5,
       icon: const ImageIcon(AssetImage("assets/icons/producttoprepare.png")),
-      title: const Text("Products to Prepare")),
+      title: const Text("Products to Prepare"),
+      child: const ProductsToPreparePage(),
+  ),
 
   FloatingBottomNavListItem(
       id: 6,
       icon: const ImageIcon(AssetImage("assets/icons/outofstuckproduct.png")),
-      title: const Text("Out of Stock Product")),
+      title: const Text("Out of Stock Product"),
+      child: const OutofStockPage(),
+  ),
 
   FloatingBottomNavListItem(
       id: 7, 
       icon: const ImageIcon(AssetImage("assets/icons/customer.png")), 
-      title: const Text("Customer")),
+      title: const Text("Customer"),
+      child: const CustomerPage(),
+  ),
 
   FloatingBottomNavListItem(
       id: 8,
       icon: const ImageIcon(AssetImage("assets/icons/Product.png")),
-      title: const Text("Products")),
+      title: const Text("Products"),
+      child:  ProductPage()
+  ),
 
   FloatingBottomNavListItem(
       id: 9,
       icon: const ImageIcon(AssetImage("assets/icons/order.png")),
-      title: const Text("Order")),
+      title: const Text("Order"),
+      child: const OrderPage()
+  ),
 
   // FloatingBottomNavListItem(
   //     id: 10,

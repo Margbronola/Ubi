@@ -51,29 +51,31 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               child: Form(
                 key: _formkey,
                 child: ListView(
+                  padding: const EdgeInsets.symmetric(vertical: 0),
                   shrinkWrap: true ,
                   controller: scrollController,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 30),
+                      padding: const EdgeInsets.only(top: 30, bottom: 10),
                       child: Row(
                         children: [
                           Container(
                             margin: const EdgeInsets.only(left: 25, bottom: 10),
-                            width: 90,
-                            height: 90,
+                            width: 70,
+                            height: 70,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: Colors.grey.shade200,
                             ),
-                            child: Icon(Icons.key_rounded, size: 55, color: Colors.orange.shade600),
+                            child: Icon(Icons.key_rounded, size: 40, color: Colors.orange.shade600),
                           ),
                       
                           Container(
                             margin: const EdgeInsets.only(left: 15),
                             child: const Text('CHANGE PASSWORD', 
                               style: TextStyle(
-                                fontSize: 28,
+                                fontSize: 22,
+                                letterSpacing: 1.5,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -88,10 +90,10 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     ),
                 
                     const Padding(
-                      padding: EdgeInsets.only(left: 50, right: 50, top: 20),
+                      padding: EdgeInsets.fromLTRB(50, 30, 50, 5),
                       child: Text(
                         'Current Password',
-                        style: TextStyle(fontSize: 20, color: Colors.grey),
+                        style: TextStyle(fontSize: 18, color: Colors.grey),
                       ),
                     ),
                 
@@ -147,10 +149,10 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     ),
                 
                     const Padding(
-                      padding: EdgeInsets.only(left: 50, right: 50, top: 20),
+                      padding: EdgeInsets.fromLTRB(50, 30, 50, 5),
                       child: Text(
                         'New Password',
-                        style: TextStyle(fontSize: 20, color: Colors.grey),
+                        style: TextStyle(fontSize: 18, color: Colors.grey),
                       ),
                     ),
                 
@@ -206,9 +208,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     ),
                 
                     const Padding(
-                      padding: EdgeInsets.only(left: 50, right: 50, top: 20),
+                      padding: EdgeInsets.fromLTRB(50, 30, 50, 5),
                       child: Text('Confirm New Password',
-                        style: TextStyle(fontSize: 20, color: Colors.grey),
+                        style: TextStyle(fontSize: 18, color: Colors.grey),
                       ),
                     ),
                 
@@ -278,7 +280,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     FocusScope.of(context).hasFocus != true ?
                     Container(
                       margin: const EdgeInsets.only(top: 40, bottom: 0),
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      padding: const EdgeInsets.symmetric(horizontal: 50),
                       height: 55,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -286,7 +288,10 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                             borderRadius: BorderRadius.circular(10)),
                           primary: const Color.fromARGB(255, 40, 84, 232)),
                         child: const Text('SAVE',
-                          style: TextStyle(fontSize: 22, letterSpacing: 4),
+                          style: TextStyle(
+                            fontSize: 20, 
+                            letterSpacing: 3
+                          ),
                         ),
                         onPressed: () async{
                           if (_formkey.currentState!.validate()) {
@@ -412,7 +417,10 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                             borderRadius: BorderRadius.circular(10)),
                           primary: const Color.fromARGB(255, 40, 84, 232)),
                         child: const Text('SAVE',
-                          style: TextStyle(fontSize: 22, letterSpacing: 4),
+                          style: TextStyle(
+                            fontSize: 20, 
+                            letterSpacing: 3
+                          ),
                         ),
                         onPressed: () async{
                           if (_formkey.currentState!.validate()) {

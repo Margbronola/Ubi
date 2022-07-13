@@ -58,14 +58,14 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                       child: Row(
                         children: [
                           Container(
-                            width: 100,
-                            height: 100,
+                            width: 90,
+                            height: 90,
                             margin: const EdgeInsets.only(left: 30, bottom: 10),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: Colors.grey.shade100,
                             ),
-                            child: const Icon(Icons.person_rounded, size: 60, color: Colors.grey,),
+                            child: const Icon(Icons.person_rounded, size: 54, color: Colors.grey,),
                           ),
               
                           Container(
@@ -78,7 +78,7 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                               children: [
                                 SizedBox(
                                   width: 195,
-                                  height: 45,
+                                  height: 49,
                                   child: TextFormField(
                                     controller: _name,
                                     enabled: !_isDisabled,
@@ -105,8 +105,8 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                                   width: 150,
                                   height: 20,
                                   padding: const EdgeInsets.only(left: 15),
-                                  margin: const EdgeInsets.only(top: 5),
-                                  child: Text(loggedUser?.position??"FETCHING DETAILS",
+                                  // margin: const EdgeInsets.only(top: 5),
+                                  child: Text(loggedUser?.position ?? "FETCHING DETAILS",
                                     style: const TextStyle(
                                       fontSize: 22, 
                                       color: Color.fromARGB(255, 232, 149, 40)
@@ -246,9 +246,10 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                     ) : Visibility(
                       visible: visiblewidget,
                       child: Container(
-                        margin: const EdgeInsets.only(bottom: 320, left: 30, right: 30, top: 20),
-                        width: size.width,
-                        height: 60,
+                        width: 600,
+                        height: 55,
+                        margin: const EdgeInsets.only(top: 40, bottom: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 40),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
@@ -283,7 +284,12 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                               );
                             }
                           },
-                          child: const Text('SAVE', style: TextStyle(fontSize: 25, letterSpacing: 5))
+                          child: const Text('SAVE', 
+                            style: TextStyle(
+                              fontSize: 20, 
+                              letterSpacing: 3
+                            ),
+                          )
                         ),
                       ),
                     )

@@ -25,35 +25,36 @@ class _MenuPageState extends State<MenuPage> {
               ),
             ),
             child: ListView(
+              padding: const EdgeInsets.symmetric(vertical: 0),
               controller: scrollController,
               children: [
                 Padding(
-                padding: const EdgeInsets.only(top: 20),
-                  child: Row(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(left: 30, bottom: 10),
-                        width: 90,
-                        height: 90,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.grey.shade100,
+                  padding: const EdgeInsets.only(top: 30, bottom: 10),
+                    child: Row(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(left: 30, bottom: 10),
+                          width: 70,
+                          height: 70,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.grey.shade200,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(17),
+                            child: ImageIcon(const AssetImage("assets/icons/Menu.png"),
+                            color: Colors.orange.shade700),
+                          )
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(25),
-                          child: ImageIcon(const AssetImage("assets/icons/Menu.png"),
-                          color: Colors.orange.shade700),
-                        )
-                      ),
 
-                      Container(
-                        margin: const EdgeInsets.only(left: 15),
-                        child: const Text('MY MENU', 
-                        style: TextStyle(
-                          fontSize: 30,
-                          letterSpacing: 3,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        Container(
+                          margin: const EdgeInsets.only(left: 15),
+                          child: const Text('MY MENU', 
+                          style: TextStyle(
+                            fontSize: 22,
+                            letterSpacing: 1.5,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],
@@ -61,7 +62,7 @@ class _MenuPageState extends State<MenuPage> {
                 ),
 
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                   child: Divider(color:Colors.grey.shade300, thickness: 3),
                 ),
 

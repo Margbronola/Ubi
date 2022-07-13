@@ -41,6 +41,7 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
           height: size.height,
           color: Colors.white,
           child: ListView(
+            padding: const EdgeInsets.symmetric(vertical: 0),
             children: [
               Container(
                 height: 160,
@@ -66,7 +67,7 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
                             padding: EdgeInsets.only(right: 10),
                             child: Icon(Icons.calendar_today_sharp),
                           ),
-                          Text(date, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                          Text(date, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                         ],
                       )
                     ),

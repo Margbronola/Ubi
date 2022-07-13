@@ -29,6 +29,7 @@ class _CustomerPageState extends State<CustomerPage> {
           color: Colors.white,
           child: SafeArea(
             child: ListView(
+              padding: const EdgeInsets.symmetric(vertical: 0),
               children: [
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -106,11 +107,13 @@ class _CustomerPageState extends State<CustomerPage> {
                     builder: (_, snapshot) {
                       if (snapshot.hasData && !snapshot.hasError) {
                         if (snapshot.data!.isNotEmpty) {
-                          final List<CustomerModel> searchCustomer = snapshot.data!.where((element) => element.name
-                          .toLowerCase().contains(searchString)).toList();
+                          final List<CustomerModel> searchCustomer = snapshot.data!.where((element) => 
+                          element.name.toLowerCase().contains(searchString)).toList();
+                          
                           return ListView.separated(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
+                            padding: const EdgeInsets.symmetric(vertical: 0),
                             itemCount: searchCustomer.length,
                             itemBuilder: (BuildContext ctx, int index) {
                               return GestureDetector(
@@ -122,11 +125,6 @@ class _CustomerPageState extends State<CustomerPage> {
                                         customer: searchCustomer[index]
                                       ),
                                     )
-                                    // MaterialPageRoute(
-                                    //   builder: (context) => CustomerDetailsPage(
-                                    //     customer: searchCustomer[index],
-                                    //   )
-                                    // )
                                   );
                                 },
                               
@@ -147,7 +145,8 @@ class _CustomerPageState extends State<CustomerPage> {
                                         ),
 
                                         const Icon(Icons.chevron_right_rounded,
-                                          color: Colors.black, size: 30
+                                          color: Colors.black, 
+                                          // size: 30
                                         )
                                       ],
                                     ),
@@ -162,7 +161,7 @@ class _CustomerPageState extends State<CustomerPage> {
                       
                         return const Center(
                           child: Text('No Customer entry',
-                            style: TextStyle(fontSize: 30, letterSpacing: 3)
+                            style: TextStyle(fontSize: 25, letterSpacing: 2)
                           )
                         );
                       }

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:internapp/model/order_model.dart';
-import 'package:internapp/orderdetails.dart';
 import 'package:internapp/viewmodel/orderviewmodel.dart';
 import 'package:intl/intl.dart';
-import 'package:page_transition/page_transition.dart';
 
 class OrderPage extends StatefulWidget {
   const OrderPage({ Key? key }) : super(key: key);
@@ -29,6 +27,7 @@ class _OrderPageState extends State<OrderPage> {
           height: size.height,
           color: Colors.white,
           child: ListView(
+            padding: const EdgeInsets.symmetric(vertical: 0),
             children: [
               Container(
                 decoration: BoxDecoration(
@@ -150,18 +149,18 @@ class _OrderPageState extends State<OrderPage> {
                           itemBuilder: (BuildContext ctx, int index ){
                             return GestureDetector(
                               onTap: () {
-                                Navigator.push(
-                                  context, PageTransition(
-                                    type: PageTransitionType.rightToLeftWithFade,
-                                    child: OrderDetailsPage(
-                                      isfromPendingOrder: true,
-                                      cusid: searchCustomer[index].cartcustomer?.customer?.id ?? 0,
-                                      cusname: searchCustomer[index].cartcustomer?.customer?.name ?? "N/A",
-                                      orderid: searchCustomer[index].id,
-                                      status: searchCustomer[index].status ? "Paid" : "Pending",
-                                    ),
-                                  )
-                                );
+                                // Navigator.push(
+                                //   context, PageTransition(
+                                //     type: PageTransitionType.rightToLeftWithFade,
+                                //     child: OrderDetailsPage(
+                                //       isfromPendingOrder: true,
+                                //       cusid: searchCustomer[index].cartcustomer?.customer?.id ?? 0,
+                                //       cusname: searchCustomer[index].cartcustomer?.customer?.name ?? "N/A",
+                                //       orderid: searchCustomer[index].id,
+                                //       status: searchCustomer[index].status ? "Paid" : "Pending",
+                                //     ),
+                                //   )
+                                // );
                               },
 
                               child: Container(

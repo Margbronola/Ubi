@@ -80,6 +80,7 @@ class _ProductPageState extends State<ProductPage> {
           height: size.height,
           child: SafeArea(
             child: ListView(
+              padding: const EdgeInsets.symmetric(vertical: 0),
               children: [
                 Container(
                   decoration: BoxDecoration(

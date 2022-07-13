@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -48,7 +50,6 @@ class _ProfilePageState extends State<ProfilePage> {
   deleteToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('accesstoken');
-    // ignore: avoid_print
     print('token deleted');
   }
 
@@ -56,7 +57,6 @@ class _ProfilePageState extends State<ProfilePage> {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     String? value = _prefs.getString("accesstoken");
     setState(() {});
-    // ignore: avoid_print
     print(value);
   }
 
@@ -144,14 +144,14 @@ class _ProfilePageState extends State<ProfilePage> {
               Row(
                 children: [
                   Container(
-                    width: 90,
-                    height: 90,
+                    width: 80,
+                    height: 80,
                     margin: const EdgeInsets.only(left: 30, bottom: 10),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.grey.shade200,
                     ),
-                    child: const Icon(Icons.person_rounded, size: 55, color: Colors.grey,),
+                    child: const Icon(Icons.person_rounded, size: 50, color: Colors.grey,),
                   ),
             
                   Container(
@@ -164,14 +164,14 @@ class _ProfilePageState extends State<ProfilePage> {
                       children: [
                         Text(loggedUser?.name ?? "FETCHING DETAILS",
                           style: const TextStyle(
-                            fontSize: 25,
+                            fontSize: 22,
                             fontWeight: FontWeight.bold
                           )
                         ),
             
                         Text(loggedUser?.position ?? "FETCHING DETAILS",
                           style: const TextStyle(
-                            fontSize: 20,
+                            fontSize: 18,
                             color: Color.fromARGB(255, 232, 149, 40)
                           )
                         ),
@@ -271,41 +271,44 @@ class _ProfilePageState extends State<ProfilePage> {
                       ]
                     ),
 
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 50, 20, 0),
-                      child: SizedBox(
-                        height: 55,
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            setState(() {
-                              isLoading = true;
-                            });
+                    Container(
+                      width: 600,
+                      height: 55,
+                      margin: const EdgeInsets.only(top: 40, bottom: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          setState(() {
+                            isLoading = true;
+                          });
 
-                            await _auth.logout().then((value) {
-                              if (value) {
-                                displayToken();
-                                deleteToken();
-                                Navigator.pushReplacement(
-                                  context, MaterialPageRoute(
-                                    builder: (context) => const LoginPage(),
-                                  ),
-                                );
-                              }
-                            }).whenComplete(
-                              () => setState(
-                                () => isLoading = false,
-                              ),
-                            );
-                          },
-                          
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)
+                          await _auth.logout().then((value) {
+                            if (value) {
+                              displayToken();
+                              deleteToken();
+                              Navigator.pushReplacement(
+                                context, MaterialPageRoute(
+                                  builder: (context) => const LoginPage(),
+                                ),
+                              );
+                            }
+                          }).whenComplete(
+                            () => setState(
+                              () => isLoading = false,
                             ),
-                            primary:const Color.fromARGB(255, 40, 84, 232)
+                          );
+                        },
+                        
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)
                           ),
-                          child: const Text('LOGOUT',
-                            style: TextStyle(fontSize: 25, letterSpacing: 5),
+                          primary:const Color.fromARGB(255, 40, 84, 232)
+                        ),
+                        child: const Text('LOGOUT',
+                          style: TextStyle(
+                            fontSize: 20, 
+                            letterSpacing: 3
                           ),
                         ),
                       ),
