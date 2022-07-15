@@ -29,11 +29,11 @@ class _MenuPageState extends State<MenuPage> {
               controller: scrollController,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 30, bottom: 10),
+                  padding: const EdgeInsets.only(top: 25, bottom: 10),
                     child: Row(
                       children: [
                         Container(
-                          margin: const EdgeInsets.only(left: 30, bottom: 10),
+                          margin: const EdgeInsets.only(left: 30, bottom: 5),
                           width: 70,
                           height: 70,
                           decoration: BoxDecoration(
@@ -51,7 +51,7 @@ class _MenuPageState extends State<MenuPage> {
                           margin: const EdgeInsets.only(left: 15),
                           child: const Text('MY MENU', 
                           style: TextStyle(
-                            fontSize: 22,
+                            fontSize: 20,
                             letterSpacing: 1.5,
                             fontWeight: FontWeight.bold,
                           ),
@@ -62,7 +62,7 @@ class _MenuPageState extends State<MenuPage> {
                 ),
 
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Divider(color:Colors.grey.shade300, thickness: 3),
                 ),
 

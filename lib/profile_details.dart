@@ -54,24 +54,24 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                   controller: scrollController,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 50),
+                      padding: const EdgeInsets.only(top: 40, right: 20, left: 20),
                       child: Row(
                         children: [
                           Container(
-                            width: 90,
-                            height: 90,
-                            margin: const EdgeInsets.only(left: 30, bottom: 10),
+                            width: 85,
+                            height: 85,
+                            margin: const EdgeInsets.only(bottom: 10),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: Colors.grey.shade100,
                             ),
-                            child: const Icon(Icons.person_rounded, size: 54, color: Colors.grey,),
+                            child: const Icon(Icons.person_rounded, size: 52, color: Colors.grey,),
                           ),
               
-                          Container(
-                            height: 100,
-                            width: 210,
-                            margin: const EdgeInsets.only(left: 10),
+                          Expanded(
+                            // height: 100,
+                            // width: 210,
+                            // margin: const EdgeInsets.only(left: 10),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -86,7 +86,7 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                                     onTap: (){
                                       _name.clear();
                                     },
-                                    style: const TextStyle(fontSize: 25),
+                                    style: const TextStyle(fontSize: 20),
                                     decoration: const InputDecoration(
                                       border: InputBorder.none,
                                       enabledBorder: UnderlineInputBorder(
@@ -108,7 +108,7 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                                   // margin: const EdgeInsets.only(top: 5),
                                   child: Text(loggedUser?.position ?? "FETCHING DETAILS",
                                     style: const TextStyle(
-                                      fontSize: 22, 
+                                      fontSize: 18, 
                                       color: Color.fromARGB(255, 232, 149, 40)
                                     )
                                   )
@@ -118,7 +118,7 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                           ),
               
                           SizedBox(
-                            width: 50,
+                            width: 40,
                             height: 50,
                             child: IconButton(
                               onPressed: (){

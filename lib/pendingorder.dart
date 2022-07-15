@@ -151,7 +151,7 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
                             width: 150,
                             child: Center(
                               child: Text('Customer', 
-                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
                               ),
                             )
                           ),
@@ -160,7 +160,7 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
                             width: 100,
                             child: Center(
                               child: Text('Price', 
-                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
                               ),
                             )
                           ),
@@ -169,7 +169,7 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
                             width: 100,
                             child: Center(
                               child: Text('No. Products', 
-                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
                               ),
                             )
                           )

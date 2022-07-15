@@ -35,7 +35,7 @@ class Auth {
         return false;
       },);
     } catch (e) {
-      print("ERROR : $e");
+      print("ERROR sa login: $e");
       return false;
     }
   }

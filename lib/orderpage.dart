@@ -215,7 +215,7 @@ class _OrderPageState extends State<OrderPage> {
 
                       return const Center(
                         child: Text('No Order',
-                          style: TextStyle(fontSize: 30)
+                          style: TextStyle(fontSize: 25)
                         )
                       );
                       

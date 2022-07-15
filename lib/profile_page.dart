@@ -146,7 +146,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Container(
                     width: 80,
                     height: 80,
-                    margin: const EdgeInsets.only(left: 30, bottom: 10),
+                    margin: const EdgeInsets.only(left: 30, bottom: 10, right: 8),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.grey.shade200,
@@ -154,17 +154,17 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: const Icon(Icons.person_rounded, size: 50, color: Colors.grey,),
                   ),
             
-                  Container(
-                    height: 100,
-                    width: 250,
-                    margin: const EdgeInsets.only(left: 10),
+                  Expanded(
+                    // height: 100,
+                    // width: 250,
+                    // margin: const EdgeInsets.only(left: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(loggedUser?.name ?? "FETCHING DETAILS",
                           style: const TextStyle(
-                            fontSize: 22,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold
                           )
                         ),

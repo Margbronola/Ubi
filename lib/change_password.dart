@@ -74,7 +74,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                             margin: const EdgeInsets.only(left: 15),
                             child: const Text('CHANGE PASSWORD', 
                               style: TextStyle(
-                                fontSize: 22,
+                                fontSize: 20,
                                 letterSpacing: 1.5,
                                 fontWeight: FontWeight.bold,
                               ),
