@@ -180,27 +180,28 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
               children: [
                 Container(
                   width: size.width,
-                  height: 50,
+                  // height: 50,
                   margin: const EdgeInsets.only(top: 10, bottom: 10),
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Expanded(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const Text('Customer: ', style: TextStyle(fontSize: 20)),
-                            Text(_displayData!.customer == null ? "N/A" : _displayData!.customer!.name,
-                              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
-                            ),
-                          ],
-                        ),
-                      ),
-    
                       Text(date,
                         style: const TextStyle(fontSize: 20)
                       ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Text('Customer: ', style: TextStyle(fontSize: 20)),
+                          Text(_displayData!.customer == null ? "N/A" : _displayData!.customer!.name,
+                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                          ),
+                        ],
+                      ),
+    
                     ]
                   ),
                 ),
@@ -211,18 +212,17 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                   itemCount: _displayData!.carts.length,
                   itemBuilder: (BuildContext ctx, int index){
                     CartDetailsModel details = _displayData!.carts[index];
-    
-                    if(details.comment == null){
+
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Slidable(
                           enabled: _enableSlidable,
                           endActionPane: ActionPane(
-                            extentRatio: 0.30,
+                            extentRatio: .6,
                             motion: const ScrollMotion(),
                             children: [
                               SlidableAction(
-                                flex: 1,
+                                // flex: 1,
                                 onPressed: (_){
                                   edit(
                                     context, 
@@ -243,6 +243,8 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                 },
                                 backgroundColor: Colors.greenAccent.shade400,
                                 icon: Icons.mode_edit_rounded,
+                                foregroundColor: Colors.white,
+                                label: "Edit",
                               ),
                                     
                               SlidableAction(
@@ -252,6 +254,8 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                 },
                                 backgroundColor: Colors.red,
                                 icon: Icons.delete_rounded,
+                                foregroundColor: Colors.white,
+                                label: "Delete",
                               ),
                             ]
                           ),
@@ -259,219 +263,87 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                           child: Container(
                             padding: const EdgeInsets.all(10),
                             color: Colors.grey.shade200,
-                            height: 105,
+                            width: size.width,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                SizedBox(
-                                  width: 80,
-                                  height: 120,
-                                  child: details.product.images.isEmpty ? Image.asset(
-                                    'assets/images/placeholder.jpg',
-                                    fit: BoxFit.fitWidth
-                                  ) : Image.network("${Network.imageUrl}${details.product.images[0].url}",
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                        
-                                Container(
-                                  width: 190,
-                                  height: 80,
-                                  alignment: Alignment.center,
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        width: 30,
-                                        child: Text(details.qty.toString(),
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold
-                                          )
-                                        ),
-                                      ),
-    
-                                      SizedBox(
-                                        width: 160,
-                                        child: Text(details.product.name,
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold
-                                          )
-                                        ),
-                                      ),
-    
-                                    ],
-                                  ),
-                                ),
-    
-                                SizedBox(
-                                  width: 80,
-                                  height: 100,
-                                  child: Center(
-                                    child: Text("P${details.product.price}",
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                      ),
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(80),
+                                  child: SizedBox(
+                                    width: 80,
+                                    height: 80,
+                                    child: details.product.images.isEmpty ? Image.asset(
+                                      'assets/images/placeholder.jpg',
+                                      fit: BoxFit.fitWidth
+                                    ) : Image.network("${Network.imageUrl}${details.product.images[0].url}",
+                                      fit: BoxFit.cover,
                                     ),
                                   ),
                                 ),
-    
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(details.qty.toString(),
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold
+                                            )
+                                          ),
+
+                                          const SizedBox(width: 10,),
+                          
+                                          Expanded(
+                                            child: Tooltip(
+                                              message: details.product.name,
+                                              child: Text(details.product.name,
+                                                  maxLines: 2,
+                                                  overflow: TextOverflow.ellipsis,
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                          const SizedBox(width: 10,),
+                                          Text("P${details.product.price}",
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                          
+                                        ],
+                                      ),
+                          
+                                      details.comment == null ? Container() : Container(
+                                                margin: const EdgeInsets.only(top: 5),
+                                                padding: const EdgeInsets.all(5),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.grey.shade300,
+                                                  borderRadius: const BorderRadius.all (Radius.circular(10)),
+                                                ), 
+                                                child: Text(details.comment.toString(),
+                                                ),
+                                              )
+                                    ],
+                                  )
+                                )
                               ],
                             ),
                           ),
                         ),
-                      );                    
-                    }
-    
-                    else{
-                      return Padding(
-                      
-                                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                                  child: Slidable(
-                                    enabled: _enableSlidable,
-                                    endActionPane: ActionPane(
-                                      extentRatio: 0.30,
-                                      motion: const ScrollMotion(),
-                                      children: [
-                                        SlidableAction(
-                                          flex: 1,
-                                          onPressed: (_){
-                                            edit(
-                                              context, 
-                                              details.id,
-                                              details.qty,
-                                              details.comment.toString(),
-                                              details.product,
-                                              callback: (callback){
-                                                  setState(() {
-                                                    details.qty = callback.qty;
-                                                    details.product = callback.product;
-                                                    details.comment = callback.comment;
-                                                    details.total = callback.total;
-                                                  });
-                                                },
-                                            );
-                                          },
-                                          backgroundColor: Colors.greenAccent.shade400,
-                                          icon: Icons.mode_edit_rounded,
-                                        ),
-                                    
-                                        SlidableAction(
-                                          onPressed: (_){
-                                            print(_displayData!.id);
-                                            delete(context, details.id, _displayData!.id);
-                                          },
-                                          backgroundColor: Colors.red,
-                                          icon: Icons.delete_rounded,
-                                        ),
-                                      ]
-                                    ),
-       
-                                    child: Container(
-                                      padding: const EdgeInsets.all(10),
-                                      color: Colors.grey.shade200,
-                                      height: 150,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          SizedBox(
-                                            width: 80,
-                                            height: 120,
-                                            child: details.product.images.isEmpty ? Image.asset(
-                                              'assets/images/placeholder.jpg',
-                                              fit: BoxFit.fitWidth
-                                            ) : Image.network("${Network.imageUrl}${details.product.images[0].url}",
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                        
-                                          Container(
-                                            margin: const EdgeInsets.only(top: 5),
-                                            child: Column(
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Container(
-                                                      width: 190,
-                                                      height: 60,
-                                                      alignment: Alignment.center,
-                                                      child: Row(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        children: [
-                                                          SizedBox(
-                                                            width: 30,
-                                                            child: Text(details.qty.toString(),
-                                                              textAlign: TextAlign.center,
-                                                              style: const TextStyle(
-                                                                color: Colors.black,
-                                                                fontSize: 18,
-                                                                fontWeight: FontWeight.bold
-                                                              )
-                                                            ),
-                                                          ),
-    
-                                                          SizedBox(
-                                                            width: 160,
-                                                            child: Text(details.product.name,
-                                                              textAlign: TextAlign.center,
-                                                              style: const TextStyle(
-                                                                color: Colors.black,
-                                                                fontSize: 18,
-                                                                fontWeight: FontWeight.bold
-                                                              )
-                                                            ),
-                                                          ),
-    
-                                                        ],
-                                                      ),
-                                                    ),
-    
-                                                    SizedBox(
-                                                      width: 80,
-                                                      height: 60,
-                                                      child: Center(
-                                                        child: Text("P${details.product.price}",
-                                                          style: const TextStyle(
-                                                            fontWeight: FontWeight.bold,
-                                                            fontSize: 20,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-    
-                                                  ],
-                                                ),
-    
-                                                Container(
-                                                  width: 250,
-                                                  height: 60,
-                                                  alignment: Alignment.center,
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.grey.shade300,
-                                                    borderRadius: const BorderRadius.all (Radius.circular(10)),
-                                                  ),
-                                                  child: Text(details.comment.toString()),
-                                                )
-    
-                                              ],
-                                            ),
-                                          ),
-    
-                                          
-    
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                );
-                    }
-    
+                      );      
                   }, 
                   separatorBuilder: (BuildContext context, int index) => const Divider(color: Colors.transparent), 
                 ),
@@ -484,7 +356,7 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 const Text('Total   ',
-                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                                 ),
                                 
                                 Container(
@@ -520,11 +392,10 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                           side: const BorderSide(
                                             width: 3,
                                             color: Color.fromARGB(255, 40, 84, 232)
-                                          ),
+                                          ), backgroundColor: Colors.white,
                                           shape: RoundedRectangleBorder(
                                             borderRadius:BorderRadius.circular(10)
                                           ),
-                                          primary: Colors.white,
                                           padding: const EdgeInsets.symmetric(vertical: 20),
                                         ),
                                         onPressed: () {
@@ -556,8 +427,8 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                         style: ElevatedButton.styleFrom(
                                           shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(10)
-                                          ),
-                                          primary: const Color.fromARGB(255, 40, 84, 232),
+                                          ), 
+                                          backgroundColor: const Color.fromARGB(255, 40, 84, 232),
                                           padding: const EdgeInsets.symmetric(vertical: 20),
                                         ),
                                         onPressed: widget.isfromPendingOrder == true ? (){} :
@@ -582,9 +453,9 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                                 borderRadius: BorderRadius.circular(15)
                                               ),
                                               content: SizedBox(
-                                                width: 190,
-                                                height: 138,
+                                                height: 170,
                                                 child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [
                                                     Container(
                                                       height: 50,
@@ -610,7 +481,8 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                                         style: TextStyle(
                                                           fontWeight: FontWeight.bold,
                                                           fontSize: 20
-                                                        )
+                                                        ),
+                                                        textAlign: TextAlign.center,
                                                       ),
                                                     ),
                                     
@@ -626,7 +498,6 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                                               );
                                                             }, 
                                                             child: const Text('Go Back to Home',
-                                                              style: TextStyle(fontSize: 16)
                                                             )
                                                           ),
                                     
@@ -635,7 +506,6 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                                               Navigator.of(context).pop();
                                                             }, 
                                                             child: const Text('Continue', 
-                                                              style: TextStyle(fontSize: 16)
                                                             )
                                                           ),
                                                         ],
@@ -657,6 +527,10 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                         ),
                                       )
                                     ),
+
+                                    const SizedBox(
+                                      height: 10,
+                                    )
                                   ]
                                 ),
 
@@ -668,11 +542,10 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                       side: const BorderSide(
                                         width: 3,
                                         color: Color.fromARGB(255, 40, 84, 232)
-                                      ),
+                                      ), backgroundColor: const Color.fromARGB(255, 40, 84, 232),
                                       shape: RoundedRectangleBorder(
                                         borderRadius:BorderRadius.circular(10)
                                       ),
-                                      primary: const Color.fromARGB(255, 40, 84, 232),
                                       padding: const EdgeInsets.symmetric(vertical: 20),
                                     ),
       
@@ -717,7 +590,7 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
     
                                           Container(
                                             height: 50,
-                                            width: 170,
+                                            width: 160,
                                             margin: const EdgeInsets.only(top: 10),
                                             child: TextFormField(
                                               controller: _amount,
@@ -755,7 +628,7 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                           
                                           Container(
                                             height: 50,
-                                            width: 170,
+                                            width: 150,
                                             margin: const EdgeInsets.only(top: 10),
                                             child: Center(
                                               child: TextFormField(
@@ -788,8 +661,8 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                       style: ElevatedButton.styleFrom(
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(10)
-                                        ),
-                                        primary: const Color.fromARGB(255, 40, 84, 232)
+                                        ), 
+                                        backgroundColor: const Color.fromARGB(255, 40, 84, 232)
                                       ),
                                       onPressed: () async {
                                         if(double.parse(_amount.text)  >= double.parse(getTotal().toString())){
@@ -838,7 +711,7 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                               content: Container(
                                                 width: 300,
                                                 height: 315,
-                                                padding: const EdgeInsets.all(10),
+                                                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                                                   child: Column(
                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
@@ -852,6 +725,7 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                                               fontSize: 25,
                                                               letterSpacing: 3,
                                                             ),
+                                                            textAlign: TextAlign.center,
                                                           ),
                                                         ),
                                                       ),
@@ -871,7 +745,7 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                                               child: Center(
                                                                 child: Text(widget.cusname,
                                                                   style: const TextStyle(
-                                                                    fontSize: 22,
+                                                                    fontSize: 20,
                                                                     fontWeight: FontWeight.bold
                                                                   ),
                                                                 ),
@@ -887,7 +761,7 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                         children: [
                                                           const Text('Amount Due',
-                                                            style:TextStyle(fontSize:18,)
+                                                            style:TextStyle(fontSize:17)
                                                           ),
                                                           
                                                           Text("Php ${getTotal()}",
@@ -906,7 +780,7 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                         children: [
                                                           const Text('Amount Received',
-                                                            style: TextStyle(fontSize:18,)
+                                                            style: TextStyle(fontSize:17)
                                                           ),
                                                                 
                                                           Text('Php ${_amount.text}.0',
@@ -922,11 +796,10 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                         children: [
                                                           const Text('Change',
-                                                            style: TextStyle(fontSize: 18)
+                                                            style: TextStyle(fontSize: 17)
                                                           ),
                                                   
                                                           Text('Php ${_change.text}',
-                                                          // ${_amount.text.isNotEmpty ? double.parse(_amount.text) - (_displayData!.total.toString().isNotEmpty ? double.parse(_displayData!.total.toString()) : 0.0) : "0.0"}',
                                                             style: const TextStyle(fontSize:18)
                                                           ),
                                                         ],
@@ -990,8 +863,7 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                               content: const Text("Insufficient amount", textAlign: TextAlign.center),
     
                                               actions: <Widget>[
-                                                // ignore: deprecated_member_use
-                                                FlatButton(
+                                                MaterialButton(
                                                   onPressed: () {
                                                     Navigator.of(ctx).pop();
                                                   },

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:internapp/forget_password_page.dart';
 import 'package:internapp/landing_page.dart';
 import 'package:internapp/services/API/auth.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key, this.isFromAlertBox = 0.08}) : super(key: key);
@@ -96,10 +97,10 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           margin: const EdgeInsets.fromLTRB(40, 20, 40, 0),
                           child: TextFormField(
+                            scrollPadding: const EdgeInsets.all(0),
                             controller: _emailController,
                             keyboardType: TextInputType.emailAddress,
-                            validator: (value) {
-                              if (value!.isEmpty) {
+                            validator: (value) { if (value!.isEmpty) {
                                 return 'Enter your Email';
                               }
           
@@ -152,6 +153,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           margin: const EdgeInsets.fromLTRB(40, 15, 40, 0),
                           child: TextFormField(
+                            scrollPadding: const EdgeInsets.all(0),
                             controller: _passwordController,
                             obscureText: _isObscure,
                             validator: (value) {
@@ -242,7 +244,7 @@ class _LoginPageState extends State<LoginPage> {
                                         content: const Text("Incorrect email/password", textAlign: TextAlign.center),
         
                                         actions: <Widget>[
-                                          FlatButton(
+                                          MaterialButton(
                                             onPressed: () {
                                               Navigator.of(ctx).pop();
                                             },
@@ -293,8 +295,8 @@ class _LoginPageState extends State<LoginPage> {
                 color: Colors.black38,
                 width: size.width,
                 height: size.height,
-                child: const Center(
-                  child: CircularProgressIndicator(),
+                child: Center(
+                  child: LoadingAnimationWidget.prograssiveDots(color: const Color.fromARGB(255, 40, 84, 232), size: 50),
                 ),
               ): Container()
             ]

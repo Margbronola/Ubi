@@ -212,7 +212,7 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                           ),
 
                                           actions: [
-                                            FlatButton(
+                                            MaterialButton(
                                               onPressed: () {
                                                 Navigator.push(
                                                   context, MaterialPageRoute(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:internapp/global/network.dart';
 import 'package:internapp/model/product_model.dart';
 import 'package:internapp/viewmodel/productviewmodel.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class OutofStockPage extends StatefulWidget {
   const OutofStockPage({ Key? key }) : super(key: key);
@@ -36,48 +37,35 @@ class _OutofStockPageState extends State<OutofStockPage> {
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: _outOfStockProducts.length,
                     itemBuilder: (BuildContext ctx, int index){
-                      return 
-                      // GestureDetector(
-                      //   onTap: () {
-                      //     Navigator.push(
-                      //       context, MaterialPageRoute(
-                      //         builder: (context) => ProductPage(isFromLocalPage: true, height: 700)
-                      //       )
-                      //     );
-                      //   },
-                        
-                      //   child:
-                        Container(
+                      return Container(
                           padding: const EdgeInsets.all(15),
-                          color: Colors.grey.shade300,
+                          color: Colors.grey.shade200,
                           height: 130,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              SizedBox(
-                                width: 140,
-                                height: 125,
-                                child:  _outOfStockProducts[index].images.isEmpty ? SizedBox(
-                                  width: 140,
-                                  height: 125,
-                                  child: Image.asset('assets/images/placeholder.jpg', fit: BoxFit.fitWidth),
-                                ) : Image.network("${Network.imageUrl}${_outOfStockProducts[index].images[0].url}",
-                                  fit: BoxFit.cover,
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(100),
+                                child: SizedBox(
+                                  width: 100,
+                                  height: 100,
+                                  child: _outOfStockProducts[index].images.isEmpty ? 
+                                  Image.asset('assets/images/placeholder.jpg', fit: BoxFit.cover) : 
+                                  Image.network("${Network.imageUrl}${_outOfStockProducts[index].images[0].url}",
+                                    fit: BoxFit.cover
+                                  ),
                                 ),
                               ),
                       
                               Expanded(
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                                  child: Center(
-                                    child: Text(_outOfStockProducts[index].name,
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold
-                                      )
-                                    ),
+                                  child: Text(_outOfStockProducts[index].name,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold
+                                    )
                                   ),
                                 ),
                               ),
@@ -97,7 +85,12 @@ class _OutofStockPageState extends State<OutofStockPage> {
                 );
 
               }
-              return const Center(child: CircularProgressIndicator.adaptive());
+              return Center(
+                child: LoadingAnimationWidget.prograssiveDots(
+                  color: const Color.fromARGB(255, 40, 84, 232), 
+                  size: 50
+                ),
+              );
             },
           ),
         )

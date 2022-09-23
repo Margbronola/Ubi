@@ -255,90 +255,101 @@ class _ProductPageState extends State<ProductPage> {
                                   
                               itemCount: searchProduct.length,
                               itemBuilder: (BuildContext ctx, int index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context, PageTransition(
-                                        type: PageTransitionType.rightToLeftWithFade,
-                                        child: ProductDetailsPage(
-                                          onUpdateCallback: (callback){},
-                                          product: searchProduct[index],
-                                          comment: "",
-                                          cusid: widget.cusid,
-                                        ),
-                                      )
-                                    );
-                                  },
+                                return LayoutBuilder(
+                                  builder: (context,c) {
+                                    final double w = c.maxWidth;
+                                    return GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context, PageTransition(
+                                            type: PageTransitionType.rightToLeftWithFade,
+                                            child: ProductDetailsPage(
+                                              onUpdateCallback: (callback){},
+                                              product: searchProduct[index],
+                                              comment: "",
+                                              cusid: widget.cusid,
+                                            ),
+                                          )
+                                        );
+                                      },
 
-                                  child: Stack(
-                                    children: [
-                                      Column(
+                                      child: Stack(
                                         children: [
-                                          Hero(
-                                            tag: "product",
-                                            child: SizedBox(
-                                              width: 200,
-                                              height: 200,
-                                                child: SizedBox(
-                                                  width: 200,
-                                                  height: 200,
-                                                  child: searchProduct[index].images.isEmpty ? SizedBox(
+                                          Column(
+                                            children: [
+                                              Expanded(
+                                                child: Hero(
+                                                  tag: "product",
+                                                  child: SizedBox(
                                                     width: 200,
                                                     height: 200,
-                                                    child: Image.asset('assets/images/placeholder.jpg',
-                                                      fit: BoxFit.fitWidth
-                                                    ),
-                                                  ) : Image.network(
-                                                    "${Network.imageUrl}${searchProduct[index].images[0].url}",
-                                                    fit: BoxFit.cover,
+                                                      child: SizedBox(
+                                                        width: 200,
+                                                        height: 200,
+                                                        child: searchProduct[index].images.isEmpty ? SizedBox(
+                                                          width: 200,
+                                                          height: 200,
+                                                          child: Image.asset('assets/images/placeholder.jpg',
+                                                            fit: BoxFit.fitWidth
+                                                          ),
+                                                        ) : Image.network(
+                                                          "${Network.imageUrl}${searchProduct[index].images[0].url}",
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ),
+                                              ),
+
+                                                Container(
+                                                  width: w,
+                                                  padding:const EdgeInsets.all(5),
+                                                  color: const Color.fromARGB(255, 232, 149, 40),
+                                                  child: Wrap(
+                                                    crossAxisAlignment: WrapCrossAlignment.center,
+                                                    runAlignment: WrapAlignment.spaceBetween,
+                                                    alignment: WrapAlignment.spaceBetween,
+                                                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    children: [
+                                                      Text(searchProduct[index].name,
+                                                        style: const TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 18,
+                                                          fontWeight: FontWeight.bold
+                                                        )
+                                                      ),
+
+                                                      Text(searchProduct[index].price.toStringAsFixed(2),
+                                                        style: const TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize:20
+                                                        )
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
+                                              ],
+                                            ),
+
+                                            if (searchProduct[index].stock == 0) ...{
+                                              Positioned.fill(
+                                                child: Container(
+                                                  color: Colors.black.withOpacity(.4),
+                                                  alignment: Alignment.center,
+                                                  child: const Text('Out of Stock',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 25,
+                                                    ),
+                                                  ),
+                                                )
                                               )
-                                            ),
-
-                                            Container(
-                                              padding:const EdgeInsets.all(5),
-                                              color: const Color.fromARGB(255, 232, 149, 40),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  Text(searchProduct[index].name,
-                                                    style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 18,
-                                                      fontWeight: FontWeight.bold
-                                                    )
-                                                  ),
-
-                                                  Text(searchProduct[index].price.toStringAsFixed(2),
-                                                    style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize:20
-                                                    )
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
+                                            },
                                           ],
                                         ),
-
-                                        if (searchProduct[index].stock == 0) ...{
-                                          Positioned.fill(
-                                            child: Container(
-                                              color: Colors.black.withOpacity(.4),
-                                              alignment: Alignment.center,
-                                              child: const Text('Out of Stock',
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 25,
-                                                ),
-                                              ),
-                                            )
-                                          )
-                                        },
-                                      ],
-                                    ),
-                                  );
+                                      );
+                                  }
+                                );
                                 }
                               );
                             } 

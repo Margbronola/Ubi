@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:internapp/services/API/forgotpasswordApi.dart';
 import 'package:internapp/verification_page.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 // ignore: use_key_in_widget_constructors
 class ForgetPasswordPage extends StatefulWidget {
@@ -206,8 +207,8 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                 color: Colors.black38,
                 width: size.width,
                 height: size.height,
-                child: const Center(
-                  child: CircularProgressIndicator(),
+                child: Center(
+                  child: LoadingAnimationWidget.prograssiveDots(color: const Color.fromARGB(255, 40, 84, 232), size: 50),
                 ),
               ): Container()
             ],

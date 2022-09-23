@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:internapp/global/custom_switcher.dart';
 import 'package:internapp/profile_page.dart';
 import 'package:internapp/viewmodel/navigationbuttonviewmodel.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 // ignore: camel_case_types
 class list extends StatefulWidget {
@@ -76,12 +77,10 @@ class _listState extends State<list> {
         stream: _viewModel.stream,
         builder: (context,snapshot) {
           // ignore: curly_braces_in_flow_control_structures
-          if(!snapshot.hasData || snapshot.hasError) return  const Center(
-            child: CircularProgressIndicator.adaptive(),
-          );
+          if(!snapshot.hasData || snapshot.hasError) return  Center(child: LoadingAnimationWidget.prograssiveDots(color: const Color.fromARGB(255, 40, 84, 232), size: 50));
         
-          return ListView(
-            padding: const EdgeInsets.symmetric(vertical: 0),
+          return Column(
+            // padding: const EdgeInsets.symmetric(vertical: 0),
             children: [
               switcherData(switchData: [
                 SwitcherData(

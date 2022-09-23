@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:internapp/orderdetails.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:internapp/model/todaysorder_model.dart';
 import 'package:internapp/services/API/todaysorderApi.dart';
@@ -34,38 +35,6 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(  
-        // appBar: AppBar(
-        //   actions: [
-        //     Container(
-        //       width: 40,
-        //       height: 40,
-        //       margin: const EdgeInsets.only(right: 8),
-        //       decoration: const BoxDecoration(
-        //         shape: BoxShape.circle,
-        //         color: Colors.white,
-        //       ),
-
-        //       child: IconButton(
-        //         onPressed: (){
-        //           showModalBottomSheet(
-        //             isScrollControlled: true,
-        //             backgroundColor: Colors.transparent,
-        //             constraints: BoxConstraints(
-        //               maxHeight: size.height,
-        //             ),
-        //             context: context,
-        //             builder: (_) => BackdropFilter(
-        //               filter: ImageFilter.blur(sigmaX: 5, sigmaY:5),
-        //               child: const ProfilePage()
-        //             )
-        //           );
-        //         }, 
-        //         icon: const Icon(Icons.person_rounded, color: Colors.blue)
-        //       ),
-        //     ),
-        //   ],
-        // ),
-
         body: Container(
           width: size.width,
           height: size.height,
@@ -84,7 +53,7 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
                     )
                   ]
                 ),
-                height: 120,
+                padding: const EdgeInsets.only(bottom: 10),
                 child: Column(
                   children: [
                     Container(
@@ -142,35 +111,29 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
                     ),
 
                     Container(
-                      height: 40,
                       padding: const EdgeInsets.symmetric(horizontal: 20),
+                      margin: const EdgeInsets.only(left: 10),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: const [
-                          SizedBox(
-                            width: 150,
-                            child: Center(
-                              child: Text('Customer', 
-                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
-                              ),
+                          Expanded(
+                            child: Text('Customer', 
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
                             )
                           ),
             
                           SizedBox(
                             width: 100,
-                            child: Center(
-                              child: Text('Price', 
-                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
-                              ),
+                            child: Text('Price', 
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
                             )
                           ),
             
                           SizedBox(
                             width: 100,
-                            child: Center(
-                              child: Text('No. Products', 
-                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
-                              ),
+                            child: Text('No. Products', 
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
                             )
                           )
                         ],
@@ -181,58 +144,47 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
                 ),
               ),
 
-            Container(
-              height: 590,
-              margin: const EdgeInsets.only(top: 15),
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: StreamBuilder<List<TodaysOrderModel>>(
-                stream: _viewModel.stream,
-                builder: (_, snapshot) {
-                  if (snapshot.hasData && !snapshot.hasError){
-                    if (snapshot.data!.isNotEmpty) {                      
-                      final List<TodaysOrderModel> searchCustomer = snapshot.data!.where((element) => 
-                        (element.cartCustomer.customer?.name.toLowerCase().contains(searchString) ?? searchString.isEmpty) &&
-                        element.status == false
-                      ).toList();
-
-                      return ListView.separated(
-                        shrinkWrap: true,
-                        itemCount: searchCustomer.length,
-                        itemBuilder: (BuildContext ctx, int index ){
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context, PageTransition(
-                                  type: PageTransitionType.rightToLeftWithFade,
-                                  child: OrderDetailsPage(
-                                    isfromPendingOrder: true,
-                                    cusid: searchCustomer[index].cartCustomer.customer?.id ?? 0,
-                                    cusname: searchCustomer[index].cartCustomer.customer?.name ?? "N/A",
-                                    orderid: searchCustomer[index].id,
-                                    status: "Pending"
-                                  ),
-                                )
-                                // MaterialPageRoute(
-                                //   builder: (context) => OrderDetailsPage(
-                                    // isfromPendingOrder: true,
-                                    // cusid: searchCustomer[index].cartCustomer.customer?.id ?? 0,
-                                    // cusname: searchCustomer[index].cartCustomer.customer?.name ?? "N/A",
-                                    // orderid: searchCustomer[index].id,
-                                    // status: "Pending"
-                                //   )
-                                // )
-                              );
-                            },
-                        
-                            child: Container(
-                              color: Colors.grey.shade100,
-                              height: 50,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  SizedBox(
-                                    width: 150,
-                                    child: Center(
+            Expanded(
+              child: Container(
+                margin: const EdgeInsets.only(top: 15),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: StreamBuilder<List<TodaysOrderModel>>(
+                  stream: _viewModel.stream,
+                  builder: (_, snapshot) {
+                    if (snapshot.hasData && !snapshot.hasError){
+                      if (snapshot.data!.isNotEmpty) {                      
+                        final List<TodaysOrderModel> searchCustomer = snapshot.data!.where((element) => 
+                          (element.cartCustomer.customer?.name.toLowerCase().contains(searchString) ?? searchString.isEmpty) &&
+                          element.status == false
+                        ).toList();
+            
+                        return ListView.separated(
+                          shrinkWrap: true,
+                          itemCount: searchCustomer.length,
+                          itemBuilder: (_, index ){
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context, PageTransition(
+                                    type: PageTransitionType.rightToLeftWithFade,
+                                    child: OrderDetailsPage(
+                                      isfromPendingOrder: true,
+                                      cusid: searchCustomer[index].cartCustomer.customer?.id ?? 0,
+                                      cusname: searchCustomer[index].cartCustomer.customer?.name ?? "N/A",
+                                      orderid: searchCustomer[index].id,
+                                      status: "Pending"
+                                    ),
+                                  )
+                                );
+                              },
+                          
+                              child: Container(
+                                color: Colors.grey.shade100,
+                                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
                                       child: Text(searchCustomer[index].cartCustomer.customer?.name ?? "N/A",
                                         style: const TextStyle(
                                           color: Colors.black,
@@ -240,51 +192,49 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
                                         )
                                       ),
                                     ),
-                                  ),
-                                      
-                                  SizedBox(
-                                    width: 100,
-                                    child: Center(
+                                        
+                                    SizedBox(
+                                      width: 100,
                                       child: Text(searchCustomer[index].total.toStringAsFixed(2),
                                         style: const TextStyle(
                                           color: Colors.black,
                                           fontSize: 18,
-                                        )
+                                        ),
+                                        textAlign: TextAlign.center,
                                       ),
                                     ),
-                                  ),
-                                      
-                                  SizedBox(
-                                    width: 100,
-                                    child: Center(
+                                        
+                                    SizedBox(
+                                      width: 100,
                                       child: Text(searchCustomer[index].orderQty.toString(),
                                         style: const TextStyle(
                                           color: Colors.black,
                                           fontSize: 18,
-                                        )
+                                        ),
+                                        textAlign: TextAlign.center,
                                       ),
                                     ),
-                                  ),
-                                    
-                                ],
+                                      
+                                  ],
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) => const Divider(color: Colors.transparent),
+                            );
+                          },
+                          separatorBuilder: (BuildContext context, int index) => const Divider(color: Colors.transparent),
+                        );
+                      }
+              
+                      return const Center(
+                        child: Text('No Pending Order',
+                          style: TextStyle(fontSize: 30, letterSpacing: 3)
+                        )
                       );
                     }
-  
-                    return const Center(
-                      child: Text('No Pending Order',
-                        style: TextStyle(fontSize: 30, letterSpacing: 3)
-                      )
-                    );
+            
+                    return Center(child: LoadingAnimationWidget.prograssiveDots(color: const Color.fromARGB(255, 40, 84, 232), size: 50));
                   }
-
-                  return const Center(child: CircularProgressIndicator.adaptive());
-                }
-              )
+                )
+              ),
             ),
           ],
         ),

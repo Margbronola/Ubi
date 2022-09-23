@@ -384,7 +384,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                     ),
                                     content: const Text("Incorrect old password"),
                                     actions: <Widget>[
-                                      FlatButton(
+                                      MaterialButton(
                                         onPressed: () {
                                           Navigator.of(ctx).pop();
                                         },
@@ -513,7 +513,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                     ),
                                     content: const Text("Incorrect old password", textAlign: TextAlign.center),
                                     actions: <Widget>[
-                                      FlatButton(
+                                      MaterialButton(
                                         onPressed: () {
                                           Navigator.of(ctx).pop();
                                         },

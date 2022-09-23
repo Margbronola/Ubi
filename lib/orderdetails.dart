@@ -7,6 +7,7 @@ import 'package:internapp/profile_page.dart';
 import 'package:internapp/services/API/addpaymentApi.dart';
 import 'package:internapp/services/API/orderdetailsApi.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 // ignore: must_be_immutable
 class OrderDetailsPage extends StatefulWidget {
@@ -123,27 +124,27 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                   children: [
                     Container(
                       width: size.width,
-                      height: 55,
-                      margin: const EdgeInsets.only(top: 25, bottom: 10),
+                      margin: const EdgeInsets.only(top: 10, bottom: 10),
                       padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Expanded(
-                            child: Row(
-                              children: [
-                                const Text('Customer: ', style: TextStyle(fontSize: 20)),
-                                Text(widget.cusname,
-                                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
-                                ),
-                              ],
-                            ),
-                          ),
-                          
                           Text(date,
                             style: const TextStyle(fontSize: 20)
-                          )
-                      
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const Text('Customer: ', style: TextStyle(fontSize: 20)),
+                              Text(widget.cusname,
+                                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                              ),
+                            ],
+                          ),
+        
                         ]
                       ),
                     ),
@@ -158,95 +159,146 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: Container(
-                            padding: const EdgeInsets.all(10),
                             color: Colors.grey.shade200,
-                            height: 100,
+                            padding: const EdgeInsets.all(10),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                SizedBox(
-                                  width: 80,
-                                  height: 100,
-                                  child: details.product.images.isNotEmpty ? 
-                                  Image.network("${Network.imageUrl}${details.product.images[0].url}",
-                                    fit: BoxFit.cover
-                                  ) : Image.asset('assets/images/placeholder.jpg',
-                                    fit: BoxFit.fitWidth
-                                  )
-                                ),
-                              
-                                Container(
-                                  margin: const EdgeInsets.only(top: 5),
-                                  child: Column(
-                                    children: [
-                                      Center(
-                                        child: Container(
-                                          width: 190,
-                                          height: 30,
-                                          padding: const EdgeInsets.only(left: 15),
-                                          child: Text( details.prepared ? "Prepared" : "To Prepare",
-                                            style: const TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
-                                              color: Color.fromARGB(255, 40, 84, 232)
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                          
-                                      SizedBox(
-                                        width: 190,
-                                        height: 45,
-                                        child: Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            SizedBox(
-                                              width: 30,
-                                              child: Text(details.qty.toString(),
-                                                textAlign: TextAlign.center,
-                                                style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold
-                                                )
-                                              ),
-                                            ),
-    
-                                            SizedBox(
-                                              width: 160,
-                                              child: Text(details.product.name,
-                                                textAlign: TextAlign.center,
-                                                style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold
-                                                )
-                                              ),
-                                            ),
-    
-                                          ],
-                                        ),
-                                      ),
-                                    ],
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(80),
+                                  child: SizedBox(
+                                    width: 80,
+                                    height: 80,
+                                    child: details.product.images.isNotEmpty ? 
+                                    Image.network("${Network.imageUrl}${details.product.images[0].url}",
+                                      fit: BoxFit.cover
+                                    ) : Image.asset('assets/images/placeholder.jpg',
+                                      fit: BoxFit.fitWidth
+                                    )
                                   ),
                                 ),
-    
-                                SizedBox(
-                                  width: 80,
-                                  height: 100,
-                                  child: Center(
-                                    child: Text("P${details.price}",
+
+                                const SizedBox(
+                                  width: 10,
+                                ),
+
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text( details.prepared ? "Prepared" : "To Prepare",
                                       style: const TextStyle(
+                                        fontSize: 18,
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 20,
+                                        color: Color.fromARGB(255, 40, 84, 232)
                                       ),
                                     ),
-                                  ),
-                                ),
-    
+
+                                    Row(
+                                      children: [
+                                        Text("${details.qty.toString()}x",
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold
+                                                )
+                                              ),
+                                      ],
+                                    )
+                                  ],
+                                )
                               ],
                             ),
                           ),
+                          // child: Container(
+                          //   padding: const EdgeInsets.all(10),
+                            // color: Colors.grey.shade200,
+                          //   height: 100,
+                          //   child: Row(
+                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //     children: [
+                                // SizedBox(
+                                //   width: 80,
+                                //   height: 80,
+                                //   child: details.product.images.isNotEmpty ? 
+                                //   Image.network("${Network.imageUrl}${details.product.images[0].url}",
+                                //     fit: BoxFit.cover
+                                //   ) : Image.asset('assets/images/placeholder.jpg',
+                                //     fit: BoxFit.fitWidth
+                                //   )
+                                // ),
+                              
+                                // Container(
+                                //   margin: const EdgeInsets.only(top: 5),
+                                //   child: Column(
+                                //     children: [
+                                //       Center(
+                                        // child: Container(
+                                        //   width: 190,
+                                        //   height: 30,
+                                        //   padding: const EdgeInsets.only(left: 15),
+                                        //   child: Text( details.prepared ? "Prepared" : "To Prepare",
+                                        //     style: const TextStyle(
+                                        //       fontSize: 20,
+                                        //       fontWeight: FontWeight.bold,
+                                        //       color: Color.fromARGB(255, 40, 84, 232)
+                                        //     ),
+                                        //   ),
+                                        // ),
+                                //       ),
+                          
+                          //             SizedBox(
+                          //               width: 190,
+                          //               height: 45,
+                          //               child: Row(
+                          //                 crossAxisAlignment: CrossAxisAlignment.start,
+                          //                 children: [
+                          //                   SizedBox(
+                          //                     width: 30,
+                                              // child: Text(details.qty.toString(),
+                                              //   textAlign: TextAlign.center,
+                                              //   style: const TextStyle(
+                                              //     color: Colors.black,
+                                              //     fontSize: 18,
+                                              //     fontWeight: FontWeight.bold
+                                              //   )
+                                              // ),
+                          //                   ),
+    
+                          //                   SizedBox(
+                          //                     width: 160,
+                          //                     child: Text(details.product.name,
+                          //                       textAlign: TextAlign.center,
+                          //                       style: const TextStyle(
+                          //                         color: Colors.black,
+                          //                         fontSize: 18,
+                          //                         fontWeight: FontWeight.bold
+                          //                       )
+                          //                     ),
+                          //                   ),
+    
+                          //                 ],
+                          //               ),
+                          //             ),
+                          //           ],
+                          //         ),
+                          //       ),
+    
+                          //       SizedBox(
+                          //         width: 80,
+                          //         height: 100,
+                          //         child: Center(
+                          //           child: Text("P${details.price}",
+                          //             style: const TextStyle(
+                          //               fontWeight: FontWeight.bold,
+                          //               fontSize: 20,
+                          //             ),
+                          //           ),
+                          //         ),
+                          //       ),
+    
+                          //     ],
+                          //   ),
+                          // ),
                         );
                       }, 
                       separatorBuilder: (BuildContext context, int index) => const Divider(color: Colors.transparent), 
@@ -616,7 +668,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
     
                                                     actions: <Widget>[
                                                       // ignore: deprecated_member_use
-                                                      FlatButton(
+                                                      MaterialButton(
                                                         onPressed: () {
                                                           Navigator.of(ctx).pop();
                                                         },
@@ -749,8 +801,8 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                 color: Colors.black38,
                 width: size.width,
                 height: size.height,
-                child: const Center(
-                  child: CircularProgressIndicator(),
+                child: Center(
+                  child: LoadingAnimationWidget.prograssiveDots(color: const Color.fromARGB(255, 40, 84, 232), size: 50),
                 ),
               ): Container()
 

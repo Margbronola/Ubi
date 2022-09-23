@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:internapp/global/access.dart';
 import 'package:internapp/services/API/datacacher.dart';
 import 'package:internapp/viewmodel/navigationbuttonviewmodel.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({ Key? key }) : super(key: key);
@@ -40,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
         accessToken = d;
       });
       checkMenu();
-      await Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(const Duration(seconds: 2));
       Navigator.pushNamed(context, '/landing_page');
     }
   }
@@ -65,9 +66,7 @@ class _SplashScreenState extends State<SplashScreen> {
               child: Image.asset('assets/images/BlackLogo.png', fit: BoxFit.fitWidth)
             ),
             
-            const CircularProgressIndicator(
-              strokeWidth: 6,
-            ),
+            LoadingAnimationWidget.prograssiveDots(color: const Color.fromARGB(255, 40, 84, 232), size: 50)
           ]
         ),
       ),

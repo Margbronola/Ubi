@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:internapp/login_page.dart';
 import 'package:internapp/services/API/forgotpasswordApi.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 // ignore: use_key_in_widget_constructors
 class NewPasswordPage extends StatefulWidget {
@@ -333,8 +334,8 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                 color: Colors.black38,
                 width: size.width,
                 height: size.height,
-                child: const Center(
-                  child: CircularProgressIndicator(),
+                child: Center(
+                  child: LoadingAnimationWidget.prograssiveDots(color: const Color.fromARGB(255, 40, 84, 232), size: 50),
                 ),
               ): Container()
             ],

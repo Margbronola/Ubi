@@ -239,24 +239,26 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 const Text("Request and Add-ons", 
                                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
                                 ),
-                                TextFormField(
-                                  enabled: label == "Added" || widget.product.stock == 0 ? false : true,
-                                  controller: comment,
-                                  maxLines: 7,
-                                  decoration: const InputDecoration(
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Color.fromARGB(255, 40, 84, 232), width: 2),
+                                Expanded(
+                                  child: TextFormField(
+                                    enabled: label == "Added" || widget.product.stock == 0 ? false : true,
+                                    controller: comment,
+                                    maxLines: 7,
+                                    decoration: const InputDecoration(
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Color.fromARGB(255, 40, 84, 232), width: 2),
+                                      ),
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Color.fromARGB(255, 40, 84, 232), width: 2),
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      hintText: "Add request here"
                                     ),
-                                    border: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Color.fromARGB(255, 40, 84, 232), width: 2),
-                                    ),
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    hintText: "Add request here"
+                                    onTap: (){
+                                      comment.clear();
+                                    },
                                   ),
-                                  onTap: (){
-                                    comment.clear();
-                                  },
                                 ),
                               ],
                             ),
@@ -415,7 +417,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                                 ),
             
                                                 actions: <Widget>[
-                                                  FlatButton(
+                                                  MaterialButton(
                                                     onPressed: () {
                                                       Navigator.of(ctx).pop();
                                                     },
@@ -504,7 +506,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                         fontSize: 20, 
                                         letterSpacing: 3, 
                                         color: Color.fromARGB(255, 40, 84, 232)
-                                      )
+                                      ),
+                                      textAlign: TextAlign.center,
                                     )
                                   ),
                                 ),

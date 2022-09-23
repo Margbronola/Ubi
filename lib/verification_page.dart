@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:internapp/new_password_page.dart';
 import 'package:flutter_verification_code/flutter_verification_code.dart';
 import 'package:internapp/services/API/forgotpasswordApi.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 // ignore: must_be_immutable
 class VerificationPage extends StatefulWidget {
@@ -177,8 +178,8 @@ class _VerificationPageState extends State<VerificationPage> {
               color: Colors.black38,
               width: size.width,
               height: size.height,
-              child: const Center(
-                child: CircularProgressIndicator(),
+              child: Center(
+                child: LoadingAnimationWidget.prograssiveDots(color: const Color.fromARGB(255, 40, 84, 232), size: 50),
               ),
             ): Container()
           ],

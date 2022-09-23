@@ -9,6 +9,7 @@ import 'package:internapp/login_page.dart';
 import 'package:internapp/menu_page.dart';
 import 'package:internapp/profile_details.dart';
 import 'package:internapp/services/API/auth.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -50,7 +51,6 @@ class _ProfilePageState extends State<ProfilePage> {
   deleteToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('accesstoken');
-    print('token deleted');
   }
 
   displayToken() async {
@@ -123,203 +123,215 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
-    return DraggableScrollableSheet(
-      minChildSize: .08,
-      initialChildSize: .65,
-      maxChildSize: .65,
-      builder: (context, scrollController){
-        return Container(
-          padding: const EdgeInsets.only(top: 30),
-          decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(50),
-                topRight: Radius.circular(50)
-              ),
-            ),
+    return Stack(
+      children: [
+        DraggableScrollableSheet(
+          minChildSize: .08,
+          initialChildSize: .65,
+          maxChildSize: .65,
+          builder: (context, scrollController){
+            return Container(
+              padding: const EdgeInsets.only(top: 20),
+              decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(50),
+                    topRight: Radius.circular(50)
+                  ),
+                ),
 
-          child: ListView(
-            controller: scrollController,
-            children: [
-              Row(
+              child: ListView(
+                shrinkWrap: true,
+                controller: scrollController,
                 children: [
-                  Container(
-                    width: 80,
-                    height: 80,
-                    margin: const EdgeInsets.only(left: 30, bottom: 10, right: 8),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.grey.shade200,
-                    ),
-                    child: const Icon(Icons.person_rounded, size: 50, color: Colors.grey,),
-                  ),
-            
-                  Expanded(
-                    // height: 100,
-                    // width: 250,
-                    // margin: const EdgeInsets.only(left: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(loggedUser?.name ?? "FETCHING DETAILS",
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold
-                          )
+                  Row(
+                    children: [
+                      Container(
+                        width: 80,
+                        height: 80,
+                        margin: const EdgeInsets.only(left: 30, bottom: 10, right: 8),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.grey.shade200,
                         ),
-            
-                        Text(loggedUser?.position ?? "FETCHING DETAILS",
-                          style: const TextStyle(
-                            fontSize: 18,
-                            color: Color.fromARGB(255, 232, 149, 40)
-                          )
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Divider(color:Colors.grey.shade300, thickness: 3),
-              ),
-
-              Container(
-                height: 400,
-                padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
-                child: ListView(
-                  children: [
-
-                    titledData(
-                      childrenData: [
-                        ChildData(
-                          icon: const Icon(
-                            Icons.person,
-                            color: Color.fromARGB(255, 232, 149, 40),
-                          ),
-                          title: "Details",
-                          destination: null,
-                          onPressed: loggedUser == null ? null : () {
-                            showModalBottomSheet(
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                              constraints: BoxConstraints(
-                                maxHeight: size.height,
-                              ),
-                              context: context,
-                              builder: (_) => BackdropFilter(
-                                filter: ImageFilter.blur(sigmaX: 5, sigmaY:5),
-                                child: ProfileDetailsPage(callback: (bool s) {setState(() {});})
+                        child: const Icon(Icons.person_rounded, size: 50, color: Colors.grey,),
+                      ),
+                
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(loggedUser?.name ?? "FETCHING DETAILS",
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold
                               )
-                            );
-                          },
-                        )
-                      ],
-                    ),
-
-                    titledData(
-                      childrenData: [
-                        ChildData(
-                          icon: const Icon(Icons.security_rounded,
-                            color: Color.fromARGB(255, 232, 149, 40)
-                          ),
-                          title: "Change Password",
-                          destination: null,
-                          onPressed: () {
-                            showModalBottomSheet(
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                              constraints: BoxConstraints(
-                                maxHeight: size.height,
-                              ),
-                              context: context,
-                              builder: (_) => BackdropFilter(
-                                filter: ImageFilter.blur(sigmaX: 5, sigmaY:5),
-                                child: const ChangePasswordPage()
-                              )
-                            );
-                          },
-                        )
-                      ]
-                    ),
-
-                    titledData(
-                      childrenData: [
-                        ChildData(
-                          icon: const Icon(Icons.menu_rounded,
-                            color: Color.fromARGB(255, 232, 149, 40)
-                          ),
-                          title: "My Menu",
-                          destination: null,
-                          onPressed: () {
-                            showModalBottomSheet(
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                              constraints: BoxConstraints(
-                                maxHeight: size.height,
-                              ),
-                              context: context,
-                              builder: (_) => BackdropFilter(
-                                filter: ImageFilter.blur(sigmaX: 5, sigmaY:5),
-                                child: const MenuPage()
-                              )
-                            );
-                          },
-                        )
-                      ]
-                    ),
-
-                    Container(
-                      width: 600,
-                      height: 55,
-                      margin: const EdgeInsets.only(top: 40, bottom: 20),
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          setState(() {
-                            isLoading = true;
-                          });
-
-                          await _auth.logout().then((value) {
-                            if (value) {
-                              displayToken();
-                              deleteToken();
-                              Navigator.pushReplacement(
-                                context, MaterialPageRoute(
-                                  builder: (context) => const LoginPage(),
-                                ),
-                              );
-                            }
-                          }).whenComplete(
-                            () => setState(
-                              () => isLoading = false,
                             ),
-                          );
-                        },
-                        
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)
-                          ),
-                          primary:const Color.fromARGB(255, 40, 84, 232)
-                        ),
-                        child: const Text('LOGOUT',
-                          style: TextStyle(
-                            fontSize: 20, 
-                            letterSpacing: 3
-                          ),
+                
+                            Text(loggedUser?.position ?? "FETCHING DETAILS",
+                              style: const TextStyle(
+                                fontSize: 18,
+                                color: Color.fromARGB(255, 232, 149, 40)
+                              )
+                            ),
+                          ],
                         ),
                       ),
+                    ],
+                  ),
+                
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Divider(color:Colors.grey.shade300, thickness: 3),
+                  ),
+
+                  Expanded(
+                    child: Container(
+                      width: size.width,
+                      height: 400,
+                      padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
+                      child: Column(
+                        children: [
+                    
+                          titledData(
+                            childrenData: [
+                              ChildData(
+                                icon: const Icon(
+                                  Icons.person,
+                                  color: Color.fromARGB(255, 232, 149, 40),
+                                ),
+                                title: "Details",
+                                destination: null,
+                                onPressed: loggedUser == null ? null : () {
+                                  showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    constraints: BoxConstraints(
+                                      maxHeight: size.height,
+                                    ),
+                                    context: context,
+                                    builder: (_) => BackdropFilter(
+                                      filter: ImageFilter.blur(sigmaX: 5, sigmaY:5),
+                                      child: ProfileDetailsPage(callback: (bool s) {setState(() {});})
+                                    )
+                                  );
+                                },
+                              )
+                            ],
+                          ),
+                    
+                          titledData(
+                            childrenData: [
+                              ChildData(
+                                icon: const Icon(Icons.security_rounded,
+                                  color: Color.fromARGB(255, 232, 149, 40)
+                                ),
+                                title: "Change Password",
+                                destination: null,
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    constraints: BoxConstraints(
+                                      maxHeight: size.height,
+                                    ),
+                                    context: context,
+                                    builder: (_) => BackdropFilter(
+                                      filter: ImageFilter.blur(sigmaX: 5, sigmaY:5),
+                                      child: const ChangePasswordPage()
+                                    )
+                                  );
+                                },
+                              )
+                            ]
+                          ),
+                    
+                          titledData(
+                            childrenData: [
+                              ChildData(
+                                icon: const Icon(Icons.menu_rounded,
+                                  color: Color.fromARGB(255, 232, 149, 40)
+                                ),
+                                title: "My Menu",
+                                destination: null,
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    constraints: BoxConstraints(
+                                      maxHeight: size.height,
+                                    ),
+                                    context: context,
+                                    builder: (_) => BackdropFilter(
+                                      filter: ImageFilter.blur(sigmaX: 5, sigmaY:5),
+                                      child: const MenuPage()
+                                    )
+                                  );
+                                },
+                              )
+                            ]
+                          ),
+                    
+                          Container(
+                            width: size.width,
+                            height: 55,
+                            margin: const EdgeInsets.only(top: 30, bottom: 0),
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                setState(() {
+                                  isLoading = true;
+                                });
+                    
+                                await _auth.logout().then((value) {
+                                  if (value) {
+                                    displayToken();
+                                    deleteToken();
+                                    Navigator.pushReplacement(
+                                      context, MaterialPageRoute(
+                                        builder: (context) => const LoginPage(),
+                                      ),
+                                    );
+                                  }
+                                }).whenComplete(
+                                  () => setState(
+                                    () => isLoading = false,
+                                  ),
+                                );
+                              },
+                              
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)
+                                ), backgroundColor: const Color.fromARGB(255, 40, 84, 232)
+                              ),
+                              child: const Text('LOGOUT',
+                                style: TextStyle(
+                                  fontSize: 20, 
+                                  letterSpacing: 3
+                                ),
+                              ),
+                            ),
+                          ),
+                        ]
+                      )
                     ),
-                  ]
-                )
+                  )
+                ]
               )
-            ]
-          )
-        );
-      }
+            );
+          }
+        ),
+        isLoading ? Container(
+                    color: Colors.black38,
+                    width: size.width,
+                    height: size.height,
+                    child: Center(
+                      child: LoadingAnimationWidget.prograssiveDots(color: const Color.fromARGB(255, 40, 84, 232), size: 50),
+                    ),
+                  ): Container()
+      ],
     );
   }
 }

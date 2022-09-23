@@ -12,6 +12,7 @@ import 'package:internapp/services/API/productApi.dart';
 import 'package:internapp/services/API/producttoprepareApi.dart';
 import 'package:internapp/services/API/todaysorderApi.dart';
 import 'package:internapp/viewmodel/navigationbuttonviewmodel.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LandingPage extends StatefulWidget {
@@ -112,9 +113,8 @@ class _LandingPageState extends State<LandingPage> {
         backgroundColor: const Color.fromARGB(255, 40, 84, 232),
       ),
       
-      body: loggedUser == null ? const Center(
-        child: CircularProgressIndicator.adaptive()
-      ) : StreamBuilder<List<int>> (
+      body: loggedUser == null ? Center(child: LoadingAnimationWidget.prograssiveDots(color: const Color.fromARGB(255, 40, 84, 232), size: 50))
+       : StreamBuilder<List<int>> (
         stream: _viewModel.stream,
         builder: (context, snapshot) {
           if(snapshot.hasData && !snapshot.hasError && snapshot.data!.isNotEmpty){
@@ -145,8 +145,8 @@ class _LandingPageState extends State<LandingPage> {
                           onTap: (index) {
                             setState(() => currentIndex = index);
                           },
-                        ): const Center(
-                          child: CircularProgressIndicator.adaptive()
+                        ): Center(
+                          child: LoadingAnimationWidget.prograssiveDots(color: const Color.fromARGB(255, 40, 84, 232), size: 50)
                         ),
                       ),
                     ),

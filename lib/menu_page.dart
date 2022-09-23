@@ -12,9 +12,9 @@ class _MenuPageState extends State<MenuPage> {
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
-        minChildSize: .08,
-        initialChildSize: .75,
-        maxChildSize: .75,
+        minChildSize: .5,
+        initialChildSize: .8,
+        maxChildSize: 1,
         builder: (context, scrollController){
           return Container(
             decoration: const BoxDecoration(
@@ -25,7 +25,7 @@ class _MenuPageState extends State<MenuPage> {
               ),
             ),
             child: ListView(
-              padding: const EdgeInsets.symmetric(vertical: 0),
+              padding: const EdgeInsets.symmetric(vertical: 10),
               controller: scrollController,
               children: [
                 Padding(
