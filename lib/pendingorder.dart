@@ -39,8 +39,7 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
           width: size.width,
           height: size.height,
           color: Colors.white,
-          child: ListView(
-            padding: const EdgeInsets.symmetric(vertical: 0),
+          child: Column(
             children: [
               Container(
                 decoration: BoxDecoration(
@@ -53,13 +52,12 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
                     )
                   ]
                 ),
-                padding: const EdgeInsets.only(bottom: 10),
+                padding: const EdgeInsets.only(bottom: 15),
                 child: Column(
                   children: [
                     Container(
                       width: size.width,
-                      height: 55,
-                      margin: const EdgeInsets.only(top: 20),
+                      margin: const EdgeInsets.only(top: 15, bottom: 5),
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -112,7 +110,7 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
 
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
-                      margin: const EdgeInsets.only(left: 10),
+                      margin: const EdgeInsets.only( top: 5),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: const [
@@ -125,7 +123,8 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
                           SizedBox(
                             width: 100,
                             child: Text('Price', 
-                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
                             )
                           ),
             
@@ -146,8 +145,7 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
 
             Expanded(
               child: Container(
-                margin: const EdgeInsets.only(top: 15),
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                margin: const EdgeInsets.only(top: 15, bottom: 70),
                 child: StreamBuilder<List<TodaysOrderModel>>(
                   stream: _viewModel.stream,
                   builder: (_, snapshot) {
@@ -180,7 +178,7 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
                           
                               child: Container(
                                 color: Colors.grey.shade100,
-                                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
@@ -226,8 +224,8 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
               
                       return const Center(
                         child: Text('No Pending Order',
-                          style: TextStyle(fontSize: 30, letterSpacing: 3)
-                        )
+                          style: TextStyle(fontSize: 25, letterSpacing: 3),
+                        ),
                       );
                     }
             

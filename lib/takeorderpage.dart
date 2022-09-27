@@ -1,6 +1,7 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:internapp/global/access.dart';
 import 'package:internapp/productpage.dart';
 import 'package:internapp/services/API/customerApi.dart';
@@ -41,80 +42,22 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                  //   Container(
-                  //   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  //   width: size.width,
-                  //   height: 80,
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: [
-                  //       Expanded(
-                  //         child: TextField(
-                  //           decoration: InputDecoration(
-                  //             border: const OutlineInputBorder(
-                  //               borderRadius: BorderRadius.all(Radius.circular(10)),
-                  //             ),
-                  //             enabledBorder: OutlineInputBorder(
-                  //               borderSide: BorderSide(color: Colors.grey.shade300),
-                  //             ),       
-                  //             hintText: 'Search Customer',
-                  //             hintStyle: const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
-                  //             filled: true,
-                  //             fillColor: Colors.grey.shade300,
-                  //             suffixIconConstraints: const BoxConstraints(
-                  //               maxHeight: double.maxFinite,
-                  //             ),
-                  //             contentPadding: const EdgeInsets.symmetric(horizontal: 20,vertical: 0),
-                  //             suffixIcon:  Container(
-                  //               width: 50,
-                  //               height: 50,
-                  //               decoration: const BoxDecoration(
-                  //                 color: Color.fromARGB(255, 40, 84, 232),
-                  //                 borderRadius: BorderRadius.only(
-                  //                   topRight: Radius.circular(5),
-                  //                   bottomRight: Radius.circular(5),
-                  //                 ),
-                  //               ),
-                  //               child: const Icon(Icons.search_rounded, color: Colors.white),
-                  //             )
-                  //           ),
-                  //         ),
-                  //       ),
-                  //       IconButton(
-                  //         onPressed: (){
-                  //           Navigator.push(
-                  //             context, MaterialPageRoute(
-                  //               builder: (context) => ScannerPage(isFromLocalPage: true,)));
-                  //             }, 
-                  //         icon: const Icon(Icons.qr_code_scanner_rounded),
-                  //         color: const Color.fromARGB(255, 40, 84, 232),
-                      
-                  //       )
-                  //     ],
-                  //   ),
-                  // ),
-          
-                    // const SizedBox(
-                    //   height: 200,
-                    // ),
-          
                     Container(
                       height: 250,
                       width: size.width,
-                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text('New Customer', 
                             style: TextStyle(
-                              fontSize: 25, 
+                              fontSize: 23, 
                               fontWeight: FontWeight.bold
                             )
                           ),
           
                           Center(
                             child: Container(
-                              height: 58,
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(5),
@@ -126,22 +69,12 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                   )
                                 ]
                               ),
-                              margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                              // padding: const EdgeInsets.symmetric(horizontal: 20),
+                              margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
                               child: TextFormField(
                                 controller: _customername,
                                 keyboardType: TextInputType.name,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Enter Customer Name';
-                                  }
-                                  return null;
-                                },
                                 style: const TextStyle(fontSize: 18),
                                 decoration: InputDecoration(
-                                  // border: OutlineInputBorder(
-                                  //   borderRadius: BorderRadius.all(Radius.circular(10)),
-                                  // ),
                                   border: const OutlineInputBorder(
                                     borderRadius: BorderRadius.all(Radius.circular(0)),
                                   ),
@@ -162,11 +95,11 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                           Container(
                             height: 50,
                             width: size.width,
-                            margin: const EdgeInsets.only(top: 30),
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            margin: const EdgeInsets.only(top: 25),
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: ElevatedButton(
-                              child: const Text('Confirm',
-                                style: TextStyle(color: Colors.white, fontSize: 25, letterSpacing: 5)
+                              child: const Text('CONFIRM',
+                                style: TextStyle(color: Colors.white, fontSize: 22, letterSpacing: 5)
                               ),
                               style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
@@ -175,20 +108,17 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                 primary: const Color.fromARGB(255, 40, 84, 232)
                               ),
                               onPressed: () async{
-                                if(_formkey.currentState!.validate()) {
+                                if(_customername.text.isNotEmpty) {
                                   setState(() {
                                     isLoading = true;
                                   });
                                 
                                   final String name = _customername.text;
           
-                                  await cusAPI.addNewCustomer(name)
-                                  .then((value) async{
+                                  await cusAPI.addNewCustomer(name).then((value) async{
                                     if(value != null){
                                       setState(() {
                                         cusAPI.getCustomer();
-                                        // ignore: avoid_print
-                                        print("New Customer ID: ${customerDetails!.id}");
                                       });
 
                                       showDialog(
@@ -226,12 +156,10 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                                 );
                                               },
                                               child: const Text("Continue"),
-                                           )
+                                            )
                                           ],
                                         ),
                                       );
-                                      // ignore: avoid_print
-                                      print('Customer Added');
                                     }
                                   }).whenComplete(
                                     () => setState(
@@ -239,19 +167,21 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                     ),
                                   );
                                   
-                                  }else {
-                                    // ignore: avoid_print
-                                    print('Unsuccessful');
-                                  }
-                                },
-                              ),
-                            )
-                          ],
-                        ),
+                                } else {
+                                  print('Unsuccessful');
+                                  Fluttertoast.showToast(
+                                    msg: "Add Customer name"
+                                  );
+                                }
+                              },
+                            ),
+                          )
+                        ],
                       ),
-                    ],
-                  ),
-                  isLoading ? Container(
+                    ),
+                  ],
+                ),
+                isLoading ? Container(
                   color: Colors.black38,
                   width: size.width,
                   height: size.height,

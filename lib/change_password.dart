@@ -36,9 +36,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: DraggableScrollableSheet(
-          minChildSize: .08,
-          initialChildSize: .70,
-          maxChildSize: .70,
+          minChildSize: .5,
+          initialChildSize: .8,
+          maxChildSize: 1,
           builder: (context, scrollController){
             return Container(
               decoration: const BoxDecoration(

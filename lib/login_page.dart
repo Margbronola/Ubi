@@ -95,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                               )
                             ]
                           ),
-                          margin: const EdgeInsets.fromLTRB(40, 20, 40, 0),
+                          margin: const EdgeInsets.fromLTRB(30, 20, 30, 0),
                           child: TextFormField(
                             scrollPadding: const EdgeInsets.all(0),
                             controller: _emailController,
@@ -151,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
                               )
                             ]
                           ),
-                          margin: const EdgeInsets.fromLTRB(40, 15, 40, 0),
+                          margin: const EdgeInsets.fromLTRB(30, 15, 30, 0),
                           child: TextFormField(
                             scrollPadding: const EdgeInsets.all(0),
                             controller: _passwordController,
@@ -195,8 +195,8 @@ class _LoginPageState extends State<LoginPage> {
                         Container(
                           margin: const EdgeInsets.only(top: 40),
                           width: 500,
-                          height: 60,
-                          padding: const EdgeInsets.symmetric(horizontal: 40),
+                          height: 50,
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(

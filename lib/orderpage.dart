@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:internapp/model/order_model.dart';
 import 'package:internapp/viewmodel/orderviewmodel.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class OrderPage extends StatefulWidget {
   const OrderPage({ Key? key }) : super(key: key);
@@ -26,8 +27,7 @@ class _OrderPageState extends State<OrderPage> {
           width: size.width,
           height: size.height,
           color: Colors.white,
-          child: ListView(
-            padding: const EdgeInsets.symmetric(vertical: 0),
+          child: Column(
             children: [
               Container(
                 decoration: BoxDecoration(
@@ -40,7 +40,6 @@ class _OrderPageState extends State<OrderPage> {
                     )
                   ]
                 ),
-                height: 120,
                 child: Column(
                   children: [
                     Container(
@@ -93,35 +92,35 @@ class _OrderPageState extends State<OrderPage> {
                     ),
 
                     Container(
-                      height: 40,
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: const [
-                          SizedBox(
-                            width: 125,
-                            child: Center(
-                              child: Text('Customer', 
-                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
-                              ),
+                          Expanded(
+                            child: Text('Customer', 
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                             )
                           ),
-          
+
                           SizedBox(
-                            width: 125,
-                            child: Center(
-                              child: Text('Amount', 
-                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
-                              ),
-                            )
+                            width: 10,
                           ),
           
+                          Expanded(
+                            child: Text('Amount', 
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            )
+                          ),
+
                           SizedBox(
-                            width: 125,
-                            child: Center(
-                              child: Text('Date', 
-                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
-                              ),
+                            width: 10,
+                          ),
+          
+                          Expanded(
+                            child: Text('Date', 
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
                             )
                           )
                         ],
@@ -132,98 +131,88 @@ class _OrderPageState extends State<OrderPage> {
                 )
               ),
     
-              Container(
-                height: 590,
-                margin: const EdgeInsets.only(top: 15),
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: StreamBuilder<List<OrderModel>>(
-                  stream: _viewModel.stream,
-                  builder: (_, snapshot) {
-                    if (snapshot.hasData && !snapshot.hasError){
-                      if (snapshot.data!.isNotEmpty) {
-                        final List<OrderModel> searchCustomer = snapshot.data!.where((element) => element.cartcustomer?.customer?.name.toLowerCase().contains(searchString)??searchString.isEmpty).toList();
-                        
-                        return ListView.separated(
-                          shrinkWrap: true,
-                          itemCount: searchCustomer.length,
-                          itemBuilder: (BuildContext ctx, int index ){
-                            return GestureDetector(
-                              onTap: () {
-                                // Navigator.push(
-                                //   context, PageTransition(
-                                //     type: PageTransitionType.rightToLeftWithFade,
-                                //     child: OrderDetailsPage(
-                                //       isfromPendingOrder: true,
-                                //       cusid: searchCustomer[index].cartcustomer?.customer?.id ?? 0,
-                                //       cusname: searchCustomer[index].cartcustomer?.customer?.name ?? "N/A",
-                                //       orderid: searchCustomer[index].id,
-                                //       status: searchCustomer[index].status ? "Paid" : "Pending",
-                                //     ),
-                                //   )
-                                // );
-                              },
-
-                              child: Container(
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.only(top: 15, bottom: 70),
+                  child: StreamBuilder<List<OrderModel>>(
+                    stream: _viewModel.stream,
+                    builder: (_, snapshot) {
+                      if (snapshot.hasData && !snapshot.hasError){
+                        if (snapshot.data!.isNotEmpty) {
+                          final List<OrderModel> searchCustomer = snapshot.data!.where((element) => 
+                          element.cartcustomer?.customer?.name.toLowerCase().contains(searchString) ?? 
+                          searchString.isEmpty).toList();
+                          
+                          return ListView.separated(
+                            shrinkWrap: true,
+                            itemCount: searchCustomer.length,
+                            itemBuilder: (BuildContext ctx, int index ){
+                              return Container(
                                 color: Colors.grey.shade100,
-                                height: 50,
+                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                      SizedBox(
-                                        width: 125,
-                                        child: Center(
-                                          child: Text(searchCustomer[index].cartcustomer!.customer?.name ?? "N/A",
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 18,
-                                            )
+                                      Expanded(
+                                        child: Text(searchCustomer[index].cartcustomer!.customer?.name ?? "N/A",
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 18,
                                           ),
                                         ),
                                       ),
-                                    
-                                      SizedBox(
-                                        width: 125,
-                                        child: Center(
-                                          child: Text(searchCustomer[index].total.toStringAsFixed(2),
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 18,
-                                            )
-                                          ),
-                                        ),
+              
+                                      const SizedBox(
+                                        width: 10,
                                       ),
                                     
-                                      SizedBox(
-                                        width: 125,
-                                        child: Center(
-                                          child: Text(DateFormat('MM-dd-yyyy').format(searchCustomer[index].date),
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 18,
-                                            )
+                                      Expanded(
+                                        child: Text(searchCustomer[index].total.toStringAsFixed(2),
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 18,
                                           ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+              
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                    
+                                      Expanded(
+                                        child: Text(DateFormat('MM-dd-yy').format(searchCustomer[index].date),
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 18,
+                                          )
                                         ),
                                       ),
                                     ],
                                   ),
-                                ),
-                            );
-                          },
-                          separatorBuilder: (BuildContext context, int index) => const Divider(color: Colors.transparent),
+                                );
+                            },
+                            separatorBuilder: (BuildContext context, int index) => const Divider(),
+                          );
+                        }
+              
+                        return const Center(
+                          child: Text('No Order',
+                            style: TextStyle(fontSize: 25)
+                          )
                         );
+                        
                       }
-
-                      return const Center(
-                        child: Text('No Order',
-                          style: TextStyle(fontSize: 25)
+                      return Center(
+                        child: LoadingAnimationWidget.prograssiveDots(
+                          color: const Color.fromARGB(255, 40, 84, 232), 
+                          size: 50
                         )
                       );
-                      
                     }
-                    return const Center(child: CircularProgressIndicator.adaptive());
-                  }
-                )
-                        
+                  )
+                          
+                ),
               ),
             ],
           ),

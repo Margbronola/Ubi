@@ -231,8 +231,8 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10)
-                              ),
-                              primary: const Color.fromARGB(255, 40, 84, 232)
+                              ), 
+                              backgroundColor: const Color.fromARGB(255, 40, 84, 232)
                             ),
 
                             child: const Text('CONFIRM',
@@ -279,6 +279,7 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 20
                                                 ),
+                                                textAlign: TextAlign.center,
                                               ),
                                               RichText(
                                                 text: TextSpan(
@@ -287,7 +288,7 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                                                       text: "Use your new password to ",
                                                       style: TextStyle(
                                                         color: Colors.black,
-                                                        fontSize: 17
+                                                        fontSize: 15
                                                       ),
                                                     ),
 
@@ -295,7 +296,7 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                                                       text: "Login",
                                                       style: const TextStyle(
                                                         color: Colors.blue,
-                                                        fontSize: 17
+                                                        fontSize: 15
                                                       ),
                                                       recognizer: TapGestureRecognizer()..onTap = () {
                                                         Navigator.pushReplacement(

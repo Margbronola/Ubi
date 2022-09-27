@@ -113,8 +113,12 @@ class _LandingPageState extends State<LandingPage> {
         backgroundColor: const Color.fromARGB(255, 40, 84, 232),
       ),
       
-      body: loggedUser == null ? Center(child: LoadingAnimationWidget.prograssiveDots(color: const Color.fromARGB(255, 40, 84, 232), size: 50))
-       : StreamBuilder<List<int>> (
+      body: loggedUser == null ? Center(
+        child: LoadingAnimationWidget.prograssiveDots(
+          color: const Color.fromARGB(255, 40, 84, 232), 
+          size: 50
+        )
+      ) : StreamBuilder<List<int>> (
         stream: _viewModel.stream,
         builder: (context, snapshot) {
           if(snapshot.hasData && !snapshot.hasError && snapshot.data!.isNotEmpty){

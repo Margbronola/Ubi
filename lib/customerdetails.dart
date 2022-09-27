@@ -73,7 +73,7 @@ class _CustomerDetailsPageState extends State<CustomerDetailsPage> {
                     child: const Text("Customer's Details", 
                       textAlign: TextAlign.left,
                       style: TextStyle(
-                        fontSize: 25,
+                        fontSize: 22,
                         fontWeight: FontWeight.bold
                       ),
                     ),
@@ -109,7 +109,7 @@ class _CustomerDetailsPageState extends State<CustomerDetailsPage> {
                     height: 100,
                     child: Text(widget.customer.name , 
                       style: const TextStyle(
-                        fontSize: 25, 
+                        fontSize: 20, 
                         fontWeight: FontWeight.bold
                       ),
                       textAlign: TextAlign.center,
@@ -117,59 +117,19 @@ class _CustomerDetailsPageState extends State<CustomerDetailsPage> {
                   )
                 ]
               ),
-      
-              // Container(
-              //   margin: const EdgeInsets.only(top: 20),
-              //   padding: const EdgeInsets.symmetric(horizontal: 30),
-              //   height: 180,
-              //   child: Column(
-              //     crossAxisAlignment: CrossAxisAlignment.start,
-              //     children: const [
-              //       Text('Address: ', 
-              //         style: TextStyle(
-              //           fontSize: 20,
-              //           fontWeight: FontWeight.bold,
-              //         )
-              //       ),
-
-              //       Divider(thickness: 5, color: Colors.transparent),
-
-                    // Padding(
-                    //   padding: const EdgeInsets.symmetric(horizontal: 50),
-                    //   child: Text(widget.customer.phone, style: const TextStyle(fontSize: 20)),
-                    // ),
-
-                    // Divider(thickness: 15, color: Colors.transparent),
-
-                    // Text("Phone Number: ", 
-                    //   style: TextStyle(
-                    //     fontSize: 20,
-                    //     fontWeight: FontWeight.bold
-                    //   )
-                    // ),
-
-                    // Divider(thickness: 5, color: Colors.transparent),
-
-                    // Padding(
-                    //   padding: const EdgeInsets.symmetric(horizontal: 50),
-                    //   child: Text(widget.customer.phone, style: const TextStyle(fontSize: 20)),
-                    // ),
-              //     ]
-              //   ),
-              // ),
 
               Container(
-                margin: const EdgeInsets.fromLTRB(30, 60, 30, 10),
+                margin: const EdgeInsets.fromLTRB(30, 15, 30, 0),
                 child: SizedBox(
                   width: size.width,
                   height: 60,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      side: const BorderSide(width: 3, color: Color.fromARGB(255, 40, 84, 232)),
+                      side: const BorderSide(width: 3, color: Color.fromARGB(255, 40, 84, 232)), 
+                      backgroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)
-                      ),
-                      primary: Colors.white
+                      )
                     ),
                     
                     onPressed: () {
@@ -196,39 +156,6 @@ class _CustomerDetailsPageState extends State<CustomerDetailsPage> {
                   ),
                 ),
               ),
-
-              // Container(
-              //   // padding: const EdgeInsets.symmetric(vertical: 20),
-              //   margin: const EdgeInsets.fromLTRB(30, 10, 30, 50),
-              //   child: SizedBox(
-              //     width: size.width,
-              //     height: 55,
-              //     child: ElevatedButton(
-              //       style: ElevatedButton.styleFrom(
-              //         side: const BorderSide(width: 3, color: Color.fromARGB(255, 40, 84, 232)),
-              //         shape: RoundedRectangleBorder(
-              //           borderRadius: BorderRadius.circular(10)
-              //         ),
-              //         primary: const Color.fromARGB(255, 40, 84, 232)
-              //       ),
-              //       onPressed: () {
-              //         Navigator.push(
-              //           context, MaterialPageRoute(
-              //             builder: (context) => PendingOrderDetailsPage(
-              //               cusid: widget.customer.id,
-              //               cusname: widget.customer.name,
-              //             )
-              //           )
-              //         );
-              //       },
-                        
-              //       child: const Text('VIEW PENDING ORDER', 
-              //         style: TextStyle(fontSize: 20, letterSpacing: 5, color: Colors.white),
-              //       )
-              //     ),
-              //   ),
-              // ),
-
             ],
           ),
         ),

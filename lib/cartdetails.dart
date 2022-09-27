@@ -180,7 +180,6 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
               children: [
                 Container(
                   width: size.width,
-                  // height: 50,
                   margin: const EdgeInsets.only(top: 10, bottom: 10),
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
@@ -291,7 +290,7 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                       Row(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Text(details.qty.toString(),
+                                          Text("${details.qty.toString()}x",
                                             style: const TextStyle(
                                               color: Colors.black,
                                               fontSize: 18,
@@ -310,16 +309,18 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                                 style: const TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 18,
-                                                  fontWeight: FontWeight.bold
                                                 ),
                                               ),
                                             ),
                                           ),
-                          const SizedBox(width: 10,),
+                                          
+                                          const SizedBox(width: 10,),
+                                          
                                           Text("P${details.product.price}",
                                             style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 18,
+                                              color: Color.fromARGB(255, 232, 149, 40),
                                             ),
                                           ),
                           
@@ -487,7 +488,7 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                                     ),
                                     
                                                     Container(
-                                                      padding: const EdgeInsets.only(top: 10),
+                                                      padding: const EdgeInsets.only(top: 5),
                                                       child: Row(
                                                         mainAxisAlignment: MainAxisAlignment.end,
                                                         children: [
@@ -737,7 +738,7 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                                           children: [
                                                             const Center(
                                                               child: Text('From',
-                                                                style: TextStyle(fontSize: 20)
+                                                                style: TextStyle(fontSize: 18)
                                                               ),
                                                             ),
 
@@ -745,7 +746,7 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                                               child: Center(
                                                                 child: Text(widget.cusname,
                                                                   style: const TextStyle(
-                                                                    fontSize: 20,
+                                                                    fontSize: 19,
                                                                     fontWeight: FontWeight.bold
                                                                   ),
                                                                 ),
@@ -764,7 +765,7 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                                             style:TextStyle(fontSize:17)
                                                           ),
                                                           
-                                                          Text("Php ${getTotal()}",
+                                                          Text("₱ ${getTotal()}",
                                                             style: const TextStyle(
                                                               fontWeight: FontWeight.bold,
                                                               fontSize: 18
@@ -783,7 +784,7 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                                             style: TextStyle(fontSize:17)
                                                           ),
                                                                 
-                                                          Text('Php ${_amount.text}.0',
+                                                          Text('₱ ${_amount.text}.0',
                                                             style: const TextStyle(fontSize: 18)
                                                           ),
                                                         ],
@@ -799,44 +800,11 @@ class _CartDetailsPageState extends State<CartDetailsPage> {
                                                             style: TextStyle(fontSize: 17)
                                                           ),
                                                   
-                                                          Text('Php ${_change.text}',
+                                                          Text('₱ ${_change.text}',
                                                             style: const TextStyle(fontSize:18)
                                                           ),
                                                         ],
                                                       ),
-    
-                                                    //   Container(
-                                                    //     width: size.width,
-                                                    //     height: 50,
-                                                    //     margin: const EdgeInsets.only(top: 60),
-                                                    //     child:ElevatedButton(
-                                                    //       style: ElevatedButton.styleFrom(
-                                                    //         shape: RoundedRectangleBorder(
-                                                    //           borderRadius: BorderRadius.circular(10)
-                                                    //         ),
-                                                    //       primary:const Color.fromARGB(255, 15, 41, 142)
-                                                    //     ),
-    
-                                                    //     child: const Text('Go to Pending Orders',
-                                                    //       style: TextStyle(
-                                                    //         color: Colors.white,
-                                                    //         fontSize: 20
-                                                    //       )
-                                                    //     ),
-    
-                                                    //     onPressed: () {
-                                                    //       Navigator.push(
-                                                    //         context, MaterialPageRoute(
-                                                    //           builder: (context) => PendingOrderDetailsPage(
-                                                    //             cusid: widget.cusid,
-                                                    //             cusname: widget.cusname,
-                                                    //           )
-                                                    //         )
-                                                    //       );
-                                                    //     },
-    
-                                                    //   )
-                                                    // )
                                                   ],
                                                 ),
                                               ),

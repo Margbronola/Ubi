@@ -28,13 +28,11 @@ class _CustomerPageState extends State<CustomerPage> {
           height: size.height,
           color: Colors.white,
           child: SafeArea(
-            child: ListView(
-              padding: const EdgeInsets.symmetric(vertical: 0),
+            child: Column(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   width: size.width,
-                  height: 75,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     boxShadow: [
@@ -99,77 +97,77 @@ class _CustomerPageState extends State<CustomerPage> {
                   ),
                 ),
               
-                Container(
-                  margin: const EdgeInsets.only(top: 15),
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
-                  child: StreamBuilder<List<CustomerModel>>(
-                    stream: _viewModel.stream,
-                    builder: (_, snapshot) {
-                      if (snapshot.hasData && !snapshot.hasError) {
-                        if (snapshot.data!.isNotEmpty) {
-                          final List<CustomerModel> searchCustomer = snapshot.data!.where((element) => 
-                          element.name.toLowerCase().contains(searchString)).toList();
-                          
-                          return ListView.separated(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            padding: const EdgeInsets.symmetric(vertical: 0),
-                            itemCount: searchCustomer.length,
-                            itemBuilder: (BuildContext ctx, int index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context, PageTransition(
-                                      type: PageTransitionType.rightToLeftWithFade,
-                                      child: CustomerDetailsPage(
-                                        customer: searchCustomer[index]
-                                      ),
-                                    )
-                                  );
-                                },
-                              
-                                child: Container(
-                                  padding: const EdgeInsets.only(left: 20, right: 10),
-                                  color: Colors.grey.shade200,
-                                  height: 45,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 10, right: 10),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(searchCustomer[index].name,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 18,
-                                          )
+                Expanded(
+                  child: Container(
+                  margin: const EdgeInsets.only(top: 15, bottom: 70),
+                    child: StreamBuilder<List<CustomerModel>>(
+                      stream: _viewModel.stream,
+                      builder: (_, snapshot) {
+                        if (snapshot.hasData && !snapshot.hasError) {
+                          if (snapshot.data!.isNotEmpty) {
+                            final List<CustomerModel> searchCustomer = snapshot.data!.where((element) => 
+                            element.name.toLowerCase().contains(searchString)).toList();
+                            
+                            return ListView.separated(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              padding: const EdgeInsets.symmetric(vertical: 0),
+                              itemCount: searchCustomer.length,
+                              itemBuilder: (BuildContext ctx, int index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context, PageTransition(
+                                        type: PageTransitionType.rightToLeftWithFade,
+                                        child: CustomerDetailsPage(
+                                          customer: searchCustomer[index]
                                         ),
-
-                                        const Icon(Icons.chevron_right_rounded,
-                                          color: Colors.black, 
-                                          // size: 30
-                                        )
-                                      ],
+                                      )
+                                    );
+                                  },
+                                
+                                  child: Container(
+                                    padding: const EdgeInsets.only(left: 20, right: 10),
+                                    color: Colors.grey.shade200,
+                                    height: 45,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 10, right: 10),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(searchCustomer[index].name,
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 18,
+                                            )
+                                          ),
+                
+                                          const Icon(Icons.chevron_right_rounded,
+                                            color: Colors.black, 
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              );
-                            },  
-                          
-                            separatorBuilder: (BuildContext context, int index) => const Divider(color: Colors.transparent),
+                                );
+                              },  
+                            
+                              separatorBuilder: (BuildContext context, int index) => const Divider(),
+                            );
+                          }
+                        
+                          return const Center(
+                            child: Text('No Customer entry',
+                              style: TextStyle(fontSize: 25, letterSpacing: 2)
+                            )
                           );
                         }
-                      
+                        
                         return const Center(
-                          child: Text('No Customer entry',
-                            style: TextStyle(fontSize: 25, letterSpacing: 2)
-                          )
+                          child: CircularProgressIndicator.adaptive()
                         );
                       }
-                      
-                      return const Center(
-                        child: CircularProgressIndicator.adaptive()
-                      );
-                    }
+                    ),
                   ),
                 )
               ],

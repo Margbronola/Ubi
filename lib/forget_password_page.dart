@@ -155,8 +155,8 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10)
-                              ),
-                              primary: const Color.fromARGB(255, 40, 84, 232)
+                              ), 
+                              backgroundColor: const Color.fromARGB(255, 40, 84, 232)
                             ),
 
                             child: const Text('CONFIRM',

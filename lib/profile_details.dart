@@ -35,7 +35,7 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
       child: Stack(
         children: [
           DraggableScrollableSheet(
-          minChildSize: .08,
+          minChildSize: .5,
           initialChildSize: .65,
           maxChildSize: .65,
           builder: (context, scrollController){
@@ -69,16 +69,12 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                           ),
               
                           Expanded(
-                            // height: 100,
-                            // width: 210,
-                            // margin: const EdgeInsets.only(left: 10),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 SizedBox(
                                   width: 195,
-                                  height: 49,
                                   child: TextFormField(
                                     controller: _name,
                                     enabled: !_isDisabled,
@@ -103,9 +99,7 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
               
                                 Container(
                                   width: 150,
-                                  height: 20,
                                   padding: const EdgeInsets.only(left: 15),
-                                  // margin: const EdgeInsets.only(top: 5),
                                   child: Text(loggedUser?.position ?? "FETCHING DETAILS",
                                     style: const TextStyle(
                                       fontSize: 18, 
@@ -140,7 +134,7 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                     ),
               
                     const Padding(
-                      padding: EdgeInsets.only(left: 60, right: 60, top: 20),
+                      padding: EdgeInsets.only(left: 60, right: 60),
                       child: Text('Contact',
                         style: TextStyle(fontSize: 20, color: Colors.grey, fontWeight: FontWeight.bold),
                       ),
@@ -182,7 +176,6 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
               
                     Container(
                       width: 100,
-                      height: 50,
                       alignment: Alignment.center,
                       margin: const EdgeInsets.only(top: 15),
                       padding: const EdgeInsets.symmetric(horizontal: 65),
@@ -210,8 +203,8 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)
-                            ),
-                            primary: const Color.fromARGB(255, 40, 84, 232)
+                            ), 
+                            backgroundColor: const Color.fromARGB(255, 40, 84, 232)
                           ),
                           
                           onPressed: () async {
@@ -248,14 +241,14 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                       child: Container(
                         width: 600,
                         height: 55,
-                        margin: const EdgeInsets.only(top: 40, bottom: 20),
+                        margin: const EdgeInsets.only(top: 30, bottom: 20),
                         padding: const EdgeInsets.symmetric(horizontal: 40),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)
-                            ),
-                            primary: const Color.fromARGB(255, 40, 84, 232)
+                            ), 
+                            backgroundColor: const Color.fromARGB(255, 40, 84, 232)
                           ),
                           
                           onPressed: () async {

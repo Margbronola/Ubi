@@ -6,6 +6,7 @@ import 'package:internapp/model/product_model.dart';
 import 'package:internapp/productdetails.dart';
 import 'package:internapp/profile_page.dart';
 import 'package:internapp/viewmodel/productviewmodel.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 
 // ignore: must_be_immutable
@@ -79,10 +80,10 @@ class _ProductPageState extends State<ProductPage> {
           width: size.width,
           height: size.height,
           child: SafeArea(
-            child: ListView(
-              padding: const EdgeInsets.symmetric(vertical: 0),
+            child: Column(
               children: [
                 Container(
+                  width: size.width,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     boxShadow: [
@@ -93,9 +94,7 @@ class _ProductPageState extends State<ProductPage> {
                       )
                     ]
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  width: size.width,
-                  height: 75,
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -144,39 +143,6 @@ class _ProductPageState extends State<ProductPage> {
                         ),
                       ),
 
-                      // IconButton(
-                      //   onPressed: () {
-                      //     Navigator.push(
-                      //       context, MaterialPageRoute(
-                      //         builder: (context) => const CartPage()
-                      //       )
-                      //     );
-                      //   },
-                    
-                      //   icon: Stack(
-                      //     children: [
-                      //       const Icon(Icons.shopping_cart_outlined),
-                      //       Positioned(
-                      //         top: 0,
-                      //         right: 0,
-                      //         child: Container(
-                      //           height: 13,
-                      //           width: 13,
-                      //           alignment: Alignment.center,
-                      //           decoration: const BoxDecoration(
-                      //             shape: BoxShape.circle,
-                      //             color: Color.fromRGBO(194, 116, 15, 1)
-                      //           ),
-                      //           child: const Text('3',
-                      //             style: TextStyle(color: Colors.white)
-                      //           )
-                      //         )
-                      //       )
-                      //     ],
-                      //   ),
-                      //   color: const Color.fromARGB(255, 232, 149, 40),
-                      // ),
-
                       IconButton(
                         padding: const EdgeInsets.all(0),
                         onPressed: () {
@@ -195,94 +161,60 @@ class _ProductPageState extends State<ProductPage> {
                     ],
                   ),
                 ),
-
-                // Container(
-                //   height: 50,
-                //   width: size.width,
-                //   margin: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: [
-                //       Expanded(
-                //         child: Container(
-                //           decoration: BoxDecoration(
-                //             borderRadius:
-                //                 const BorderRadius.all(Radius.circular(10)),
-                //             color: Colors.grey.shade300,
-                //           ),
-                //           height: 65,
-                //         ),
-                //       ),
-                      
-                //       IconButton(
-                //           padding: const EdgeInsets.all(0),
-                //           onPressed: () {
-                //             setState(() {
-                //               isGridView = !isGridView;
-                //             });
-                //           },
-                //           icon: Icon(
-                //             isGridView ? Icons.list_rounded : Icons.dashboard,
-                //             color: const Color.fromARGB(255, 40, 84, 232),
-                //             size: 25,
-                //           )),
-                //     ],
-                //   ),
-                // ),
-
-                Container(
-                  height: widget.height,
-                  padding:const EdgeInsets.only(left: 20, right: 20),
-                  margin: const EdgeInsets.only(bottom: 20, top: 15),
-                  child: StreamBuilder<List<ProductModel>>(
-                    stream: _viewModel.stream,
-                    builder: (_, snapshot) {
-                      if (snapshot.hasData && !snapshot.hasError) {
-                        if (snapshot.data!.isNotEmpty) {
-                          final List<ProductModel> searchProduct = snapshot.data!.where((element) => element.name
-                          .toLowerCase().contains(searchString)).toList();
-            
-                          if (isGridView) {
-                            return GridView.builder(
-                              shrinkWrap: true,
-                              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 200,
-                                mainAxisExtent: 230,
-                                childAspectRatio: 3 / 2,
-                                crossAxisSpacing: 15,
-                                mainAxisSpacing: 15
-                              ),
-                                  
-                              itemCount: searchProduct.length,
-                              itemBuilder: (BuildContext ctx, int index) {
-                                return LayoutBuilder(
-                                  builder: (context,c) {
-                                    final double w = c.maxWidth;
-                                    return GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context, PageTransition(
-                                            type: PageTransitionType.rightToLeftWithFade,
-                                            child: ProductDetailsPage(
-                                              onUpdateCallback: (callback){},
-                                              product: searchProduct[index],
-                                              comment: "",
-                                              cusid: widget.cusid,
-                                            ),
-                                          )
-                                        );
-                                      },
-
-                                      child: Stack(
-                                        children: [
-                                          Column(
-                                            children: [
-                                              Expanded(
-                                                child: Hero(
-                                                  tag: "product",
-                                                  child: SizedBox(
-                                                    width: 200,
-                                                    height: 200,
+                
+                Expanded(
+                  child: Container(
+                    width: size.width,
+                    padding:const EdgeInsets.symmetric(horizontal: 20),
+                    margin: const EdgeInsets.only(top: 15, bottom: 70),
+                    child: StreamBuilder<List<ProductModel>>(
+                      stream: _viewModel.stream,
+                      builder: (_, snapshot) {
+                        if (snapshot.hasData && !snapshot.hasError) {
+                          if (snapshot.data!.isNotEmpty) {
+                            final List<ProductModel> searchProduct = snapshot.data!.where((element) => element.name.toLowerCase().contains(searchString)).toList();
+                            
+                            if (isGridView) {
+                              return GridView.builder(
+                                shrinkWrap: true,
+                                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                                  maxCrossAxisExtent: 200,
+                                  mainAxisExtent: 230,
+                                  childAspectRatio: 3 / 2,
+                                  crossAxisSpacing: 15,
+                                  mainAxisSpacing: 15
+                                ),
+                                    
+                                itemCount: searchProduct.length,
+                                itemBuilder: (BuildContext ctx, int index) {
+                                  return LayoutBuilder(
+                                    builder: (context,c) {
+                                      final double w = c.maxWidth;
+                                      return GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context, PageTransition(
+                                              type: PageTransitionType.rightToLeftWithFade,
+                                              child: ProductDetailsPage(
+                                                onUpdateCallback: (callback){},
+                                                product: searchProduct[index],
+                                                comment: "",
+                                                cusid: widget.cusid,
+                                              ),
+                                            )
+                                          );
+                                        },
+                
+                                        child: Stack(
+                                          children: [
+                                            Column(
+                                              children: [
+                                                Expanded(
+                                                  child: Hero(
+                                                    tag: "product",
+                                                    child: SizedBox(
+                                                      width: 200,
+                                                      height: 200,
                                                       child: SizedBox(
                                                         width: 200,
                                                         height: 200,
@@ -299,8 +231,8 @@ class _ProductPageState extends State<ProductPage> {
                                                       ),
                                                     )
                                                   ),
-                                              ),
-
+                                                ),
+                
                                                 Container(
                                                   width: w,
                                                   padding:const EdgeInsets.all(5),
@@ -309,7 +241,6 @@ class _ProductPageState extends State<ProductPage> {
                                                     crossAxisAlignment: WrapCrossAlignment.center,
                                                     runAlignment: WrapAlignment.spaceBetween,
                                                     alignment: WrapAlignment.spaceBetween,
-                                                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                     children: [
                                                       Text(searchProduct[index].name,
                                                         style: const TextStyle(
@@ -318,7 +249,7 @@ class _ProductPageState extends State<ProductPage> {
                                                           fontWeight: FontWeight.bold
                                                         )
                                                       ),
-
+                
                                                       Text(searchProduct[index].price.toStringAsFixed(2),
                                                         style: const TextStyle(
                                                           color: Colors.white,
@@ -330,7 +261,7 @@ class _ProductPageState extends State<ProductPage> {
                                                 ),
                                               ],
                                             ),
-
+                
                                             if (searchProduct[index].stock == 0) ...{
                                               Positioned.fill(
                                                 child: Container(
@@ -348,12 +279,12 @@ class _ProductPageState extends State<ProductPage> {
                                           ],
                                         ),
                                       );
-                                  }
-                                );
+                                    }
+                                  );
                                 }
                               );
                             } 
-                            
+                              
                             else {
                               return ListView.separated(
                                 shrinkWrap: true,
@@ -372,7 +303,7 @@ class _ProductPageState extends State<ProductPage> {
                                         )
                                       );
                                     },
-
+                
                                     child: Container(
                                       color: Colors.grey.shade300,
                                       child: Stack(
@@ -385,7 +316,7 @@ class _ProductPageState extends State<ProductPage> {
                                                 fontWeight: FontWeight.bold
                                               )
                                             ),
-
+                
                                             trailing: Text(searchProduct[index].price.toStringAsFixed(2),
                                               style: const TextStyle(
                                                 color: Colors.black,
@@ -393,7 +324,7 @@ class _ProductPageState extends State<ProductPage> {
                                               )
                                             ),
                                           ),
-
+               
                                           if (searchProduct[index].stock == 0) ...{
                                             Positioned.fill(
                                               child: Container(
@@ -402,7 +333,7 @@ class _ProductPageState extends State<ProductPage> {
                                                 child: const Text( 'Out of Stock',
                                                   style: TextStyle(
                                                     color: Colors.white,
-                                                    fontSize: 22
+                                                    fontSize: 19
                                                   ),
                                                 ),
                                               )
@@ -417,13 +348,20 @@ class _ProductPageState extends State<ProductPage> {
                               );
                             }
                           }
-
+                
                           return const Center(
-                            child: Text('No Product entry', style: TextStyle(fontSize: 30))
+                            child: Text('No Product entry', style: TextStyle(fontSize: 25))
                           );
                         }
-                      return const Center(child: CircularProgressIndicator.adaptive());
-                    }
+                        
+                        return Center(
+                          child: LoadingAnimationWidget.prograssiveDots(
+                            color: const Color.fromARGB(255, 40, 84, 232), 
+                            size: 50
+                          )
+                        );
+                      }
+                    ),
                   ),
                 ),
               ],

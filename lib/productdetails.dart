@@ -93,39 +93,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           foregroundColor: const Color.fromARGB(255, 40, 84, 232),
           backgroundColor: Colors.white,
           elevation: 0,
-          // actions: [
-          //   IconButton(
-          //     padding: const EdgeInsets.only(right: 25),
-          //     onPressed: (){
-          //       Navigator.push(
-          //         context, MaterialPageRoute(
-          //           builder: (context) => const CartPage()
-          //         )
-          //       );
-          //     },
-    
-          //     icon: Stack(
-          //       children: [
-          //         const Icon(Icons.shopping_cart_outlined),
-          //         Positioned(
-          //           top: 0,
-          //           right: 0,
-          //           child: Container(
-          //             height: 13,
-          //             width: 13,
-          //             alignment: Alignment.center,
-          //             decoration: const BoxDecoration(
-          //               shape: BoxShape.circle,
-          //               color: Color.fromARGB(255, 232, 149, 40)
-          //             ),
-          //             child: const Text('3', style: TextStyle(color: Colors.white))
-          //           )
-          //         )
-          //       ],
-          //     ),
-          //     color: const Color.fromARGB(255, 232, 149, 40),
-          //   )
-          // ]
         ),
 
         body: SafeArea(
@@ -204,8 +171,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 
                       Container(
                         width: size.width,
-                        height: 160,
-                        padding: const EdgeInsets.only(top: 20),
+                        padding: const EdgeInsets.only(top: 15, bottom: 20),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -218,8 +184,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             ),
                 
                             Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-                              child: Text(widget.product.description??"",
+                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              child: Text(widget.product.description ?? "",
                                 style: const TextStyle(color: Colors.black, fontSize: 17)
                               ),
                             ),
@@ -229,10 +195,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 
                       Column(
                         children: [
-                          Container(
+                          SizedBox(
                             width: size.width,
-                            height:175,
-                            margin: const EdgeInsets.only(top: 5),
+                            height:160,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -243,7 +208,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                   child: TextFormField(
                                     enabled: label == "Added" || widget.product.stock == 0 ? false : true,
                                     controller: comment,
-                                    maxLines: 7,
+                                    maxLines: 5,
                                     decoration: const InputDecoration(
                                       focusedBorder: OutlineInputBorder(
                                         borderSide: BorderSide(color: Color.fromARGB(255, 40, 84, 232), width: 2),
@@ -272,14 +237,13 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 SizedBox(
-                                  width: 175,
+                                  width: 170,
                                   height: 50,
                                   child: Row(
                                     children: [
                                       Container(
                                         width: 50,
                                         height: 50,
-                                        margin: const EdgeInsets.only(right: 7),
                                         decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10)),
                                         color: Color.fromARGB(255, 40, 84, 232)),
                                         child: IconButton(
@@ -303,9 +267,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                         width: 60,
                                         height: 50,
                                         alignment: Alignment.center,
-                                        margin: const EdgeInsets.only(right: 7),
                                         child:Text('${widget.quantity == 0 ? _qty : widget.quantity}',
-                                          style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                                          style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                                         )
                                         // TextField(
                                         //   enabled: false,
@@ -350,10 +313,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                     ]
                                   ),
                                 ),
-                      
+
                                 if(widget.isfromOrderDetails )...{  
                                   SizedBox(
-                                    width: 150,
+                                    // width: 150,
                                     height: 50,
                                     child: ElevatedButton(
                                       onPressed: () async{
@@ -393,81 +356,82 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 }
             
                                 else...{
-                                  SizedBox(
-                                    width: 150,
-                                    height: 50,
-                                    child: ElevatedButton(
-                                      onPressed: () async{
-                                        if(label == "Added"){
-                                          return;
-                                        }
-                                      
-                                        else{
-                                          if(widget.product.stock < _qty){
-                                            showDialog(
-                                              barrierDismissible: false,
-                                              context: context,
-                                              builder: (ctx) => AlertDialog(
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.circular(25)
-                                                ),
-                      
-                                                content: Text("Order quantity exceeds stock!\n\n Available Stock :  ${widget.product.stock}", 
-                                                  textAlign: TextAlign.center, style: const TextStyle(fontSize: 17),
-                                                ),
-            
-                                                actions: <Widget>[
-                                                  MaterialButton(
-                                                    onPressed: () {
-                                                      Navigator.of(ctx).pop();
-                                                    },
-                                                    child: const Text("Close"),
-                                                  )
-                                                ]
-                                              ),
-                                            );
+                                  Expanded(
+                                    child: SizedBox(
+                                      height: 50,
+                                      child: ElevatedButton(
+                                        onPressed: () async{
+                                          if(label == "Added"){
+                                            return;
                                           }
-            
+                                        
                                           else{
-                                            setState(() {
-                                              isLoading = true;
-                                            });
-                                          
-                                            await cartApi.addToCart(
-                                              comment: comment.text,
-                                              productid: widget.product.id,
-                                              quantity: _qty,
-                                              customerID: widget.cusid == 0 ? null : widget.cusid, 
-                                            ).then((value){
-                                              if(value != null){
-                                                setState(() {
-                                                  added = value;
-                                                });
-                                                cartApi.getCartDetails(cartCustomerId: value.cartcustomer!.id);
-                                              }
-                                            }).whenComplete(
-                                              () => setState(
-                                                () => isLoading = false,
-                                              ),
-                                            );
-                                          
-                                            setState(() {
-                                              visiblebutton = !visiblebutton;
-                                              label = "Added";
-                                              borderColor = const Color.fromARGB(255, 232, 149, 40);
-                                            });
-                                          }   
-                                        }                        
-                                      },
-                                      
-                                      child: Text(label, 
-                                        style: const TextStyle(fontSize: 20, color: Colors.white)
-                                      ),
-                                      style: ElevatedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(10)
+                                            if(widget.product.stock < _qty){
+                                              showDialog(
+                                                barrierDismissible: false,
+                                                context: context,
+                                                builder: (ctx) => AlertDialog(
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(25)
+                                                  ),
+                      
+                                                  content: Text("Order quantity exceeds stock!\n Available Stock :  ${widget.product.stock}", 
+                                                    textAlign: TextAlign.center,
+                                                  ),
+            
+                                                  actions: <Widget>[
+                                                    MaterialButton(
+                                                      onPressed: () {
+                                                        Navigator.of(ctx).pop();
+                                                      },
+                                                      child: const Text("Close"),
+                                                    )
+                                                  ]
+                                                ),
+                                              );
+                                            }
+            
+                                            else{
+                                              setState(() {
+                                                isLoading = true;
+                                              });
+                                            
+                                              await cartApi.addToCart(
+                                                comment: comment.text,
+                                                productid: widget.product.id,
+                                                quantity: _qty,
+                                                customerID: widget.cusid == 0 ? null : widget.cusid, 
+                                              ).then((value){
+                                                if(value != null){
+                                                  setState(() {
+                                                    added = value;
+                                                  });
+                                                  cartApi.getCartDetails(cartCustomerId: value.cartcustomer!.id);
+                                                }
+                                              }).whenComplete(
+                                                () => setState(
+                                                  () => isLoading = false,
+                                                ),
+                                              );
+                                            
+                                              setState(() {
+                                                visiblebutton = !visiblebutton;
+                                                label = "Added";
+                                                borderColor = const Color.fromARGB(255, 232, 149, 40);
+                                              });
+                                            }   
+                                          }                        
+                                        },
+                                        
+                                        child: Text(label, 
+                                          style: const TextStyle(fontSize: 18, color: Colors.white)
                                         ),
-                                        primary: borderColor
+                                        style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10)
+                                          ),
+                                          primary: borderColor
+                                        ),
                                       ),
                                     ),
                                   )
@@ -479,80 +443,78 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         ],
                       ),    
                 
-                      Expanded(
-                        child: Visibility(
-                          visible: visiblebutton,
-                          child: Container(
-                            height: 180,
-                            padding: const EdgeInsets.only(top: 10),
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  width: size.width,
-                                  height: 55,
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      side: const BorderSide(width: 2, color: Color.fromARGB(255, 40, 84, 232)),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10)
-                                      ),
-                                      primary: Colors.white
-                                    ),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('ADD ANOTHER PRODUCT', 
-                                      style: TextStyle(
-                                        fontSize: 20, 
-                                        letterSpacing: 3, 
-                                        color: Color.fromARGB(255, 40, 84, 232)
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    )
+                  Expanded(
+                    child: Visibility(
+                      visible: visiblebutton,
+                      child: Container(
+                        height: 180,
+                        padding: const EdgeInsets.only(top: 10),
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              width: size.width,
+                              height: 55,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  side: const BorderSide(width: 2, color: Color.fromARGB(255, 40, 84, 232)),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)
                                   ),
+                                  primary: Colors.white
                                 ),
-                
-                                Container(
-                                  width: size.width,
-                                  height: 55,
-                                  margin: const EdgeInsets.only(top: 10),
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      side: const BorderSide(width: 3, color: Color.fromARGB(255, 40, 84, 232)),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10)
-                                      ),
-                                      primary: const Color.fromARGB(255, 40, 84, 232)
-                                    ),
-            
-                                    onPressed: added != null ? () {
-                                        Navigator.pushReplacement(
-                                          context, PageTransition(
-                                            type: PageTransitionType.rightToLeftWithFade,
-                                            child: CartDetailsPage(
-                                              product: widget.product,
-                                              cusname: added!.cartcustomer?.customer?.name ?? "N/A",
-                                              isfromPendingOrder: false,
-                                              cartcusid: added!.cartcustomer!.id
-                                            ),
-                                          )
-                                        );
-                                    } : null,
-                                    child: const Text('FINISH ORDER', 
-                                      style: TextStyle(fontSize: 20, letterSpacing: 5, color: Colors.white),
-                                    )
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('ADD ANOTHER PRODUCT', 
+                                  style: TextStyle(
+                                    fontSize: 20, 
+                                    letterSpacing: 3, 
+                                    color: Color.fromARGB(255, 40, 84, 232)
                                   ),
-                                ),
-            
-                              ],
+                                  textAlign: TextAlign.center,
+                                )
+                              ),
                             ),
-                          ),
+                
+                            Container(
+                              width: size.width,
+                              height: 55,
+                              margin: const EdgeInsets.only(top: 10),
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  side: const BorderSide(width: 3, color: Color.fromARGB(255, 40, 84, 232)),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)
+                                  ),
+                                  primary: const Color.fromARGB(255, 40, 84, 232)
+                                ),
+            
+                                onPressed: added != null ? () {
+                                  Navigator.pushReplacement(
+                                    context, PageTransition(
+                                      type: PageTransitionType.rightToLeftWithFade,
+                                      child: CartDetailsPage(
+                                        product: widget.product,
+                                        cusname: added!.cartcustomer?.customer?.name ?? "N/A",
+                                        isfromPendingOrder: false,
+                                        cartcusid: added!.cartcustomer!.id
+                                      ),
+                                    )
+                                  );
+                                } : null,
+                                child: const Text('FINISH ORDER', 
+                                  style: TextStyle(fontSize: 20, letterSpacing: 5, color: Colors.white),
+                                )
+                              ),
+                            ),
+                          ],
                         ),
-                      )
-                      
-                    ],
-                  ),
-                )
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            )
           ),
         ),
       ),

@@ -11,13 +11,15 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 // ignore: must_be_immutable
 class OrderDetailsPage extends StatefulWidget {
-  OrderDetailsPage({ Key? key,
+  OrderDetailsPage(
+      {Key? key,
       this.orderid = 0,
       this.cusid = 0,
       this.cusname = "",
       this.isfromOrderPage = false,
       this.isfromPendingOrder = false,
-      this.status = ""}) : super(key: key);
+      this.status = ""})
+      : super(key: key);
 
   int orderid;
   int cusid;
@@ -41,38 +43,36 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
   OrderModel? _displayorder;
 
   fetchDetails() async {
-    await _orderApi.getOrderdetails(orderId: widget.orderid).then((value) 
-    {
-      if(value != null){
+    await _orderApi.getOrderdetails(orderId: widget.orderid).then((value) {
+      if (value != null) {
         setState(() {
           _displayorder = value;
         });
-      }else{
+      } else {
         Navigator.of(context).pop();
       }
     });
   }
 
   @override
-  void initState(){
-    if(widget.orderid != 0){
+  void initState() {
+    if (widget.orderid != 0) {
       fetchDetails();
     }
     super.initState();
   }
 
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     DateTime current = DateTime.now();
     String date = Jiffy(current).format('MMMM dd, yyyy');
-    
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -87,6 +87,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                   shape: BoxShape.circle,
                   color: Colors.white,
                 ),
+                
                 child: IconButton(
                   onPressed: () {
                     showModalBottomSheet(
@@ -97,12 +98,16 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                       ),
                       context: context,
                       builder: (_) => BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                        filter: ImageFilter.blur(
+                          sigmaX: 5, sigmaY: 5
+                        ),
                         child: const ProfilePage()
                       )
                     );
                   },
-                  icon: const Icon(Icons.person_rounded, color: Colors.blue)
+                  icon: const Icon(Icons.person_rounded,
+                    color: Colors.blue
+                  )
                 ),
               ),
             ),
@@ -110,706 +115,640 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
           elevation: 5,
           backgroundColor: const Color.fromARGB(255, 40, 84, 232),
         ) : null,
-      
+          
         body: SafeArea(
           child: Stack(
             children: [
               SizedBox(
                 width: size.width,
                 height: size.height,
-                child: _displayorder == null ? const Center(
-                  child: CircularProgressIndicator(),
+                child: _displayorder == null ? Center(
+                  child: LoadingAnimationWidget.prograssiveDots(
+                    color: const Color.fromARGB(255, 40, 84, 232), 
+                    size: 50
+                  ),
                 ) : ListView(
                   padding: const EdgeInsets.symmetric(vertical: 0),
-                  children: [
-                    Container(
-                      width: size.width,
-                      margin: const EdgeInsets.only(top: 10, bottom: 10),
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(date,
-                            style: const TextStyle(fontSize: 20)
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              const Text('Customer: ', style: TextStyle(fontSize: 20)),
-                              Text(widget.cusname,
-                                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
-                              ),
-                            ],
-                          ),
-        
-                        ]
-                      ),
-                    ),
-    
-                    ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: _displayorder!.orderproduct.length,
-                      itemBuilder: (BuildContext ctx, int index){
-                        OrderProductModel details = _displayorder!.orderproduct[index];
-    
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Container(
-                            color: Colors.grey.shade200,
-                            padding: const EdgeInsets.all(10),
-                            child: Row(
+                    children: [
+                      Container(
+                        width: size.width,
+                        margin: const EdgeInsets.only(top: 10, bottom: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(date,
+                              style: const TextStyle(fontSize: 18)
+                            ),
+                                    
+                            const SizedBox(
+                              height: 5,
+                            ),
+            
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(80),
-                                  child: SizedBox(
-                                    width: 80,
-                                    height: 80,
-                                    child: details.product.images.isNotEmpty ? 
-                                    Image.network("${Network.imageUrl}${details.product.images[0].url}",
-                                      fit: BoxFit.cover
-                                    ) : Image.asset('assets/images/placeholder.jpg',
-                                      fit: BoxFit.fitWidth
-                                    )
-                                  ),
+                                const Text('Customer: ',
+                                  style: TextStyle(fontSize: 18)
                                 ),
-
-                                const SizedBox(
-                                  width: 10,
+                                
+                                Text(widget.cusname,
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold
+                                  )
                                 ),
-
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text( details.prepared ? "Prepared" : "To Prepare",
-                                      style: const TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color.fromARGB(255, 40, 84, 232)
-                                      ),
-                                    ),
-
-                                    Row(
-                                      children: [
-                                        Text("${details.qty.toString()}x",
-                                                textAlign: TextAlign.center,
-                                                style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold
-                                                )
-                                              ),
-                                      ],
-                                    )
-                                  ],
-                                )
                               ],
                             ),
-                          ),
-                          // child: Container(
-                          //   padding: const EdgeInsets.all(10),
-                            // color: Colors.grey.shade200,
-                          //   height: 100,
-                          //   child: Row(
-                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //     children: [
-                                // SizedBox(
-                                //   width: 80,
-                                //   height: 80,
-                                //   child: details.product.images.isNotEmpty ? 
-                                //   Image.network("${Network.imageUrl}${details.product.images[0].url}",
-                                //     fit: BoxFit.cover
-                                //   ) : Image.asset('assets/images/placeholder.jpg',
-                                //     fit: BoxFit.fitWidth
-                                //   )
-                                // ),
-                              
-                                // Container(
-                                //   margin: const EdgeInsets.only(top: 5),
-                                //   child: Column(
-                                //     children: [
-                                //       Center(
-                                        // child: Container(
-                                        //   width: 190,
-                                        //   height: 30,
-                                        //   padding: const EdgeInsets.only(left: 15),
-                                        //   child: Text( details.prepared ? "Prepared" : "To Prepare",
-                                        //     style: const TextStyle(
-                                        //       fontSize: 20,
-                                        //       fontWeight: FontWeight.bold,
-                                        //       color: Color.fromARGB(255, 40, 84, 232)
-                                        //     ),
-                                        //   ),
-                                        // ),
-                                //       ),
-                          
-                          //             SizedBox(
-                          //               width: 190,
-                          //               height: 45,
-                          //               child: Row(
-                          //                 crossAxisAlignment: CrossAxisAlignment.start,
-                          //                 children: [
-                          //                   SizedBox(
-                          //                     width: 30,
-                                              // child: Text(details.qty.toString(),
-                                              //   textAlign: TextAlign.center,
-                                              //   style: const TextStyle(
-                                              //     color: Colors.black,
-                                              //     fontSize: 18,
-                                              //     fontWeight: FontWeight.bold
-                                              //   )
-                                              // ),
-                          //                   ),
-    
-                          //                   SizedBox(
-                          //                     width: 160,
-                          //                     child: Text(details.product.name,
-                          //                       textAlign: TextAlign.center,
-                          //                       style: const TextStyle(
-                          //                         color: Colors.black,
-                          //                         fontSize: 18,
-                          //                         fontWeight: FontWeight.bold
-                          //                       )
-                          //                     ),
-                          //                   ),
-    
-                          //                 ],
-                          //               ),
-                          //             ),
-                          //           ],
-                          //         ),
-                          //       ),
-    
-                          //       SizedBox(
-                          //         width: 80,
-                          //         height: 100,
-                          //         child: Center(
-                          //           child: Text("P${details.price}",
-                          //             style: const TextStyle(
-                          //               fontWeight: FontWeight.bold,
-                          //               fontSize: 20,
-                          //             ),
-                          //           ),
-                          //         ),
-                          //       ),
-    
-                          //     ],
-                          //   ),
-                          // ),
-                        );
-                      }, 
-                      separatorBuilder: (BuildContext context, int index) => const Divider(color: Colors.transparent), 
-                    ),
-    
-                    Container(
-                      height: 60,
-                      padding: const EdgeInsets.only(right: 20, top: 15),
-                      margin: const EdgeInsets.symmetric(vertical: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          const Text('Total   ',
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                                   
-                          Container(
-                            width: 150,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color: Colors.black12,
-                            ),
-                            padding: const EdgeInsets.fromLTRB(5, 10, 20, 10),
-                            child: Text("${_displayorder!.total}", 
-                              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold), 
-                              textAlign: TextAlign.end
-                            )
-                          )
-    
-                        ]
+                          ]
+                        ),
                       ),
-                    ),
-    
-                    if(widget.status == "Pending")...{
-                      Visibility(
-                        visible: visiblecontainer,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Column(
-                            children: [
-    
-                              Visibility(
-                                visible: true,
-                                child: Visibility(
-                                  child: Container(
-                                    width: 600,
-                                    height: 55,
-                                    margin: const EdgeInsets.only(top: 30, bottom: 20),
-                                              child: ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                  side: const BorderSide(
-                                                    width: 3,
-                                                    color: Color.fromARGB(255, 40, 84, 232)
-                                                  ),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:BorderRadius.circular(10)
-                                                  ),
-                                                  primary: const Color.fromARGB(255, 40, 84, 232),
-                                                  // padding: const EdgeInsets.symmetric(vertical: 20),
-                                                ),
-                                                onPressed: () {
-                                                  setState(() {
-                                                    visiblewidget = !visiblewidget;
-                                                    visiblecontainer = !visiblecontainer;
-                                                  });
-                                                },
-                                                child: const Text('ADD PAYMENT',
-                                                  style: TextStyle(
-                                                    fontSize: 20,
-                                                    letterSpacing: 3,
-                                                    color: Colors.white
-                                                  )
-                                                ),
-                                              )
-                                            ),
-    
-                                          ),
-                                        ),
-                                      ]
+                       
+                      ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: _displayorder!.orderproduct.length,
+                        itemBuilder: (BuildContext ctx, int index) {
+                          OrderProductModel details = _displayorder!.orderproduct[index];
+
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Container(
+                              color: Colors.grey.shade200,
+                              padding: const EdgeInsets.all(10),
+                              child: Row(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(80),
+                                    child: SizedBox(
+                                      width: 80,
+                                      height: 80,
+                                      child: details.product.images.isNotEmpty ? Image.network(
+                                        "${Network.imageUrl}${details.product.images[0].url}",
+                                        fit: BoxFit.cover
+                                      ) : Image.asset(
+                                        'assets/images/placeholder.jpg',
+                                        fit: BoxFit.fitWidth
+                                      )
                                     ),
                                   ),
                                   
-                                  replacement: Container(
-                                    height: 195,
-                                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  
+                                  Expanded(
                                     child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
-                                        Divider(color:Colors.grey.shade400, thickness: 5),
-    
-                                        Padding(
-                                          padding: const EdgeInsets.only(top: 15),
-                                          child: Row(
-                                            mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  const Text('Amount Received  ',
-                                                    style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                      FontWeight.bold
-                                                    )
-                                                  ),
-    
-                                                  Container(
-                                                    height: 50,
-                                                    width: 170,
-                                                    margin: const EdgeInsets.only(top: 10),
-                                                    child: TextFormField(
-                                                      controller: _amount,
-                                                      keyboardType: const TextInputType.numberWithOptions(),
-                                                      onChanged: (__text) {
-                                                        setState(() {
-                                                          _change.text = (double.parse(_amount.text) - double.parse(_displayorder!.total.toString())).toString();
-                                                        });
-                                                      },
-                                                      textAlign: TextAlign.center,
-                                                      style: const TextStyle(fontSize: 18),
-                                                      decoration: const InputDecoration(
-                                                        border: OutlineInputBorder(
-                                                          borderRadius: BorderRadius.all(
-                                                            Radius.circular(10)
-                                                          ),
-                                                        ),
-                                                        fillColor: Colors.white,
-                                                        filled: true,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ]
-                                              ),
-    
-                                              Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  const Text('Change',
-                                                    style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight: FontWeight.bold
-                                                    )
-                                                  ),
-                                                  
-                                                  Container(
-                                                    height: 50,
-                                                    width: 170,
-                                                    margin: const EdgeInsets.only(top: 10),
-                                                    child: Center(
-                                                      child: TextFormField(
-                                                        readOnly: true,
-                                                        textAlign: TextAlign.center,
-                                                        controller: _change,      
-                                                      )
-                                                    ),
-                                                  ),
-                                                ]
-                                              ),
-                                            ],
+                                        Text(details.prepared ? "Prepared" : "To Prepare",
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: Color.fromARGB(255, 232, 149, 40),
                                           ),
                                         ),
-                                        
-                                        Container(
-                                          width: size.width,
-                                          height: 50,
-                                          margin: const EdgeInsets.only(top: 15),
-                        //                   width: 600,
-                        // height: 55,
-                        // margin: const EdgeInsets.only(top: 40, bottom: 20),
-                        // padding: const EdgeInsets.symmetric(horizontal: 40),
-                                          child: ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
+
+                                        Row(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text("${details.qty.toString()}x",
+                                              textAlign: TextAlign.center,
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold
+                                              )
+                                            ),
+                                                  
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                
+                                            Expanded(
+                                              child: Tooltip(
+                                                message: details.product.name,
+                                                child: Text(details.product.name,
+                                                  maxLines: 2,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 18,
+                                                    // fontWeight: FontWeight.bold
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                          
+                                            Text("₱${details.price}",
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18,
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+
+                        separatorBuilder: (BuildContext context, int index) => const Divider(),
+                      ),
+                      
+                      Container(
+                        height: 60,
+                        padding: const EdgeInsets.only(right: 20, top: 15),
+                        margin: const EdgeInsets.symmetric(vertical: 15),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            const Text('Total   ',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold
+                              ),
+                            ),
+                      
+                            Container(
+                              width: 150,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: Colors.black12,
+                              ),
+                              padding: const EdgeInsets.fromLTRB(5, 10, 20, 10),
+                              child: Text(_displayorder!.total.toStringAsFixed(2),
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold
+                                ),
+                                textAlign: TextAlign.end
+                              )
+                            )
+                          ],
+                        ),
+                      ),
+                  
+                      if (widget.status == "Pending") ...{
+                        Visibility(
+                          visible: visiblecontainer,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Column(
+                              children: [
+                                Visibility(
+                                  visible: true,
+                                  child: Visibility(
+                                    child: Container(
+                                      width: 600,
+                                      height: 55,
+                                      margin: const EdgeInsets.only(top: 30, bottom: 20),
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          side: const BorderSide(
+                                            width: 3,
+                                            color: Color.fromARGB(255, 40, 84, 232)
+                                          ),
+                                          backgroundColor: const Color.fromARGB(255, 40, 84, 232),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10)
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            visiblewidget = !visiblewidget;
+                                            visiblecontainer = !visiblecontainer;
+                                          });
+                                        },
+                                        child: const Text('ADD PAYMENT',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            letterSpacing: 3,
+                                            color: Colors.white
+                                          )
+                                        ),
+                                      )
+                                    ),
+                                  ),
+                                ),
+                              ]
+                            ),
+                          ),
+
+                          replacement: Container(
+                            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                            child: Column(
+                              children: [
+                                Divider(color: Colors.grey.shade400, thickness: 5),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 15),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          const Text('Amount Received  ',
+                                            style: TextStyle(fontSize: 18)
+                                          ),
+                                          
+                                          Container(
+                                            height: 50,
+                                            width: 160,
+                                            margin: const EdgeInsets.only(top: 10),
+                                            child: TextFormField(
+                                              controller: _amount,
+                                              keyboardType: const TextInputType.numberWithOptions(),
+                                              onChanged: (__text) {
+                                                setState(() {
+                                                  _change.text = (double.parse(_amount.text) - double.parse(_displayorder!.total.toString())).toString();
+                                                });
+                                              },
+                                              textAlign: TextAlign.center,
+                                              style: const TextStyle(fontSize: 18),
+                                              decoration: const InputDecoration(
+                                                border: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                                                ),
+                                                fillColor: Colors.white,
+                                                filled: true,
+                                              ),
+                                            ),
+                                          ),
+                                        ]
+                                      ),
+                                      
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          const Text('Change',
+                                            style: TextStyle(fontSize: 18)
+                                          ),
+                                          
+                                          Container(
+                                            height: 50,
+                                            width: 150,
+                                            margin: const EdgeInsets.only(top: 10),
+                                            child: Center(
+                                              child: TextFormField(
+                                                readOnly: true,
+                                                controller: _change,
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(fontSize: 18),
+                                                decoration: const InputDecoration(
+                                                  border: OutlineInputBorder(
+                                                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                                                  ),
+                                                  fillColor: Colors.white,
+                                                  filled: true,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ]
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                    
+                                Container(
+                                  width: size.width,
+                                  height: 50,
+                                  margin: const EdgeInsets.only(top: 15, bottom: 15),
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10)
+                                      ), 
+                                      backgroundColor: const Color.fromARGB(255, 40, 84, 232)
+                                    ),
+                                    onPressed: () async {
+                                      if (double.parse(_amount.text) >= double.parse(_displayorder!.total.toString())) {
+                                        setState(() {
+                                          isLoading = true;
+                                        });
+
+                                        await _addPayment.paymentbyOrder(
+                                          orderID: widget.orderid,
+                                          amount: double.parse(
+                                            _amount.text),
+                                          ).whenComplete(
+                                            () => setState(
+                                              () => isLoading = false,
+                                            ),
+                                          );
+
+                                          showDialog(
+                                            barrierDismissible: false,
+                                            context: context,
+                                            builder: (ctx) => AlertDialog(
                                               shape: RoundedRectangleBorder(
                                                 borderRadius: BorderRadius.circular(10)
                                               ),
-                                              primary: const Color.fromARGB(255, 40, 84, 232)
-                                            ),
-                                            onPressed: () async {
-                                              if(double.parse(_amount.text)  >= double.parse(_displayorder!.total.toString())){
-                                              setState(() {
-                                                isLoading = true;
-                                              });
-    
-                                              await _addPayment.paymentbyOrder(
-                                                orderID: widget.orderid,
-                                                amount: double.parse(_amount.text),
-                                              ).whenComplete(
-                                                () => setState(
-                                                  () => isLoading = false,
-                                                ),
-                                              );
-    
-                                              showDialog(
-                                                barrierDismissible: false,
-                                                context: context, builder: (ctx) => AlertDialog(
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:BorderRadius.circular(10)
+                                              
+                                              title: Container(
+                                                alignment: Alignment.topRight,
+                                                child: Container(
+                                                  width: 40,
+                                                  height: 40,
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: Colors.grey.shade200,
                                                   ),
-                                                  title: Container(
-                                                    alignment: Alignment.topRight,
-                                                    child: Container(
-                                                      width: 40,
-                                                      height: 40,
-                                                      decoration:BoxDecoration(  
-                                                        shape: BoxShape.circle,
-                                                        color: Colors.grey.shade200,
-                                                      ),
-                                                      child: IconButton(
-                                                        onPressed: () {
-                                                          Navigator.of(context).pushNamedAndRemoveUntil(
-                                                            '/landingPage', (Route<dynamic> route) => false
-                                                          );
-                                                        },
-                                                        icon: Icon(
-                                                          Icons.close_rounded,
-                                                          color: Colors.grey.shade900,
-                                                        )
+                                                  child: IconButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context).pushNamedAndRemoveUntil('/landingPage',
+                                                        (Route<dynamic> route) => false
+                                                      );
+                                                    },
+                                                    icon: Icon(
+                                                      Icons.close_rounded,
+                                                      color: Colors.grey.shade900,
+                                                    )
+                                                  ),
+                                                ),
+                                              ),
+                                            
+                                              content: Container(
+                                                width: 300,
+                                                height: 315,
+                                                padding: const EdgeInsets.all(10),
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    const Padding(
+                                                      padding: EdgeInsets.only(bottom: 10),
+                                                      child: Text('PAYMENT RECEIVE',
+                                                        style: TextStyle(
+                                                          fontWeight: FontWeight.bold,
+                                                          color: Color.fromARGB(255, 15, 41, 142),
+                                                          fontSize: 23,
+                                                          letterSpacing: 2,
+                                                        ),
+                                                        textAlign: TextAlign.center,
                                                       ),
                                                     ),
-                                                  ),
-    
-                                                  content: Container(
-                                                    width: 300,
-                                                    height: 315,
-                                                    padding: const EdgeInsets.all(10),
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
+
+                                                    Container(
+                                                      // height: 60,
+                                                      margin: const EdgeInsets.only(bottom: 30, top: 15),
+                                                      child: Row(
                                                         children: [
-                                                          const Padding(
-                                                            padding: EdgeInsets.only(bottom: 10),
+                                                          const Center(
+                                                            child: Text('From', style: TextStyle(fontSize: 18)),
+                                                          ),
+                                                          
+                                                          Expanded(
                                                             child: Center(
-                                                              child: Text('PAYMENT RECEIVE',
-                                                                style: TextStyle(
-                                                                  fontWeight: FontWeight.bold,
-                                                                  color: Color.fromARGB(255, 15, 41, 142),
-                                                                  fontSize: 25,
-                                                                  letterSpacing: 3,
-                                                                ),
+                                                              child: Text(widget.cusname,
+                                                                style: const TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
                                                               ),
                                                             ),
                                                           ),
-    
-                                                          Container(
-                                                            height: 60,
-                                                            margin: const EdgeInsets.only(bottom: 30, top: 15),
-                                                            child: Row(
-                                                              children: [
-                                                                const Center(
-                                                                  child: Text('From',
-                                                                    style: TextStyle(fontSize: 20)
-                                                                  ),
-                                                                ),
-
-                                                                Expanded(
-                                                                  child: Center(
-                                                                    child: Text(widget.cusname,
-                                                                      style: const TextStyle(
-                                                                        fontSize: 22,
-                                                                        fontWeight: FontWeight.bold
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-
-                                                              ],
-                                                            ),
-                                                          ),
-    
-                                              
-                                                          Row(
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                            children: [
-                                                              const Text('Amount Due',
-                                                                style:TextStyle(fontSize:18,)
-                                                              ),
-                                                              
-                                                              Text("Php ${_displayorder!.total.toString()}",
-                                                                style: const TextStyle(
-                                                                  fontWeight: FontWeight.bold,
-                                                                  fontSize: 18
-                                                                )
-                                                              ),
-                                                            ],
-                                                          ),
-                                                                  
-                                                          const Divider(thickness: 5, color: Colors.transparent),
-    
-                                                          Row(
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                            children: [
-                                                              const Text('Amount Receive',
-                                                                style: TextStyle(fontSize:18,)
-                                                              ),
-                                                                    
-                                                              Text('Php ${_amount.text}.0',
-                                                                style: const TextStyle(fontSize: 18)
-                                                              ),
-                                                            ],
-                                                          ),
-                                                                
-                                                          const Divider(thickness: 5, color: Colors.transparent),
-    
-                                                          Row(
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                            children: [
-                                                              const Text('Change',
-                                                                style: TextStyle(fontSize: 18)
-                                                              ),
-                                                      
-                                                              Text('Php ${_amount.text.isNotEmpty ? double.parse(_amount.text) - (_displayorder!.total.toString().isNotEmpty ? double.parse(_displayorder!.total.toString()) : 0.0) : "0.0"}',
-                                                                style: const TextStyle(fontSize:18)
-                                                              ),
-                                                            ],
-                                                          ),
-    
-                                                          // Container(
-                                                          //   width: size.width,
-                                                          //   height: 50,
-                                                          //   margin: const EdgeInsets.only(top: 60),
-                                                          //   child:ElevatedButton(
-                                                          //     style: ElevatedButton.styleFrom(
-                                                          //       shape: RoundedRectangleBorder(
-                                                          //         borderRadius: BorderRadius.circular(10)
-                                                          //       ),
-                                                          //       primary:const Color.fromARGB(255, 15, 41, 142)
-                                                          //     ),
-                                                          //     child: const Text('Go to Pending Orders',
-                                                          //       style: TextStyle(
-                                                          //         color: Colors.white,
-                                                          //         fontSize: 20
-                                                          //       )
-                                                          //     ),
-                                                          //     onPressed: () {
-                                                          //       Navigator.of(context).pushNamedAndRemoveUntil(
-                                                          //         '/landingPage', (Route<dynamic> route) => false
-                                                          //       );
-                                                          //     },
-                                                          //   )
-                                                          // )
                                                         ],
                                                       ),
                                                     ),
-                                                  )
-                                                );
-                                              }
-    
-                                              else{
-                                                showDialog(
-                                                  barrierDismissible: false,
-                                                  context: context,
-                                                  builder: (ctx) => AlertDialog(
-                                                    shape: RoundedRectangleBorder(
-                                                      borderRadius: BorderRadius.circular(25)
+
+                                                    Row(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      children: [
+                                                        const Text('Amount Due',
+                                                          style: TextStyle(fontSize: 18)
+                                                        ),
+                                                                        
+                                                        Text("₱ ${_displayorder!.total.toString()}",
+                                                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)
+                                                        ),
+                                                      ],
                                                     ),
-    
-                                                    title: const Text("Payment Unsuccessful",
-                                                      style: TextStyle(
-                                                        fontWeight: FontWeight.bold,
-                                                        fontSize: 20
-                                                      )
+
+                                                    const Divider(thickness: 5, color: Colors.transparent),
+
+                                                    Row(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      children: [
+                                                        const Text('Amount Receive',
+                                                          style: TextStyle(fontSize: 18)
+                                                        ),
+                                                        
+                                                        Text('₱ ${_amount.text}.0',
+                                                          style: const TextStyle(fontSize: 18)
+                                                        ),
+                                                      ],
                                                     ),
-    
-                                                    content: const Text("Insufficient amount", textAlign: TextAlign.center),
-    
-                                                    actions: <Widget>[
-                                                      // ignore: deprecated_member_use
-                                                      MaterialButton(
-                                                        onPressed: () {
-                                                          Navigator.of(ctx).pop();
-                                                        },
-                                                        child: const Text("Close"),
-                                                      )
-                                                    ]
-                                                  )
-                                                );
-                                              }
-                                            },
-    
-                                            child: const Text('Confirm Payment',
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                letterSpacing: 3
-                                              )
-                                            ),
-                                          )
-                                        )
-    
-                                      ],
-                                    ),
-                                  ),
-                                )
-                    }
-    
-                    else...{
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Divider(color:Colors.grey.shade400, thickness: 5),
-                      ),
-    
-                      SizedBox(
-                        height: 170,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: size.width,
-                              height: 50,
-                              alignment: Alignment.centerLeft,
-                              padding: const EdgeInsets.only(left: 20),
-                              child: const Text('Payment Received', 
-                                style: TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color.fromARGB(255, 40, 84, 232)
-                                )
-                              ),
-                            ),
-    
-                            Container(
-                              width: size.width,
-                              height: 100,
-                              padding: const EdgeInsets.fromLTRB(25, 5, 25, 0),
-                              child: Row(
-                                mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      const Text('Amount Received  ',
+
+                                                    const Divider(thickness: 5, color: Colors.transparent),
+
+                                                    Row(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      children: [
+                                                        const Text('Change',
+                                                          style: TextStyle(fontSize: 18)
+                                                        ),
+                                                        
+                                                        Text('₱ ${_amount.text.isNotEmpty ? double.parse(_amount.text) - (_displayorder!.total.toString().isNotEmpty ? 
+                                                          double.parse(_displayorder!.total.toString()) : 0.0) : "0.0"}',
+                                                          style: const TextStyle(fontSize: 18)
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            )
+                                          );
+                                        }
+                                        
+                                        else {
+                                          showDialog(
+                                            barrierDismissible: false,
+                                            context: context,
+                                            builder: (ctx) => AlertDialog(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(25)
+                                              ),
+                                              title: const Text("Payment Unsuccessful",
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20
+                                                )
+                                              ),
+                                                            
+                                              content: const Text("Insufficient amount",
+                                                textAlign: TextAlign.center
+                                              ),
+                                              
+                                              actions: <Widget>[
+                                                MaterialButton(
+                                                  onPressed: () {
+                                                    Navigator.of(ctx).pop();
+                                                  },
+                                                  child: const Text("Close"),
+                                                )
+                                              ]
+                                            )
+                                          );
+                                        }
+                                      },
+                              
+                                      child: const Text('Confirm Payment',
                                         style: TextStyle(
                                           fontSize: 20,
+                                          letterSpacing: 3,
                                         )
                                       ),
-    
-                                                Container(
-                                                  height: 40,
-                                                  width: 150,
-                                                  margin: const EdgeInsets.only(top: 10),
-                                                  decoration: const BoxDecoration(
-                                                    color: Colors.black12,
-                                                    borderRadius: BorderRadius.all(Radius.circular(10))
-                                                  ),
-                                                  child: Center(
-                                                    child: Text(_displayorder?.payments?.paid.toStringAsFixed(2)??"0.0" ,
-                                                      style: const TextStyle(
-                                                        fontSize: 20, 
-                                                        fontWeight: FontWeight.bold
+                                    )
+                                  )
+                                ],
+                              ),
+                            ),
+                          )
+                      } 
+                            
+                            else ...{
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                child: Divider(
+                                    color: Colors.grey.shade300, thickness: 3),
+                              ),
+                              SizedBox(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        width: size.width,
+                                        height: 50,
+                                        alignment: Alignment.centerLeft,
+                                        padding:
+                                            const EdgeInsets.only(left: 20),
+                                        child: const Text('Payment Received',
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                                color: Color.fromARGB(255, 40, 84, 232))),
+                                      ),
+                                      Container(
+                                        width: size.width,
+                                        height: 100,
+                                        padding: const EdgeInsets.fromLTRB(
+                                            25, 5, 25, 0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  const Text(
+                                                      'Amount Received  ',
+                                                      style: TextStyle(
+                                                        fontSize: 18,
+                                                      )),
+                                                  Container(
+                                                    width: 150,
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            top: 10),
+                                                            padding: const EdgeInsets.symmetric(vertical: 10),
+                                                    decoration: const BoxDecoration(
+                                                        color: Colors.black12,
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    10))),
+                                                    child: Center(
+                                                      child: Text(
+                                                        _displayorder
+                                                                ?.payments?.paid
+                                                                .toStringAsFixed(
+                                                                    2) ??
+                                                            "0.0",
+                                                        style: const TextStyle(
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                    
-                                              ]
-                                            ),
-    
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      const Text('Change',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                        )
-                                      ),
-                                                        
-                                      Container(
-                                        height: 40,
-                                        width: 150,
-                                        margin: const EdgeInsets.only(top: 10),
-                                        decoration: const BoxDecoration(
-                                          color: Colors.black12,
-                                          borderRadius: BorderRadius.all(Radius.circular(10))
+                                                ]),
+
+                                            Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  const Text('Change',
+                                                      style: TextStyle(
+                                                        fontSize: 18,
+                                                      )),
+                                                  Container(
+                                                    width: 150,
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            top: 10),
+                                                            padding: const EdgeInsets.symmetric(vertical: 10),
+                                                    decoration: const BoxDecoration(
+                                                        color: Colors.black12,
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    10))),
+                                                    child: Center(
+                                                      child: Text(
+                                                        _displayorder?.payments
+                                                                ?.change
+                                                                .toStringAsFixed(
+                                                                    2) ??
+                                                            "0.0",
+                                                        style: const TextStyle(
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ]),
+                                          ],
                                         ),
-                                        child: Center(
-                                          child: Text(_displayorder?.payments?.change.toStringAsFixed(2)??"0.0" ,
-                                            style: const TextStyle(
-                                              fontSize: 20, 
-                                              fontWeight: FontWeight.bold
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                       
-                                    ]
-                                  ),
-                                ],
-                              ),
-                            )
+                                      )
+                                    ],
+                                  ))
+                            }
                           ],
-                        )
+                        ),
+                ),
+                isLoading
+                    ? Container(
+                        color: Colors.black38,
+                        width: size.width,
+                        height: size.height,
+                        child: Center(
+                          child: LoadingAnimationWidget.prograssiveDots(
+                              color: const Color.fromARGB(255, 40, 84, 232),
+                              size: 50),
+                        ),
                       )
-                    }
-                  ],
-                ),
-              ),
-
-              isLoading ? Container(
-                color: Colors.black38,
-                width: size.width,
-                height: size.height,
-                child: Center(
-                  child: LoadingAnimationWidget.prograssiveDots(color: const Color.fromARGB(255, 40, 84, 232), size: 50),
-                ),
-              ): Container()
-
-            ],
-          ),
-        )
-      ),
+                    : Container()
+              ],
+            ),
+          )),
     );
   }
 }

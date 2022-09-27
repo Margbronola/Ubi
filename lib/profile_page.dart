@@ -126,7 +126,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Stack(
       children: [
         DraggableScrollableSheet(
-          minChildSize: .08,
+          minChildSize: .5,
           initialChildSize: .65,
           maxChildSize: .65,
           builder: (context, scrollController){

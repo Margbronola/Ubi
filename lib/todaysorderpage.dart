@@ -5,6 +5,7 @@ import 'package:internapp/model/todaysorder_model.dart';
 import 'package:internapp/orderdetails.dart';
 import 'package:internapp/viewmodel/todaysorderviewmodel.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:page_transition/page_transition.dart';
 
 class TodaysOrderPage extends StatefulWidget {
@@ -40,11 +41,9 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
           width: size.width,
           height: size.height,
           color: Colors.white,
-          child: ListView(
-            padding: const EdgeInsets.symmetric(vertical: 0),
+          child: Column(
             children: [
               Container(
-                height: 160,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   boxShadow: [
@@ -59,8 +58,7 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
                 child: Column(
                   children: [
                     Container(
-                      height: 50,
-                      padding: const EdgeInsets.only(left: 20, top: 5),
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       child: Row(
                         children: [
                           const Padding(
@@ -74,9 +72,8 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
                     
                     Container(
                       width: size.width,
-                      height: 55,
                       padding: const EdgeInsets.symmetric(horizontal: 20),
-                      margin: const EdgeInsets.only(bottom: 15),
+                      margin: const EdgeInsets.only(bottom: 10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -159,32 +156,29 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
                     Container(
                       padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: const [
-                          SizedBox(
-                            width: 125,
-                            child: Center(
-                              child: Text('Customer', 
-                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
-                              ),
+                          Expanded(
+                            child: Text('Customer', 
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
                             )
                           ),
           
                           SizedBox(
-                            width: 125,
+                            width: 100,
                             child: Center(
                               child: Text('Status', 
-                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
                               ),
                             )
                           ),
           
                           SizedBox(
-                            width: 125,
-                            child: Center(
-                              child: Text('No. Products', 
-                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
-                              ),
+                            width: 100,
+                            child: Text('No. Products', 
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
                             )
                           )
                         ],
@@ -195,60 +189,48 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
                 ),
               ),
 
-              Container(
-                height: 555,
-                margin: const EdgeInsets.only(top: 15),
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: StreamBuilder<List<TodaysOrderModel>>(
-                  stream: _viewModel.stream,
-                  builder: (_, snapshot) {
-                    if (snapshot.hasData && !snapshot.hasError){
-                      if (snapshot.data!.isNotEmpty) {
-
-                        if(dropdownvalue == "Pending"){
-                          final List<TodaysOrderModel> pendinglist = snapshot.data!.where((element) => 
-                            (element.cartCustomer.customer?.name.toLowerCase().contains(searchString) ?? searchString.isEmpty) &&
-                            element.status == false
-                          ).toList();
-
-                            return ListView.separated(
-                              shrinkWrap: true,
-                              itemCount: pendinglist.length ,
-                              itemBuilder: (BuildContext ctx, int index ){
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context, PageTransition(
-                                        type: PageTransitionType.rightToLeftWithFade,
-                                        child: OrderDetailsPage(
-                                          isfromPendingOrder: true,
-                                          cusid: pendinglist[index].cartCustomer.customer?.id ?? 0,
-                                          cusname: pendinglist[index].cartCustomer.customer?.name ?? "N/A",
-                                          orderid: pendinglist[index].id,
-                                          status: pendinglist[index].status ? "Paid" : "Pending",
-                                        ),
-                                      )
-                                      // MaterialPageRoute(
-                                      //   builder: (context) => OrderDetails                  Page(
-                                          // isfromPendingOrder: true,
-                                          // cusid: pendinglist[index].cartCustomer.customer?.id ?? 0,
-                                          // cusname: pendinglist[index].cartCustomer.customer?.name ?? "N/A",
-                                          // orderid: pendinglist[index].id,
-                                          // status: pendinglist[index].status ? "Paid" : "Pending",
-                                      //   )
-                                      // )
-                                    );
-                                  },
-                            
-                                  child: Container(
-                                    color: Colors.grey.shade100,
-                                    height: 40,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        SizedBox(
-                                          width: 125,
-                                          child: Center(
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.only(top: 15, bottom: 70),
+                  child: StreamBuilder<List<TodaysOrderModel>>(
+                    stream: _viewModel.stream,
+                    builder: (_, snapshot) {
+                      if (snapshot.hasData && !snapshot.hasError){
+                        if (snapshot.data!.isNotEmpty) {
+              
+                          if(dropdownvalue == "Pending"){
+                            final List<TodaysOrderModel> pendinglist = snapshot.data!.where((element) => 
+                              (element.cartCustomer.customer?.name.toLowerCase().contains(searchString) ?? searchString.isEmpty) &&
+                              element.status == false
+                            ).toList();
+              
+                              return ListView.separated(
+                                shrinkWrap: true,
+                                itemCount: pendinglist.length ,
+                                itemBuilder: (_, index ){
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context, PageTransition(
+                                          type: PageTransitionType.rightToLeftWithFade,
+                                          child: OrderDetailsPage(
+                                            isfromPendingOrder: true,
+                                            cusid: pendinglist[index].cartCustomer.customer?.id ?? 0,
+                                            cusname: pendinglist[index].cartCustomer.customer?.name ?? "N/A",
+                                            orderid: pendinglist[index].id,
+                                            status: pendinglist[index].status ? "Paid" : "Pending",
+                                          ),
+                                        )
+                                      );
+                                    },
+                              
+                                    child: Container(
+                                      color: Colors.grey.shade100,
+                                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
                                             child: Text(pendinglist[index].cartCustomer.customer?.name ?? "N/A",
                                               style: const TextStyle(
                                                 color: Colors.black,
@@ -256,49 +238,118 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
                                               )
                                             ),
                                           ),
-                                        ),
-                                          
-                                        SizedBox(
-                                          width: 125,
-                                          child: Center(
+                                            
+                                          SizedBox(
+                                            width: 100,
                                             child: Text(pendinglist[index].status ? "Paid" : "Pending",
                                               style: const TextStyle(
                                                 color: Color.fromARGB(255, 40, 84, 232),
                                                 fontSize: 18,
-                                              )
+                                              ),
+                                              textAlign: TextAlign.center,
                                             ),
                                           ),
-                                        ),
-                                          
-                                        SizedBox(
-                                          width: 125,
-                                          child: Center(
+                                            
+                                          SizedBox(
+                                            width: 100,
                                             child: Text(pendinglist[index].orderQty.toString(),
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 18,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                                separatorBuilder: (BuildContext context, int index) => const Divider(),
+                              );
+                            }
+              
+                            else if(dropdownvalue == "Paid"){
+                              final List<TodaysOrderModel> paidlist = snapshot.data!.where((element) => 
+                                (element.cartCustomer.customer?.name.toLowerCase().contains(searchString) ?? searchString.isEmpty) &&
+                                element.status == true
+                              ).toList();
+              
+                              return ListView.separated(
+                                shrinkWrap: true,
+                                itemCount: paidlist.length ,
+                                itemBuilder: (BuildContext ctx, int index ){
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context, PageTransition(
+                                          type: PageTransitionType.rightToLeftWithFade,
+                                          child: OrderDetailsPage(
+                                            isfromPendingOrder: true,
+                                            cusid: paidlist[index].cartCustomer.customer?.id ?? 0,
+                                            cusname: paidlist[index].cartCustomer.customer?.name ?? "N/A",
+                                            orderid: paidlist[index].id,
+                                            status: paidlist[index].status ? "Paid" : "Pending",
+                                          ),
+                                        )
+                                      );
+                                    },
+                              
+                                    child: Container(
+                                      color: Colors.grey.shade100,
+                                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: Text(paidlist[index].cartCustomer.customer?.name ?? "N/A",
                                               style: const TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 18,
                                               )
                                             ),
                                           ),
-                                        ),
-                                      ],
+                                            
+                                          SizedBox(
+                                            width: 100,
+                                            child: Text(paidlist[index].status ? "Paid" : "Pending",
+                                              style: const TextStyle(
+                                                color: Color.fromARGB(255, 40, 84, 232),
+                                                fontSize: 18,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                            
+                                          SizedBox(
+                                            width: 100,
+                                            child: Center(
+                                              child: Text(paidlist[index].orderQty.toString(),
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 18,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                );
-                              },
-                              separatorBuilder: (BuildContext context, int index) => const Divider(color: Colors.transparent),
-                            );
-                          }
-
-                          else if(dropdownvalue == "Paid"){
-                            final List<TodaysOrderModel> paidlist = snapshot.data!.where((element) => 
-                              (element.cartCustomer.customer?.name.toLowerCase().contains(searchString) ?? searchString.isEmpty) &&
-                              element.status == true
+                                  );
+                                },
+                                separatorBuilder: (BuildContext context, int index) => const Divider(),
+                              );
+                            }
+              
+                          else{
+                            final List<TodaysOrderModel> searchCustomer = snapshot.data!.where((element) => 
+                              element.cartCustomer.customer?.name.toLowerCase().contains(searchString) ?? searchString.isEmpty
                             ).toList();
-
+              
                             return ListView.separated(
                               shrinkWrap: true,
-                              itemCount: paidlist.length ,
+                              itemCount: searchCustomer.length ,
                               itemBuilder: (BuildContext ctx, int index ){
                                 return GestureDetector(
                                   onTap: () {
@@ -307,108 +358,22 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
                                         type: PageTransitionType.rightToLeftWithFade,
                                         child: OrderDetailsPage(
                                           isfromPendingOrder: true,
-                                          cusid: paidlist[index].cartCustomer.customer?.id ?? 0,
-                                          cusname: paidlist[index].cartCustomer.customer?.name ?? "N/A",
-                                          orderid: paidlist[index].id,
-                                          status: paidlist[index].status ? "Paid" : "Pending",
+                                          cusid: searchCustomer[index].cartCustomer.customer?.id ?? 0,
+                                          cusname: searchCustomer[index].cartCustomer.customer?.name ?? "N/A",
+                                          orderid: searchCustomer[index].id,
+                                          status: searchCustomer[index].status ? "Paid" : "Pending",
                                         ),
                                       )
-                                      // MaterialPageRoute(
-                                      //   builder: (context) => OrderDetailsPage(
-                                      //     isfromPendingOrder: true,
-                                      //     cusid: paidlist[index].cartCustomer.customer?.id ?? 0,
-                                      //     cusname: paidlist[index].cartCustomer.customer?.name ?? "N/A",
-                                      //     orderid: paidlist[index].id,
-                                      //     status: paidlist[index].status ? "Paid" : "Pending",
-                                      //   )
-                                      // )
                                     );
                                   },
                             
                                   child: Container(
                                     color: Colors.grey.shade100,
-                                    height: 40,
+                                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        SizedBox(
-                                          width: 125,
-                                          child: Center(
-                                            child: Text(paidlist[index].cartCustomer.customer?.name ?? "N/A",
-                                              style: const TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 18,
-                                              )
-                                            ),
-                                          ),
-                                        ),
-                                          
-                                        SizedBox(
-                                          width: 125,
-                                          child: Center(
-                                            child: Text(paidlist[index].status ? "Paid" : "Pending",
-                                              style: const TextStyle(
-                                                color: Color.fromARGB(255, 40, 84, 232),
-                                                fontSize: 18,
-                                              )
-                                            ),
-                                          ),
-                                        ),
-                                          
-                                        SizedBox(
-                                          width: 125,
-                                          child: Center(
-                                            child: Text(paidlist[index].orderQty.toString(),
-                                              style: const TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 18,
-                                              )
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              },
-                              separatorBuilder: (BuildContext context, int index) => const Divider(color: Colors.transparent),
-                            );
-                          }
-
-                        else{
-                          final List<TodaysOrderModel> searchCustomer = snapshot.data!.where((element) => 
-                            element.cartCustomer.customer?.name.toLowerCase().contains(searchString) ?? searchString.isEmpty
-                          ).toList();
-
-                          return ListView.separated(
-                            shrinkWrap: true,
-                            itemCount: searchCustomer.length ,
-                            itemBuilder: (BuildContext ctx, int index ){
-                              return GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context, PageTransition(
-                                      type: PageTransitionType.rightToLeftWithFade,
-                                      child: OrderDetailsPage(
-                                        isfromPendingOrder: true,
-                                        cusid: searchCustomer[index].cartCustomer.customer?.id ?? 0,
-                                        cusname: searchCustomer[index].cartCustomer.customer?.name ?? "N/A",
-                                        orderid: searchCustomer[index].id,
-                                        status: searchCustomer[index].status ? "Paid" : "Pending",
-                                      ),
-                                    )
-                                  );
-                                },
-                          
-                                child: Container(
-                                  color: Colors.grey.shade100,
-                                  height: 40,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      SizedBox(
-                                        width: 125,
-                                        child: Center(
+                                        Expanded(
                                           child: Text(searchCustomer[index].cartCustomer.customer?.name ?? "N/A",
                                             style: const TextStyle(
                                               color: Colors.black,
@@ -416,51 +381,54 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
                                             )
                                           ),
                                         ),
-                                      ),
-                                        
-                                      SizedBox(
-                                        width: 125,
-                                        child: Center(
+                                          
+                                        SizedBox(
+                                          width: 100,
                                           child: Text(searchCustomer[index].status ? "Paid" : "Pending",
                                             style: const TextStyle(
                                               color: Color.fromARGB(255, 40, 84, 232),
                                               fontSize: 18,
-                                            )
+                                            ),
+                                            textAlign: TextAlign.center,
                                           ),
                                         ),
-                                      ),
-                                        
-                                      SizedBox(
-                                        width: 125,
-                                        child: Center(
+                                          
+                                        SizedBox(
+                                          width: 100,
                                           child: Text(searchCustomer[index].orderQty.toString(),
                                             style: const TextStyle(
                                               color: Colors.black,
                                               fontSize: 18,
-                                            )
+                                            ),
+                                            textAlign: TextAlign.center,
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
-                            separatorBuilder: (BuildContext context, int index) => const Divider(color: Colors.transparent),
-                          );
+                                );
+                              },
+                              separatorBuilder: (BuildContext context, int index) => const Divider(),
+                            );
+                          }
                         }
+              
+                        return const Center(
+                          child: Text('No Order Today',
+                            style: TextStyle(fontSize: 25, letterSpacing: 3)
+                          )
+                        );
                       }
-
-                      return const Center(
-                        child: Text('No Order Today',
-                          style: TextStyle(fontSize: 30, letterSpacing: 3)
+              
+                      return Center(
+                        child: LoadingAnimationWidget.prograssiveDots(
+                          color: const Color.fromARGB(255, 40, 84, 232), 
+                          size: 50
                         )
                       );
                     }
-
-                    return const Center(child: CircularProgressIndicator.adaptive());
-                  }
-                )
+                  )
+                ),
               ),
             ],
           ),
