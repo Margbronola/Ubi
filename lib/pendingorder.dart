@@ -122,7 +122,7 @@ class _PendingOrderPageState extends State<PendingOrderPage> {
             
                           SizedBox(
                             width: 100,
-                            child: Text('Price', 
+                            child: Text('Total', 
                               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                               textAlign: TextAlign.center,
                             )

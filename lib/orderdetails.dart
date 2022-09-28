@@ -310,7 +310,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                                   visible: true,
                                   child: Visibility(
                                     child: Container(
-                                      width: 600,
+                                      width: size.width,
                                       height: 55,
                                       margin: const EdgeInsets.only(top: 30, bottom: 20),
                                       child: ElevatedButton(
@@ -364,7 +364,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                                           
                                           Container(
                                             height: 50,
-                                            width: 160,
+                                            width: size.width *.45,
                                             margin: const EdgeInsets.only(top: 10),
                                             child: TextFormField(
                                               controller: _amount,
@@ -397,7 +397,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                                           
                                           Container(
                                             height: 50,
-                                            width: 150,
+                                            width: size.width *.40,
                                             margin: const EdgeInsets.only(top: 10),
                                             child: Center(
                                               child: TextFormField(
@@ -661,7 +661,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                                                         fontSize: 18,
                                                       )),
                                                   Container(
-                                                    width: 150,
+                                                    width: size.width *.45,
                                                     margin:
                                                         const EdgeInsets.only(
                                                             top: 10),
@@ -698,7 +698,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                                                         fontSize: 18,
                                                       )),
                                                   Container(
-                                                    width: 150,
+                                                    width: size.width *.4,
                                                     margin:
                                                         const EdgeInsets.only(
                                                             top: 10),
@@ -732,23 +732,23 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                                   ))
                             }
                           ],
-                        ),
                 ),
-                isLoading
-                    ? Container(
-                        color: Colors.black38,
-                        width: size.width,
-                        height: size.height,
-                        child: Center(
-                          child: LoadingAnimationWidget.prograssiveDots(
-                              color: const Color.fromARGB(255, 40, 84, 232),
-                              size: 50),
-                        ),
-                      )
-                    : Container()
-              ],
-            ),
-          )),
+              ),
+              isLoading ? Container(
+                color: Colors.black38,
+                width: size.width,
+                height: size.height,
+                child: Center(
+                  child: LoadingAnimationWidget.prograssiveDots(
+                    color: const Color.fromARGB(255, 40, 84, 232),
+                    size: 50
+                  ),
+                ),
+              ) : Container()
+            ],
+          ),
+        )
+      ),
     );
   }
 }

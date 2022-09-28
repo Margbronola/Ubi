@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:internapp/global/access.dart';
 import 'package:internapp/productpage.dart';
 import 'package:internapp/services/API/customerApi.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class TakeOrderPage extends StatefulWidget {
   const TakeOrderPage({ Key? key }) : super(key: key);
@@ -181,13 +182,17 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                     ),
                   ],
                 ),
+                
                 isLoading ? Container(
                   color: Colors.black38,
                   width: size.width,
                   height: size.height,
-                  child: const Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                  child: Center(
+                    child: LoadingAnimationWidget.prograssiveDots(
+                      color: const Color.fromARGB(255, 40, 84, 232), 
+                      size: 50
+                    ),
+                  )
                 ): Container()
               ],
             ),

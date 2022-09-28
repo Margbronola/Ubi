@@ -350,7 +350,12 @@ class _ProductPageState extends State<ProductPage> {
                           }
                 
                           return const Center(
-                            child: Text('No Product entry', style: TextStyle(fontSize: 25))
+                            child: Text('No Product entry', 
+                              style: TextStyle(
+                                fontSize: 20, 
+                                letterSpacing: 2
+                              )
+                            )
                           );
                         }
                         

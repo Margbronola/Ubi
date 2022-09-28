@@ -193,6 +193,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         ),
                       ),
                 
+                      widget.product.stock == 0 ? Container() :
                       Column(
                         children: [
                           SizedBox(
@@ -270,23 +271,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                         child:Text('${widget.quantity == 0 ? _qty : widget.quantity}',
                                           style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                                         )
-                                        // TextField(
-                                        //   enabled: false,
-                                        //   textAlign: TextAlign.center,
-                                        //   keyboardType: TextInputType.number,
-                                        //   controller: _qty,
-                                        //   style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                                        //   decoration: const InputDecoration(
-                                        //     focusedBorder: OutlineInputBorder(
-                                        //       borderSide: BorderSide(color: Color.fromARGB(255, 40, 84, 232), width: 2),
-                                        //     ),
-                                        //     border: OutlineInputBorder(
-                                        //       borderSide: BorderSide(color: Color.fromARGB(255, 40, 84, 232), width: 5),
-                                        //     ),
-                                        //   filled: true,
-                                        //   fillColor: Colors.white,
-                                        //   ),
-                                        // ),
                                       ),
                       
                                       Container(
@@ -315,41 +299,42 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 ),
 
                                 if(widget.isfromOrderDetails )...{  
-                                  SizedBox(
-                                    // width: 150,
-                                    height: 50,
-                                    child: ElevatedButton(
-                                      onPressed: () async{
-                                        setState(() {
-                                          isLoading = true;
-                                        });
-            
-                                        await _updateorder.update(
-                                          cartID: widget.cartId,
-                                          qty: widget.quantity,
-                                          comment: comment.text
-                                        ).then((value) {
-                                          if(value != null){
-                                            widget.onUpdateCallback(value);
-                                          }
-                                          setState(() {});
-                                        }).whenComplete(
-                                          () => setState(
-                                            () => isLoading = false,
-                                          ),
-                                        );
-                                          
-                                        Navigator.of(context).pop();                                  
-                                      },
-                                      
-                                      child: const Text("Update", 
-                                        style: TextStyle(fontSize: 20, color: Colors.white)
-                                      ),
-                                      style: ElevatedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(10)
+                                  Expanded(
+                                    child: SizedBox(
+                                      height: 50,
+                                      child: ElevatedButton(
+                                        onPressed: () async{
+                                          setState(() {
+                                            isLoading = true;
+                                          });
+                                                
+                                          await _updateorder.update(
+                                            cartID: widget.cartId,
+                                            qty: widget.quantity,
+                                            comment: comment.text
+                                          ).then((value) {
+                                            if(value != null){
+                                              widget.onUpdateCallback(value);
+                                            }
+                                            setState(() {});
+                                          }).whenComplete(
+                                            () => setState(
+                                              () => isLoading = false,
+                                            ),
+                                          );
+                                            
+                                          Navigator.of(context).pop();                                  
+                                        },
+                                        
+                                        child: const Text("Update", 
+                                          style: TextStyle(fontSize: 20, color: Colors.white)
                                         ),
-                                        primary: borderColor
+                                        style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10)
+                                          ),
+                                          primary: borderColor
+                                        ),
                                       ),
                                     ),
                                   )
@@ -440,78 +425,76 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             )
                           ),
             
-                        ],
-                      ),    
-                
-                  Expanded(
-                    child: Visibility(
-                      visible: visiblebutton,
-                      child: Container(
-                        height: 180,
-                        padding: const EdgeInsets.only(top: 10),
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              width: size.width,
-                              height: 55,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  side: const BorderSide(width: 2, color: Color.fromARGB(255, 40, 84, 232)),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)
-                                  ),
-                                  primary: Colors.white
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text('ADD ANOTHER PRODUCT', 
-                                  style: TextStyle(
-                                    fontSize: 20, 
-                                    letterSpacing: 3, 
-                                    color: Color.fromARGB(255, 40, 84, 232)
-                                  ),
-                                  textAlign: TextAlign.center,
-                                )
-                              ),
-                            ),
-                
-                            Container(
-                              width: size.width,
-                              height: 55,
-                              margin: const EdgeInsets.only(top: 10),
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  side: const BorderSide(width: 3, color: Color.fromARGB(255, 40, 84, 232)),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)
-                                  ),
-                                  primary: const Color.fromARGB(255, 40, 84, 232)
-                                ),
-            
-                                onPressed: added != null ? () {
-                                  Navigator.pushReplacement(
-                                    context, PageTransition(
-                                      type: PageTransitionType.rightToLeftWithFade,
-                                      child: CartDetailsPage(
-                                        product: widget.product,
-                                        cusname: added!.cartcustomer?.customer?.name ?? "N/A",
-                                        isfromPendingOrder: false,
-                                        cartcusid: added!.cartcustomer!.id
+                          Visibility(
+                            visible: visiblebutton,
+                            child: Container(
+                              height: 180,
+                              padding: const EdgeInsets.only(top: 10),
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    width: size.width,
+                                    height: 55,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        side: const BorderSide(width: 2, color: Color.fromARGB(255, 40, 84, 232)),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10)
+                                        ),
+                                        primary: Colors.white
                                       ),
-                                    )
-                                  );
-                                } : null,
-                                child: const Text('FINISH ORDER', 
-                                  style: TextStyle(fontSize: 20, letterSpacing: 5, color: Colors.white),
-                                )
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('ADD ANOTHER PRODUCT', 
+                                        style: TextStyle(
+                                          fontSize: 20, 
+                                          letterSpacing: 3, 
+                                          color: Color.fromARGB(255, 40, 84, 232)
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      )
+                                    ),
+                                  ),
+                        
+                                  Container(
+                                    width: size.width,
+                                    height: 55,
+                                    margin: const EdgeInsets.only(top: 10),
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        side: const BorderSide(width: 3, color: Color.fromARGB(255, 40, 84, 232)),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10)
+                                        ),
+                                        primary: const Color.fromARGB(255, 40, 84, 232)
+                                      ),
+                    
+                                      onPressed: added != null ? () {
+                                        Navigator.pushReplacement(
+                                          context, PageTransition(
+                                            type: PageTransitionType.rightToLeftWithFade,
+                                            child: CartDetailsPage(
+                                              product: widget.product,
+                                              cusname: added!.cartcustomer?.customer?.name ?? "N/A",
+                                              isfromPendingOrder: false,
+                                              cartcusid: added!.cartcustomer!.id
+                                            ),
+                                          )
+                                        );
+                                      } : null,
+                                      child: const Text('FINISH ORDER', 
+                                        style: TextStyle(fontSize: 20, letterSpacing: 5, color: Colors.white),
+                                      )
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
+                          )
+                        ],
+                      )
+                
                 ],
               ),
             )

@@ -194,7 +194,7 @@ class _LoginPageState extends State<LoginPage> {
                     
                         Container(
                           margin: const EdgeInsets.only(top: 40),
-                          width: 500,
+                          width: size.width,
                           height: 50,
                           padding: const EdgeInsets.symmetric(horizontal: 30),
                           child: ElevatedButton(

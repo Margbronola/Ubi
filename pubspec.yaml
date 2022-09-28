@@ -25,6 +25,8 @@ dependencies:
   flutter_slidable: ^1.2.0
   loading_animation_widget: ^1.2.0+3
   fluttertoast: ^8.0.9
+  cached_network_image: ^3.2.2
+  loading_animations: ^2.2.0
   # qr_code_scanner: ^0.7.0
   # flutter_barcode_scanner: ^2.0.0
   

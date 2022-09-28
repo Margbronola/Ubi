@@ -185,7 +185,8 @@ class _OrderPageState extends State<OrderPage> {
                                           style: const TextStyle(
                                             color: Colors.black,
                                             fontSize: 18,
-                                          )
+                                          ),
+                                          textAlign: TextAlign.center,
                                         ),
                                       ),
                                     ],

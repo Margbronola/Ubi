@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -52,7 +54,6 @@ class _listState extends State<list> {
                       isEnabled: e.isEnabled,
                       callback: (bool x) {
                         _viewModel.control(e.id);
-                        // ignore: avoid_print
                         print('added ${_viewModel.current}');
                         setState(() {});
                       },
@@ -76,11 +77,9 @@ class _listState extends State<list> {
       child: StreamBuilder<List<int>>(
         stream: _viewModel.stream,
         builder: (context,snapshot) {
-          // ignore: curly_braces_in_flow_control_structures
           if(!snapshot.hasData || snapshot.hasError) return  Center(child: LoadingAnimationWidget.prograssiveDots(color: const Color.fromARGB(255, 40, 84, 232), size: 50));
         
           return Column(
-            // padding: const EdgeInsets.symmetric(vertical: 0),
             children: [
               switcherData(switchData: [
                 SwitcherData(

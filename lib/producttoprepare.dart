@@ -34,10 +34,16 @@ class _ProductsToPreparePageState extends State<ProductsToPreparePage> {
               child: Column(
                 children: [
                   GestureDetector(
-                    onTap: (){
+                    onTap: () async{
                       setState(() {
-                        _toPrepareAPI.getToPrepare();
+                        isLoading = true;
                       });
+                          
+                      await _toPrepareAPI.getToPrepare().whenComplete(
+                        () => setState(
+                          () => isLoading = false,
+                        ),
+                      );
                     },
                     child: SizedBox(
                       width: size.width,
@@ -176,7 +182,7 @@ class _ProductsToPreparePageState extends State<ProductsToPreparePage> {
                             
                             return const Center(
                               child: Text('No Orders to Prepare',
-                                style: TextStyle(fontSize: 20, letterSpacing: 1.5)
+                                style: TextStyle(fontSize: 20, letterSpacing: 2)
                               )
                             );
                             
@@ -199,7 +205,10 @@ class _ProductsToPreparePageState extends State<ProductsToPreparePage> {
               width: size.width,
               height: size.height,
               child: Center(
-                child: LoadingAnimationWidget.prograssiveDots(color: const Color.fromARGB(255, 40, 84, 232), size: 50),
+                child: LoadingAnimationWidget.prograssiveDots(
+                  color: const Color.fromARGB(255, 40, 84, 232), 
+                  size: 50
+                ),
               ),
             ): Container()
           ]

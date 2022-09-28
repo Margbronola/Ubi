@@ -197,7 +197,7 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
                     builder: (_, snapshot) {
                       if (snapshot.hasData && !snapshot.hasError){
                         if (snapshot.data!.isNotEmpty) {
-              
+                          
                           if(dropdownvalue == "Pending"){
                             final List<TodaysOrderModel> pendinglist = snapshot.data!.where((element) => 
                               (element.cartCustomer.customer?.name.toLowerCase().contains(searchString) ?? searchString.isEmpty) &&
@@ -415,7 +415,7 @@ class _TodaysOrderPageState extends State<TodaysOrderPage> {
               
                         return const Center(
                           child: Text('No Order Today',
-                            style: TextStyle(fontSize: 25, letterSpacing: 3)
+                            style: TextStyle(fontSize: 20, letterSpacing: 2)
                           )
                         );
                       }
